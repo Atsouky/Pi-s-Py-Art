@@ -1,6 +1,6 @@
 """
 Programme jeu de la vie rÃ©alisÃ© par Gazi Damien
-Version 0.1.5
+Version 0.1.6
 """
 import pygame
 from random import uniform
