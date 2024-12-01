@@ -6,7 +6,7 @@ import pygame
 from random import uniform
 from boutton import TextInput,Bouton
 from math import *
-#test
+
 #region------------------------------------------------------------__Init__-----------------------------------------------------------------------------------------
 #variables de l'écrans
 WINDOWWIDTH = 1366
