@@ -77,23 +77,24 @@ voisins_fliter = [
     [-1, 1, -0.5], [0, 1, -0.1], [1, 1, 0.2]
 ]
 
-textinput10 = TextInput(10, 370, 140, 32, 16)
+textinput10 = TextInput(10, 370, 440,64, 64)
+
+
+
 
 #compilation de la formule d'activation entrer par l'utilisateur
 def compile_activation(formula):
-    try:
-        code = compile(formula, "<string>", "eval")
-        return lambda x: max(0.0, min(1.0, eval(code, {"x": x, "__builtins__": None})))
-    except Exception as e:
-        print(f"Failed to compile formula: {e}")
-        return lambda x: 0.0  
+    code = compile(formula, "", "eval")
+    return lambda x: max(0.0, min(1.0, eval(code, {"x": x, "sin": sin, "cos": cos , 'pi': pi, 'sqrt': sqrt , 'log': log , 'exp': exp , 'tan' : tan, 'abs': abs})))
+
     
 textinput10.text="x"
 activation_formula = compile_activation(textinput10.text)
 
 #fonction d'activation
 def activation(x):
-    return activation_formula(x)
+    try:return activation_formula(x)
+    except: return 0
 
 
 
@@ -169,22 +170,22 @@ time_interval = 0.01
 loop=True
 run=True
 
-textinput = TextInput(10, 10, 140, 32, 16)
-textinput2 = TextInput(155, 10, 140, 32, 16)
-textinput3 = TextInput(300, 10, 140, 32, 16)
-textinput4 = TextInput(10, 50, 140, 32, 16)
-textinput5 = TextInput(155, 50, 140, 32, 16)
-textinput6 = TextInput(300, 50, 140, 32, 16)
-textinput7 = TextInput(10, 90, 140, 32, 16)
-textinput8 = TextInput(155, 90, 140, 32, 16)
-textinput9 = TextInput(300, 90, 140, 32, 16)
+textinput = TextInput(10, 10, 140, 32, 32)
+textinput2 = TextInput(155, 10, 140, 32, 32)
+textinput3 = TextInput(300, 10, 140, 32, 32)
+textinput4 = TextInput(10, 50, 140, 32, 32)
+textinput5 = TextInput(155, 50, 140, 32, 32)
+textinput6 = TextInput(300, 50, 140, 32, 32)
+textinput7 = TextInput(10, 90, 140, 32, 32)
+textinput8 = TextInput(155, 90, 140, 32, 32)
+textinput9 = TextInput(300, 90, 140, 32, 32)
 
 boutonSave = Bouton(10, 130, 140, 32, 'Save', (0, 0, 0), (255, 255, 255))
 boutonLoad = Bouton(10, 170, 140, 32, 'Load', (0, 0, 0), (255, 255, 255))
-textinputSavelocation = TextInput(150, 150, 140, 32, 16)
+textinputSavelocation = TextInput(150, 150, 140, 32, 32)
 boutonprint = Bouton(10, 210, 140, 32, '', (0, 0, 0), (255, 255, 255))
 
-Bouton1 = Bouton(10, 410, 140, 32, 'Start', (0, 0, 0), (255, 255, 255))
+Bouton1 = Bouton(10, 450, 140, 32, 'Start', (0, 0, 0), (255, 255, 255))
 Bouton2 = Bouton(450, 10, 140, 32, 'Random', (0, 0, 0), (255, 255, 255))
 BoutonExit = Bouton(WINDOWWIDTH - 150, WINDOWHEIGHT - 50, 140, 32, 'Exit', (0, 0, 0), (255, 255, 255))
 txt=[textinput,textinput2,textinput3,textinput4,textinput5,textinput6,textinput7,textinput8,textinput9,textinput10,textinputSavelocation]
