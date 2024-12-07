@@ -153,8 +153,13 @@ while running:
                 grid = rdgrid()
             elif event.key == pygame.K_SPACE:
                 run = not run
-                
+            
             elif event.key == pygame.K_v:
+                for i in range(0, cellWidth):
+                    for j in range(0, cellHeight):
+                        grid[i][j] = 0
+                
+            elif event.key == pygame.K_t:
                 temp=[]
                 for i in range(7):
                     temp.append(uniform(-1.0,1.0))

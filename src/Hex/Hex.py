@@ -86,13 +86,13 @@ def nextvie(vie: list) -> list:
 
 
 grid = rdgrid()
-grid[1][1] = 0
+"""grid[1][1] = 0
 grid[1][2] = 1 # (0, 1)
 grid[0][1] = 1 # (-1, 0)
 grid[2][1] = 1 # (1, 0)
 grid[1][0] = 1 # (0, -1)
 grid[2][2] = 1 # (1, 1)
-grid[0][2] = 1 # (-1, 1)
+grid[0][2] = 1 # (-1, 1)"""
 
 """grid[10][10] = 1
 grid[10][11] = 1
@@ -100,7 +100,7 @@ grid[10][12] = 1"""
 
 
 running = True
-run= False
+run= True
 while running:
     screen.fill((0,0,0))
     
@@ -121,6 +121,11 @@ while running:
                 grid = rdgrid()
             elif event.key == pygame.K_SPACE:
                 run = not run
+            elif event.key == pygame.K_v:
+                for x in range(0, cellWidth):
+                    for y in range(0, cellHeight):
+                        grid[x][y] = 0
+                
                 
                 
     pos = pygame.mouse.get_pos()

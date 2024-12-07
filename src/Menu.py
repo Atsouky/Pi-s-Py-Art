@@ -44,6 +44,9 @@ Brain = Bouton(300, 100, 100, 100, 'Brain',(0,0,0),(255,255,255))
 wireWorld = Bouton(400, 100, 100, 100, 'WireWorld',(0,0,0),(255,255,255))
 Mandelbrot = Bouton(500, 100, 100, 100, 'Mandelbrot',(0,0,0),(255,255,255))
 Func = Bouton(600, 100, 100, 100, 'Func',(0,0,0),(255,255,255))
+Hexjdlv = Bouton(700, 100, 100, 100, 'Hex',(0,0,0),(255,255,255))
+HexCycl = Bouton(800, 100, 100, 100, 'HexCycl',(0,0,0),(255,255,255))
+HexNuro = Bouton(900, 100, 100, 100, 'HexNuro',(0,0,0),(255,255,255))
 
 
 
@@ -108,6 +111,14 @@ while run:
     if Func.draw(fenetre):
         subprocess.run(["python", "Func.py"])
         
+    if Hexjdlv.draw(fenetre):
+        subprocess.run(["python", "Hex/Hex.py"])
+        
+    if HexCycl.draw(fenetre):
+        subprocess.run(["python", "Hex/HexCycl.py"])
+        
+    if HexNuro.draw(fenetre):
+        subprocess.run(["python", "Hex/HexNuro.py"])
         
     if exit.draw(fenetre):
         run=False
@@ -122,8 +133,9 @@ while run:
     printscreen("fleche droite pour accelere le jeu",150,400,(0,0,0))
     printscreen("clique gauche pour mettre une cellule sur chaque jeu",150,420,(0,0,0))
     printscreen("clique droit pour effacer une cellule sur chaque jeu",150,440,(0,0,0))
-    printscreen("les touche numériquer 1(&) a 7(è) pour changer de materiaux sur les falling sanns",150,460,(0,0,0))
-    printscreen("Echape pour Acceder au menu du jeu de la vie et de Cyclique",150,480,(0,0,0))
+    printscreen("les touche numériquer 1(&) a 7(è) pour changer de materiaux sur les falling sans",150,460,(0,0,0))
+    printscreen("Echape pour Acceder au menu du jeu de la vie, de Cyclique, de Elementary, Neuro",150,480,(0,0,0))
+    printscreen("t permetr sur hex Neuro de changer les règle en tant réel",150,500,(0,0,0))
     
     
     
