@@ -10,7 +10,7 @@ Bonjour voici notre projet pour les trophée NSI de 2024 avec le thème Art et I
 
 Les automates cellulaires sont une branche de l'informatique et des math étudiant le comportement de cellule dans une grille avec des règles simples.
 
-Ce sont des simulation donc il se jou tout seul mais il est possible d'intervenir dans les simulation en tant réel.
+Ce sont des simulation donc il se joue tout seul mais il est possible d'intervenir dans les simulation en tant réel.
 
 Bien que les règles des automates cellulaires soit simples, de nombreuse chose peuvent arriver que ce soit très simple a une grande complexiter.
 
