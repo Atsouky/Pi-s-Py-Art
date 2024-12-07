@@ -16,7 +16,7 @@ Bien que les règles des automates cellulaires soit simples, de nombreuse chose 
 
 ##  Dans notre projet nous verrons les automates cellulaires les plus populaire tel que :
 
-- Le jeu de la vie de Jhon Conway
+- Le jeu de la vie de John Conway
   
 - Un Automate Cellulaire Cyclique
 
