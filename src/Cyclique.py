@@ -4,6 +4,7 @@ Programme jeu de la vie rÃ©alisÃ© par nom, prÃ©nom, classe
 import pygame
 from random import randint
 from boutton import Checkbox,TextInput
+import colorsys
 #region------------------------------------------------------------__Init__-----------------------------------------------------------------------------------------
 #variables de l'Ã©cran
 WINDOWWIDTH = 1366
@@ -51,32 +52,56 @@ def tracerGrille():
 #initialise un dictionnaire de cellules CELLWIDTH*CELLHEIGHT {(0, 0): 0, (1, 0): 0, (2, 0): 0, (3, 0): 0, ....(17, 14): 0, (18, 14): 0, (19, 14): 0}
 #les cellules seront toutes mortes
 def initialiserCellules():
-    return [[0 for i in range(nbCellHeight+1)] for j in range(nbCellWidth+1)]
+    return [[0 for i in range(nbCellHeight)] for j in range(nbCellWidth)]
 
 
 
 #active alÃ©atoirement les cellules (mise Ã  1) {(0, 0): 0, (1, 0): 1, (2, 0): 1, (3, 0): 1, (4, 0): 1, etc...
 def generationAleatoire(State):
-    return [[randint(0,State-1) for i in range(nbCellHeight+1)] for j in range(nbCellWidth+1)]
+    return [[randint(0, State - 1) for i in range(nbCellHeight)] for j in range(nbCellWidth)]
     
 
 COLORS = [(0, 0, 0), (255, 0, 0), (0, 255, 0), (0, 0, 255)]
+
+
+
+def generate_colors(State):
+    colors = []
+    for i in range(State):
+        hue = i / State 
+        rgb = colorsys.hsv_to_rgb(hue, 1.0, 1.0)  
+        colors.append(tuple(int(c * 255) for c in rgb)) 
+    return colors
+
+
+
 #remplir la fenetre avec un rectangle vert si la cellule est vivante, noir sinon morte)
 def remplirGrille(vie):
+    global COLORS
     c=10
     for x in range(nbCellWidth):
         for y in range(nbCellHeight):
             if vie[x][y]!=0:
-                
-                if not colormode: colo = (c*vie[x][y],c*vie[x][y],c*vie[x][y])
-                else: 
-                    #colo = ((c*vie[x][y])%255,(5*c*vie[x][y])%255,(2*c*vie[x][y])%255)
-                    colo = COLORS[vie[x][y]]
+                try:colo = COLORS[vie[x][y]]
+                except:colo = (c*vie[x][y],c*vie[x][y],c*vie[x][y])
                 pygame.draw.rect(fenetre, colo, (x*CELLSIZE, y*CELLSIZE, CELLSIZE, CELLSIZE))
     
 
 #DÃ©termine combien de voisins sont en vie
 #rappel item est un tuple (x,y) contenant la position de la cellule.
+
+
+"""def voisin(x, y, vie):
+    nbvoisin = 0
+    for dx in [-1, 0, 1]:
+        for dy in [-1, 0, 1]:
+            if dx == 0 and dy == 0:
+                continue 
+            nx, ny = (x + dx) % nbCellWidth, (y + dy) % nbCellHeight
+            if vie[nx][ny] == (vie[x][y]+1) % State:
+                nbvoisin += 1
+    return nbvoisin"""
+ 
 
 
 def voisin(x, y, vie):
@@ -86,30 +111,32 @@ def voisin(x, y, vie):
             if dx == 0 and dy == 0:
                 continue 
             nx, ny = (x + dx) % nbCellWidth, (y + dy) % nbCellHeight
-            if vie[nx][ny] == (vie[x][y]+1)%State:
+            if vie[nx][ny] == (vie[x][y]+1) % State:
                 nbvoisin += 1
-    return nbvoisin
- 
-
-
-
+    return nbvoisin>=int(ruleset.text)
 
 
 
 #calcule la prochaine Ã©tape, retourne un nouveau dictionnaire
 def prochaine_vie(vie):
-    next_vie = [[0] * (nbCellHeight+1) for i in range(nbCellWidth+1)]
+    next_vie = [[0] * (nbCellHeight) for i in range(nbCellWidth)]
     
     for x in range(nbCellWidth):
         for y in range(nbCellHeight):
             a = voisin(x, y, vie)
             
-            if (a ==2 and rule2) or (a == 4 and rule4) or (a == 6 and rule6) or (a == 8 and rule8)\
+            """if (a ==2 and rule2) or (a == 4 and rule4) or (a == 6 and rule6) or (a == 8 and rule8)\
                 or (a == 3 and rule3) or (a == 5 and rule5) or (a == 7 and rule7) or (a == 1 and rule1)\
                     or (a == 0 and rule0):   
                 next_vie[x][y] = (vie[x][y]+1)%State
             else:
-                next_vie[x][y] = vie[x][y]  
+                next_vie[x][y] = vie[x][y]  """
+            
+            if a:
+                next_vie[x][y] = (vie[x][y]+1)%State
+            else:
+                next_vie[x][y] = vie[x][y]
+            
             
 
     return next_vie
@@ -129,6 +156,7 @@ Checkbox10 = Checkbox(300, 500, 50, 50, "Rule 1", (255, 0, 0), False)
 Checkbox11 = Checkbox(500, 600, 50, 50, "Quit", (255, 0, 0), False)
 Checkbox12 = Checkbox(300, 600, 50, 50, "Rule 0", (255, 0, 0), False)
 TextInput1= TextInput(200,100,150,50,20)
+ruleset = TextInput(400,100,150,50,20)
 
 
 
@@ -165,6 +193,7 @@ txtimput= ''
 
 def menu():
     global rule2,rule4,rule6,rule8,colormode,rule3,rule5,rule7,rule1,txtimput
+    global State , COLORS
     while True:
         
         for event in pygame.event.get():
@@ -175,6 +204,7 @@ def menu():
             elif event.type == pygame.KEYDOWN: 
                 if event.key == pygame.K_w:
                     break
+            ruleset.analyse_event(event)
             if TextInput1.analyse_event(event) != '' and TextInput1.active == False:
                 txtimput = int(TextInput1.text)
         
@@ -223,17 +253,22 @@ def menu():
             quit()
             
         TextInput1.draw(fenetre)
+        ruleset.draw(fenetre)
         
-        
-        pygame.display.update()        
+        pygame.display.update()     
+    try:
+        State=int(txtimput)
+    except:
+        State=4  
+    if ruleset.text == '':
+        ruleset.text = 2
+    COLORS = None
+    COLORS = generate_colors(State) 
         
     
     
 menu()
-try:
-    State=int(txtimput)
-except:
-    State=4
+
 vie=initialiserCellules()
 vie=generationAleatoire(State)
 loopGame=True
@@ -304,7 +339,7 @@ while loopGame==True:
     if mousepos[0]<nbCellWidth*CELLSIZE and mousepos[1]<nbCellHeight*CELLSIZE: 
         if mousePressed1:
             
-            vie[mousepos[0]//CELLSIZE][mousepos[1]//CELLSIZE]=randint(0,3)
+            vie[mousepos[0]//CELLSIZE][mousepos[1]//CELLSIZE]=randint(0,State-1)
         if mousePressed2:
                 vie[mousepos[0]//CELLSIZE][mousepos[1]//CELLSIZE]=0
 

@@ -1,1 +1,6 @@
-start python3 Menu.py
+
+cd src 
+python3 Menu.py
+
+
+

@@ -9,7 +9,7 @@ def mandelbrot(c, maxiter):
     for n in range(maxiter):
         if abs(z) > 2:
             return n
-        z = z * z + c
+        z = z **3+ c
     return maxiter
         
         
@@ -24,8 +24,8 @@ def mandelbrot_set(xmin, xmax, ymin, ymax, width, height, maxiter):
     return mset
 
 xmin , xmax, ymin, ymax = -2.0, 1.0, -1.5, 1.5
-width, height = 50000, 50000
-maxiter = 1000
+width, height = 1000, 1000
+maxiter = 100
 
 img = mandelbrot_set(xmin, xmax, ymin, ymax, width, height, maxiter)
 

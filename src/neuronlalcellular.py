@@ -1,6 +1,6 @@
 """
 Programme jeu de la vie rÃ©alisÃ© par Gazi Damien
-Version 0.1.6
+Version 0.1.8
 """
 import pygame
 from random import uniform
@@ -85,7 +85,8 @@ textinput10 = TextInput(10, 370, 440,64, 64)
 #compilation de la formule d'activation entrer par l'utilisateur
 def compile_activation(formula):
     code = compile(formula, "", "eval")
-    return lambda x: max(0.0, min(1.0, eval(code, {"x": x, "sin": sin, "cos": cos , 'pi': pi, 'sqrt': sqrt , 'log': log , 'exp': exp , 'tan' : tan, 'abs': abs})))
+    return lambda x: max(0.0, min(1.0, eval(code, {"x": x, "sin": sin, "cos": cos , 'pi': pi, 'sqrt': sqrt , 'log': log1p , 'exp': exp , 'tan' : tan, 'abs': abs, 'min': min, 'max': max, 'round': round})))
+
 
     
 textinput10.text="x"
@@ -128,7 +129,8 @@ def save():
         "txt10" : textinput10.text
     }
     os.makedirs("saves", exist_ok=True)
-    with open(f"saves/{savelocation}.json", "w") as f:
+    os.makedirs("saves/neuronal", exist_ok=True)
+    with open(f"saves/neuronal/{savelocation}.json", "w") as f:
         json.dump(data, f)
     print("sauvegarde effectuer")
     boutonprint.txt = 'sauvegarde effectuer'
@@ -136,7 +138,7 @@ def save():
 
 def load():
     try:
-        with open(f"saves/{savelocation}.json", "r") as f:
+        with open(f"saves/neuronal/{savelocation}.json", "r") as f:
             data = json.load(f)
             textinput.text = data["txt1"]
             textinput2.text = data["txt2"]
@@ -169,7 +171,7 @@ time_interval = 0.01
 #region------------------------------------------------------------__Loop__-----------------------------------------------------------------------------------------
 loop=True
 run=True
-
+#region menu
 textinput = TextInput(10, 10, 140, 32, 32)
 textinput2 = TextInput(155, 10, 140, 32, 32)
 textinput3 = TextInput(300, 10, 140, 32, 32)
@@ -275,7 +277,7 @@ def menu():
     activation_formula = compile_activation(textinput10.text)
     
 menu()
-
+#endregion
 while loop==True:
     mousepos=pygame.mouse.get_pos()
     for event in pygame.event.get():
@@ -349,11 +351,15 @@ while loop==True:
     
     if run and  time.monotonic() - timer > time_interval:
         timer = time.monotonic()
-        vie=prochaine_vie(vie)
+        
+        vie = prochaine_vie(vie)
+        
     
     
     fenetre.fill(background_color)
+    
     remplirGrille(vie)
+    
     pygame.display.update()
 
 pygame.quit()

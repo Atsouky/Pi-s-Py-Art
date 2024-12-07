@@ -85,7 +85,7 @@ while run:
         subprocess.run(["python", "Seeds.py"])
     
     if neuronelal.draw(fenetre):
-        subprocess.run(["python", "neuronlal cellular.py"])
+        subprocess.run(["python", "neuronlalcellular.py"])
         
     if Cyclique.draw(fenetre):
         subprocess.run(["python", "Cyclique.py"])

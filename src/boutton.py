@@ -32,6 +32,7 @@ class Boutonsprite():
     
 class Bouton():
     def __init__(self, x , y , w , h, txt , colo , colo1  ):
+        
         self.x = x
         self.y = y
         self.color = colo

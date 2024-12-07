@@ -3,8 +3,8 @@ Programme jeu de la vie rÃ©alisÃ© par nom, prÃ©nom, classe
 """
 import pygame
 from random import randint
-from boutton import Checkbox
-from numba import jit # python compilateur
+from boutton import Checkbox,Bouton,TextInput
+
 #region------------------------------------------------------------__Init__-----------------------------------------------------------------------------------------
 #variables de l'Ã©cran
 WINDOWWIDTH = 1366
@@ -131,7 +131,7 @@ vie=generationAleatoire()
 
 
 
-#menu
+#region menu
 
 def printscreen(text:str,x,y,color):
     txt=font.render(text,True,color)
@@ -139,27 +139,40 @@ def printscreen(text:str,x,y,color):
 
 
 CheckboxStart = Checkbox(100, 100, 50, 50, "Start", (255, 0, 0), False) 
-Checkbox2 = Checkbox(100, 200, 50, 50, "Rule 2", (255, 0, 0), False)
-Checkbox4 = Checkbox(100, 300, 50, 50, "Rule 4", (255, 0, 0), False)
-Checkbox6 = Checkbox(100, 400, 50, 50, "Rule 6", (255, 0, 0), False)
-Checkbox8 = Checkbox(100, 500, 50, 50, "Rule 8", (255, 0, 0), False)
 CheckboxCl = Checkbox(100, 600, 50, 50, "color mode", (255, 0, 0), False)
-Checkbox3 = Checkbox(300, 200, 50, 50, "Rule 3", (255, 0, 0), True)
-Checkbox5 = Checkbox(300, 300, 50, 50, "Rule 5", (255, 0, 0), False)
-Checkbox7 = Checkbox(300, 400, 50, 50, "Rule 7", (255, 0, 0), False)
-Checkbox1 = Checkbox(300, 500, 50, 50, "Rule 1", (255, 0, 0), False)
 CheckboxQuit = Checkbox(500, 600, 50, 50, "Quit", (255, 0, 0), False)
-Checkbox0 = Checkbox(300, 600, 50, 50, "Rule 0", (255, 0, 0), False)
+BoutonSave = Bouton(400, 200, 50, 50, "Save", (255, 0, 0), False)
+BoutonLoad = Bouton(400, 300, 50, 50, "Load", (255, 0, 0), False)
+Savelocation =TextInput(400, 400, 200, 64,32)
 
-Checkboxb2 = Checkbox(700, 200, 50, 50, "Rule 2", (255, 0, 0), True)
-Checkboxb4 = Checkbox(700, 300, 50, 50, "Rule 4", (255, 0, 0), False)
-Checkboxb6 = Checkbox(700, 400, 50, 50, "Rule 6", (255, 0, 0), False)
-Checkboxb8 = Checkbox(700, 500, 50, 50, "Rule 8", (255, 0, 0), False)
-Checkboxb3 = Checkbox(900, 200, 50, 50, "Rule 3", (255, 0, 0), False)
-Checkboxb5 = Checkbox(900, 300, 50, 50, "Rule 5", (255, 0, 0), False)
-Checkboxb7 = Checkbox(900, 400, 50, 50, "Rule 7", (255, 0, 0), False)
-Checkboxb1 = Checkbox(900, 500, 50, 50, "Rule 1", (255, 0, 0), False)
+
+
+Checkbox0 = Checkbox(300, 600, 50, 50, "Rule 0", (255, 0, 0), False)
+Checkbox1 = Checkbox(300, 500, 50, 50, "Rule 1", (255, 0, 0), False)
+Checkbox2 = Checkbox(100, 200, 50, 50, "Rule 2", (255, 0, 0), False)
+Checkbox3 = Checkbox(300, 200, 50, 50, "Rule 3", (255, 0, 0), True)
+Checkbox4 = Checkbox(100, 300, 50, 50, "Rule 4", (255, 0, 0), False)
+Checkbox5 = Checkbox(300, 300, 50, 50, "Rule 5", (255, 0, 0), False)
+Checkbox6 = Checkbox(100, 400, 50, 50, "Rule 6", (255, 0, 0), False)
+Checkbox7 = Checkbox(300, 400, 50, 50, "Rule 7", (255, 0, 0), False)
+Checkbox8 = Checkbox(100, 500, 50, 50, "Rule 8", (255, 0, 0), False)
+
+lst_checkbox=[Checkbox0,Checkbox1,Checkbox2,Checkbox3,Checkbox4,Checkbox5,Checkbox6,Checkbox7,Checkbox8]
+
 Checkboxb0 = Checkbox(900, 600, 50, 50, "Rule 0", (255, 0, 0), False)
+Checkboxb1 = Checkbox(900, 500, 50, 50, "Rule 1", (255, 0, 0), False)
+Checkboxb2 = Checkbox(700, 200, 50, 50, "Rule 2", (255, 0, 0), True)
+Checkboxb3 = Checkbox(900, 200, 50, 50, "Rule 3", (255, 0, 0), False)
+Checkboxb4 = Checkbox(700, 300, 50, 50, "Rule 4", (255, 0, 0), False)
+Checkboxb5 = Checkbox(900, 300, 50, 50, "Rule 5", (255, 0, 0), False)
+Checkboxb6 = Checkbox(700, 400, 50, 50, "Rule 6", (255, 0, 0), False)
+Checkboxb7 = Checkbox(900, 400, 50, 50, "Rule 7", (255, 0, 0), False)
+Checkboxb8 = Checkbox(700, 500, 50, 50, "Rule 8", (255, 0, 0), False)
+
+lst_checkboxb= [Checkboxb0,Checkboxb1,Checkboxb2,Checkboxb3,Checkboxb4,Checkboxb5,Checkboxb6,Checkboxb7,Checkboxb8]
+
+
+
 
 CheckboxVs=[]
 for i in range (5):
@@ -168,7 +181,59 @@ for i in range (5):
 
 for i in [6,7,8,11,13,16,17,18]:
     CheckboxVs[i].checked = True
+    
+    
+    
+    
+def to_savedata():
+    to_save = {}
+    for i in range (len(CheckboxVs)):
+        to_save[str(i)] = CheckboxVs[i].checked
+    for i in range (len(lst_checkbox)):
+        to_save[str(i+25)] = lst_checkbox[i].checked
+    for i in range (len(lst_checkboxb)):
+        to_save[str(i+34)] = lst_checkboxb[i].checked 
+    return to_save   
 
+def to_loaddata(data):
+    for i in range (len(CheckboxVs)):
+        CheckboxVs[i].checked = data[str(i)]
+    for i in range (len(lst_checkbox)):
+        lst_checkbox[i].checked = data[str(i+25)]
+    for i in range (len(lst_checkboxb)):
+        lst_checkboxb[i].checked = data[str(i+34)]
+    
+
+
+import os 
+import json
+
+
+boutonprint = Bouton(0, 0, 140, 32, '', (52,78, 91), (0,0,0))
+
+def save():
+    if Savelocation.text not in ['day&night']:
+        os.makedirs("saves", exist_ok=True)
+        os.makedirs("saves/jdlv", exist_ok=True)
+        with open(f"saves/jdlv/{Savelocation.text}.json", "w") as f:
+            json.dump(to_savedata(), f)
+        print("sauvegarde effectuer")
+        boutonprint.txt = 'sauvegarde effectuer'
+    else:
+        boutonprint.txt = 'sauvegarde impossible ou tentative de réecriture d"une des sauvegarde de base'
+
+
+def load():
+    try:
+        with open(f"saves/jdlv/{Savelocation.text}.json", "r") as f:
+            data = json.load(f)
+            to_loaddata(data)
+        print("sauvegarde chargé")
+        boutonprint.txt = 'sauvegarde chargé'
+        
+    except FileNotFoundError:
+        print("Aucune sauvegarde trouvée")
+        boutonprint.txt = 'Aucune sauvegarde trouvée'
 
 
 rule0S=False
@@ -218,6 +283,7 @@ def menu():
                 elif event.key ==pygame.K_ESCAPE:
                     CheckboxStart.checked = True
                     break
+            Savelocation.analyse_event(event)
         
         fenetre.fill((52,78,91))
         
@@ -331,7 +397,11 @@ def menu():
         if CheckboxVs[24].draw(fenetre):a24=1
         else: a24=0
             
-            
+        if BoutonSave.draw(fenetre):save()
+        if BoutonLoad.draw(fenetre):load()
+        if Savelocation.draw(fenetre):pass
+        if boutonprint.draw(fenetre):pass
+        
         
         
         pygame.display.update()
@@ -368,7 +438,7 @@ voisins=[]
 
 menu()
 print(voisins)
-
+#endregion
 
 mousePressed1=False
 mousePressed2=False
