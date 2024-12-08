@@ -19,14 +19,19 @@ Bien que les règles des automates cellulaires soit simples, de nombreuse chose 
 ##  Dans notre projet nous verrons les automates cellulaires les plus populaire tel que :
 
 - Le jeu de la vie de John Conway
+![jeu de la vie](Image/jdlv.png)
   
 - Un Automate Cellulaire Cyclique
+![Cyclic](Image/Cyclic.png)
 
 - Un Automate Celluaire Neuronal
+![Neuro](Image/neuronal.png)
 
 - Une simulation "Falling Sand"
+![Sand](Image/Sand.png)
 
 - Et bien encore...
+![Other](Image/other.png)
 
 ---
 
