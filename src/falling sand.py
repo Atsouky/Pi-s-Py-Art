@@ -1,67 +1,43 @@
 """
-Programme jeu de la vie rÃ©alisÃ© par nom, prÃ©nom, classe
+Programme jeu de la vie rÃ©alisÃ© par nGazi Damien Tg3
 """
 import pygame
 from random import randint,choice
 import time
 #region------------------------------------------------------------__Init__-----------------------------------------------------------------------------------------
 #variables de l'Ã©cran
-screen = pygame.display.set_mode()
-l,h = screen.get_size()
-WINDOWWIDTH = 1366
-WINDOWHEIGHT = 700
-CELLSIZE = 6
-WINDOWWIDTH = l
-WINDOWHEIGHT = h-20*2
 
+cellcolor = (0,255,0)
+
+clock = pygame.time.Clock()
+pygame.init()
+
+display_info = pygame.display.Info()
+l = display_info.current_w
+h = display_info.current_h - 65 #pour la barre de menu windows
+
+fenetre = pygame.display.set_mode((l,h), pygame.RESIZABLE)
+
+pygame.display.set_caption("Day&Night")
+font = pygame.font.Font('freesansbold.ttf', 20)
+
+#variables de l'écran
+WINDOWWIDTH = l
+WINDOWHEIGHT = h
+CELLSIZE = 5
 CELLWIDTH = WINDOWWIDTH // CELLSIZE
 CELLHEIGHT = WINDOWHEIGHT // CELLSIZE
-
-FPS=1000   #vitesse du jeu
-
-ROUGE=(255,0,0)
-NOIR=(0,0,0)
-BLANC=(255,255,255)
-VERT=(0,255,0)
-BLEU=(0,0,125)
-MAGENTA=(255,0,255)
-cellcolor=(15,240,46)
-grillecolor=NOIR
-background_color=grillecolor
-
 
 global nbCellHeight, nbCellWidth
 nbCellWidth=WINDOWWIDTH//CELLSIZE
 nbCellHeight=WINDOWHEIGHT//CELLSIZE
 
-clock = pygame.time.Clock()
-pygame.init()
-fenetre = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT))
-pygame.display.set_caption("Jeu de la vie")
-font = pygame.font.Font('freesansbold.ttf', 20)
-#endregion
 
 
 
-
-
-#Trace la grille
-def tracerGrille():
-    for i in range(0,WINDOWWIDTH+1,CELLSIZE):
-        pygame.draw.line(fenetre,grillecolor,(0+i,0),(0+i,700),1)
-    for j in range(0,WINDOWHEIGHT+1,CELLSIZE):
-        pygame.draw.line(fenetre,grillecolor,(0,0+j),(1366,0+j),1)
-    pass
-
-
-#initialise un dictionnaire de cellules CELLWIDTH*CELLHEIGHT {(0, 0): 0, (1, 0): 0, (2, 0): 0, (3, 0): 0, ....(17, 14): 0, (18, 14): 0, (19, 14): 0}
-#les cellules seront toutes mortes
 def initialiserCellules():
     return [[0 for i in range(nbCellHeight+1)] for j in range(nbCellWidth+1)]
 
-
-
-#active alÃ©atoirement les cellules (mise Ã  1) {(0, 0): 0, (1, 0): 1, (2, 0): 1, (3, 0): 1, (4, 0): 1, etc...
 def generationAleatoire():
     return [[randint(0,len(dictionairedescouleur)) for i in range(nbCellHeight+1)] for j in range(nbCellWidth+1)]
     
@@ -71,8 +47,9 @@ dictionairedescouleur={
     3:(201,51,0),       #bois
     4:(255,0,0),        #feu
     5:(100,100,100),    #steam
-    6:(70,70,70),        #metal
-    7:(255,255,255),    #électricité
+    6:(0,255,0),        #herbe
+    7:(0,255,0),        #herbeTige
+    8:(153, 51, 0),     #Terre
     
     
     
@@ -117,38 +94,11 @@ def shiftcell(x,y,x2,y2,vie):
     vie[x2][y2]=temp1
     
 
-#DÃ©termine combien de voisins sont en vie
-#rappel item est un tuple (x,y) contenant la position de la cellule.
-'''''
-def voisins(item,vie):
-    nbVoisins = 0
-    for x in range (-1,2):
-        for y in range (-1,2):
-            xv=item[0]+x
-            yv=item[1]+y
-
-            
-    return nbVoisins
-    '''
-def voisin(x, y, vie):
-    nbvoisin = 0
-    for dx in [-1, 0, 1]:
-        for dy in [-1, 0, 1]:
-            if dx == 0 and dy == 0:
-                continue
-            nx, ny = x + dx, y + dy
-            if 0 <= nx < nbCellWidth and 0 <= ny < nbCellWidth:
-                nbvoisin += vie[nx][ny]
-    return nbvoisin
- 
-
-def voisins(x, y, vie,what):
-    if haut(x,y,vie) == what  or bas(x,y,vie) == what or droite(x,y,vie) == what or gauche(x,y,vie) == what\
-        or basdroite(x,y,vie) == what or basgauche(x,y,vie) == what or hautdroite(x,y,vie) == what \
-            or hautgauche(x,y,vie) == what:
-        return what
-    else:
-        return -1
+def autour(x,y,vie,types):
+    for i in [(-1,-1),(-1,0),(-1,1),(0,-1),(0,1),(1,-1),(1,0),(1,1),(-2,-2),(-2,-1),(-2,0),(-2,1),(-2,2),(2,-2),(2,-1),(2,0),(2,1),(2,2)]:
+        if vie[x+i[0]][y+i[1]] == types:
+            return True
+        
 
 
 
@@ -232,11 +182,6 @@ def prochaine_vie(vie):
                 case 4 : # feu
                       
                     
-                    
-                    
-                    """if bas(x,y,vie) == 0 and y+1<=nbCellHeight-2 and bas(x,y,next_vie)==0:
-                        next_vie[x][y+1] = 4
-                        next_vie[x][y] = 0"""
                     if haut(x,y,vie)==2:
                         next_vie[x][y] = 2
 
@@ -266,34 +211,25 @@ def prochaine_vie(vie):
                             next_vie[x][y] = vie[x][y]
                     else:
                         next_vie[x][y] = vie[x][y]
-    
-                case 6: #metal
-                    
-                    if gauche(x,y,vie)==7:
-                        next_vie[x][y] = 7
-                    elif droite(x,y,vie)==7:
-                        next_vie[x][y] = 7
-                    
-                    next_vie[x][y] = vie[x][y]
-                    
-                case 7: #electricite
-
-                    elec = True  
-                    for x1, y1 in [(-1, 0), (1, 0), (0, -1), (0, 1), (1, 1), (-1, 1), (1, -1), (-1, -1)]:  # Adjacent cells
-                        x2, y2 = x + x1, y + y1
-                        if 0 <= x2 < nbCellWidth and 0 <= y2 < nbCellHeight:
-                            if vie[x2][y2] == 6:  
-                                next_vie[x2][y2] = 7 
-                                elec = False
-
-                            elif vie[x2][y2] in [3, 6, 10]: 
-                                next_vie[x2][y2] = 4 
-                                elec = False
-                   
-                    if elec:
-                        next_vie[x][y] = 0
+                        
+                case 6: #Herbe
+                    if bas(x,y,vie)==8 and autour(x,y,vie,2):
+                        next_vie[x][y] = 6
+                        next_vie[x][y-1] = 7
                     else:
+                        next_vie[x][y] = 0
+                
+                case 7: #Tige
+                    if bas(x,y,vie)==8 or bas(x,y,vie)==7:
                         next_vie[x][y] = vie[x][y]
+                        if randint(0,100)==1:
+                            next_vie[x][y-1] = 7
+                    else :
+                        next_vie[x][y] = 0
+
+                case 8 : #terre
+                    next_vie[x][y] = vie[x][y]
+                
 
                     
                             
@@ -380,7 +316,7 @@ while loop==True:
             vie[mousepos[0]//CELLSIZE][mousepos[1]//CELLSIZE]=0
         
             
-    fenetre.fill(background_color)
+    fenetre.fill((0,0,0))
     remplirGrille(vie)
     #tracerGrille()
     pygame.display.update() #mets Ã  jour la fentre graphique
