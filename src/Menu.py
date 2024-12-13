@@ -47,7 +47,8 @@ Func = Bouton(600, 100, 100, 100, 'Func',(0,0,0),(255,255,255))
 Hexjdlv = Bouton(700, 100, 100, 100, 'Hex',(0,0,0),(255,255,255))
 HexCycl = Bouton(800, 100, 100, 100, 'HexCycl',(0,0,0),(255,255,255))
 HexNuro = Bouton(900, 100, 100, 100, 'HexNuro',(0,0,0),(255,255,255))
-
+Energy = Bouton(1000, 100, 100, 100, 'Energy',(0,0,0),(255,255,255))
+wave = Bouton(1100, 100, 100, 100, 'Wave',(0,0,0),(255,255,255))
 
 
 
@@ -64,7 +65,7 @@ while run:
     
     
     if falling.draw(fenetre):
-        subprocess.run(["python", "falling sand.py"])
+        subprocess.run(["python", "Sand/falling sand.py"])
     
     if additif.draw(fenetre):
         subprocess.run(["python", "Additif.py"])
@@ -119,6 +120,12 @@ while run:
         
     if HexNuro.draw(fenetre):
         subprocess.run(["python", "Hex/HexNuro.py"])
+        
+    if Energy.draw(fenetre):
+        subprocess.run(["python", "Energy.py"])
+        
+    if wave.draw(fenetre):
+        subprocess.run(["python", "Wave.py"])
         
     if exit.draw(fenetre):
         run=False

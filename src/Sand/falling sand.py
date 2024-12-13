@@ -3,6 +3,7 @@ Programme jeu de la vie rÃ©alisÃ© par Gazi Damien Tg3
 """
 import pygame , time , re
 from random import randint,choice
+from Element import elements,dictionairedescouleur,e
 
 #region------------------------------------------------------------__Init__-----------------------------------------------------------------------------------------
 #variables de l'Ã©cran
@@ -41,37 +42,7 @@ def initialiserCellules():
 def generationAleatoire():
     return [[randint(0,len(dictionairedescouleur)) for i in range(nbCellHeight+1)] for j in range(nbCellWidth+1)]
     
-dictionairedescouleur = {
-    
-    1:(255,200,0),      #sable
-    2:(0,0,255),        #eau
-    3:(201,51,0),       #bois
-    4:(255,0,0),        #feu
-    5:(100,100,100),    #steam
-    6:(0,255,0),        #herbe
-    7:(0,255,0),        #tige
-    8:(153, 51, 0),     #Terre
-    9:(200,10,0),       #feuv
-    10:(130,130,130),   #stone
-    11:(0,200,255),     #glace
-    
-}
 
-e = {
-    
-    'sable':1,
-    'eau':2,
-    'bois':3,
-    'feu':4,
-    'steam':5,
-    'herbe':6,
-    'tige':7,
-    'terre':8,
-    'feuv':9,
-    'stone':10,
-    'glace':11,
-    
-}
 
 #remplir la fenetre avec un rectangle vert si la cellule est vivante, noir sinon morte)
 def remplirGrille(vie):
@@ -258,9 +229,7 @@ def symbolic(x,y,Paterne,vie,next_vie,elementreaction = None):
             
             
             
-        case '@=>|u|#create':
-            
-            pass
+        
             
         case '@=>None':
             
@@ -342,71 +311,12 @@ def lgauche(x,y,vie,next_vie):
     if vie[x-1][y] == 0 and next_vie[x-1][y] == 0 and x-1>=0:
         return True
     
-import json
-try:
-    with open(f"saves/sand/sand.json", "r") as f:
-        elements = json.load(f)
-except FileNotFoundError:
-    print("Aucune sauvegarde trouvée")
+
 
 def prochaine_vie(vie):
     next_vie = [[0] * (nbCellHeight+1) for i in range(nbCellWidth+1)]
     
-    elements = {
-        'sable': [
-            ('@ => |d|', None, 0),
-            ('@ => _|d|_', None, 1),
-        ],
-        'eau': [
-            ('@ => |d|', None, 0),
-            ('@ => @_@', None, 1),
-            ('@ + @bis=> / ? glace', 'glace', 1),
-            ('@ => |u| /#shift %10', 'sable', 0),
-        ],
-        'bois': [
-            ('@ => @', None, 0),
-            ('@ + @bis => /?feuv', 'feuv', 0),
-            ('@ + @bis => /?feuv', 'feu', 0),
-        ],
-        'feu': [
-            ('@ => |d|', None, 0),
-            ('@ => |u| / #create %1', 'steam', 0),
-            ('@ + @bis => / ?stone', 'eau', 0),
-        ],
-        'steam': [
-            ('@ => |u| / %20', None, 0),
-            ('@ => |u| /#shift %10', 'feu', 0),
-            
-        ],
-        'herbe': [
-            ('@ => @ / ?terre', None, 0),
-            ('@ => |u| /#create %100', 'tige', 0),
-            ('@ + @bis => / ?feuv', 'feu', 0),
-            ('@ + @bis => / ?feuv', 'feuv', 0),
-        ],
-        'tige': [
-            ('@ => @ / ?herbe *d', None, 0),
-            ('@ => @ / ?tige *d', None, 0),
-            ('@ => |u| /#shift %10', 'herbe', 0),
-            ('@ + @bis => / ?feuv', 'feu', 0),
-            ('@ + @bis => / ?feuv', 'feuv', 0),
-        ],
-        'terre': [
-            ('@ => @', None, 0),
-        ],
-        'feuv': [
-            ('@ => None /%1', None, 0),
-            ('@ + @bis => / ?steam', 'eau', 0),
-        ],
-        'stone': [
-            ('@ => @', None, 0),
-        ],
-        'glace': [
-            ('@ => @', None, 0),
-            ('@ + @bis => / ?eau', 'feu', 0),
-            ('@ + @bis => / ?eau', 'feuv', 0),
-        ]
-    }
+    # tout les elements sont dans le ficher elements pour des modification a volonter
     
     for x in range(nbCellWidth):
         for y in range(nbCellHeight):        
