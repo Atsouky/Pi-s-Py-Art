@@ -191,7 +191,7 @@ Exemple : La glace réagit avec le feu et donne de l'eau
 ##Que veut dire le 0 ou le 1 à la fin ?
 
 0 : rien ne se passe
-1 : cette règle n'est effectuée que si la cellule reste immobile //Ouais, j'ai pas compris ce système de 1
+1 : cette règle n'est effectuée que si la cellule reste immobile
 
 Exemple :   
 
@@ -201,7 +201,7 @@ sable:[
                             donc grace au 1 de la seconde règle elle tombe en bas à droite ou en bas à gauche
 ]
 
-grphique : 
+graphique : 
 - => vide
 # => sable
 
