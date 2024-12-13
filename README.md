@@ -38,7 +38,7 @@ Bien que les règles des automates cellulaires soit simples, de nombreuse chose 
 ### Prérequis
 
 - Python 3.8 ou plus
-- Librairie requises: `pygame`, `matplotlib`, `numpy`
+- Librairie requises: `pygame`, (`matplotlib`, `numpy`) uniquement pour mandelbrot et julia
 
 
 
