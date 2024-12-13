@@ -4,12 +4,12 @@ dictionairedescouleur = {
     2:(0,0,255),        #eau
     3:(201,51,0),       #bois
     4:(255,0,0),        #feu
-    5:(100,100,100),    #steam
+    5:(100,100,100),    #fumee
     6:(0,255,0),        #herbe
     7:(0,255,0),        #tige
     8:(153, 51, 0),     #Terre
     9:(200,10,0),       #feuv
-    10:(130,130,130),   #stone
+    10:(130,130,130),   #pierre
     11:(0,200,255),     #glace
     
 }
@@ -20,12 +20,12 @@ e = {
     'eau':2,
     'bois':3,
     'feu':4,
-    'steam':5,
+    'fumee':5,
     'herbe':6,
     'tige':7,
     'terre':8,
     'feuv':9,
-    'stone':10,
+    'pierre':10,
     'glace':11,
     
 }
@@ -50,10 +50,10 @@ elements = {
         ],
         'feu': [
             ('@ => |d|', None, 0),
-            ('@ => |u| / #create %1', 'steam', 0),
-            ('@ + @bis => / ?stone', 'eau', 0),
+            ('@ => |u| / #create %1', 'fumee', 0),
+            ('@ + @bis => / ?pierre', 'eau', 0),
         ],
-        'steam': [
+        'fumee': [
             ('@ => |u| / %20', None, 0),
             ('@ => |u| /#shift %10', 'feu', 0),
             
@@ -76,9 +76,9 @@ elements = {
         ],
         'feuv': [
             ('@ => None /%1', None, 0),
-            ('@ + @bis => / ?steam', 'eau', 0),
+            ('@ + @bis => / ?fumee', 'eau', 0),
         ],
-        'stone': [
+        'pierre': [
             ('@ => @', None, 0),
         ],
         'glace': [
@@ -95,7 +95,7 @@ elements = {
 ###Documentation des règles
 
 
-##pour crée un nouvelle element il faut utiliser le format suivant (valeur > 12):  
+##Pour créer un nouvel element il faut utiliser le format suivant (avec une valeur >= 12) :  
 
 dictionairedescouleur = {
     'valeur':(couleurR,couleurG,couleurB),   
@@ -107,45 +107,43 @@ elements = {
     'nom': []
 }
 
-
-##pour ajouter une nouvelle regle a l'element il faut utiliser le format suivant:
+le @ représente la cellule actuelle 
+le => montre la transition vers son produit final 
+##Pour ajouter une nouvelle regle à l'element, il faut utiliser le format suivant :
 
 'nom': [
     ('@ => |d|', None, 0), #règle faisant tomber un element
 ]
 
-plusieur règle peuvent etre ajouter
 
-
-
-##tout les règle du première element du tuple:
+##Toutes les règles pouvant être ajoutée au premier element du tuple :
 
 
 @=>|d|              # règle faisant tomber un element
 
 @=>|u|              # règle faisant monter un element
 
-@=>_|d|_            # règle faisant tomber un element en bas a gauche ou en bas a droite
+@=>_|d|_            # règle faisant tomber un element en bas à gauche ou en bas à droite
 
-@=>_|u|_            # règle faisant tomber un element en haut a gauche ou en haut a droite
+@=>_|u|_            # règle faisant tomber un element en haut à gauche ou en haut à droite
 
-@=>@_@              # règle faisant glisser un element a droite ou a gauche
+@=>@_@              # règle faisant glisser un element à droite ou à gauche
 
-@=>@                # element static
+@=>@                # element statique
 
-@=>None             #destruction de l'element
+@=>None             # destruction de l'element
 
-@+@bis=>            #règle complexe de réaction avec un autre element pour en donner un autre
+@+@bis=>            # règle complexe de réaction : element + elementbis => elementfinal
 
 
 
-Pour tout ces règle certain paramètres doivent etre renseignés:
+Pour toutes ces règles, certains paramètres doivent etre renseignés :
 
 ##Parametre :
 
-chaque paramètre doivent etre renseigner sous la forme suivante (avec un /) :
+Chaque paramètre doivent être renseigné sous la forme suivante (avec un /) :
 
-@ => |u| / #create %10      # a 10% de chance d crée un nouvel element dans la cellule du dessu
+@ => |u| / #create %10      # à 10% de chance de créer un nouvel element dans la cellule du dessus
 
 
 %n : n chance sur 100
@@ -153,35 +151,81 @@ chaque paramètre doivent etre renseigner sous la forme suivante (avec un /) :
 #create : crée un nouvel element
 #shift : fait glisser un element
 #destroy : fait disparaitre un element
-*d : direction (uniquement pour static)
+*d : direction (uniquement pour statique)
 
 
-##règle complexe :
+##Règle complexe :
 
 ( @ + @bis => / ?element, elementreaction, 0)
     |               |               |
 # règle       produit final     avec quel element faire la reaction
 
-exemple: la glace réagit avec le feu et donne de l'eau
 
-glace:[
+Exemple : La glace réagit avec le feu et donne de l'eau
+'glace':[
     ('@ + @bis => / ?eau', 'feu', 0),
 ]
+'herbe':[
+    ('@ => @ / ?terre', None, 0),
+    ('@ => |u| /#create %100', 'tige', 0),
+    ('@ + @bis => / ?feuv', 'feu', 0),          <----- herbe + feu => feuv
+    ('@ + @bis => / ?feuv', 'feuv', 0),         <----- herbe + feuv => feuv
+]
+'tige': [
+        ('@ => @ / ?herbe *d', None, 0),
+        ('@ => @ / ?tige *d', None, 0),
+        ('@ => |u| /#shift %10', 'herbe', 0),
+        ('@ + @bis => / ?feuv', 'feu', 0),      <----- tige + feu => feuv
+        ('@ + @bis => / ?feuv', 'feuv', 0),     <----- tige + feuv => feuv
+        ],
+
+'feuv': [
+            ('@ => None /%1', None, 0),
+            ('@ + @bis => / ?fumee', 'eau', 0), <----- feuv + eau => fumee
+        ],
 
 
-##Que veux dire le 0 ou le 1 a la fin ?
+
+
+
+##Que veut dire le 0 ou le 1 à la fin ?
 
 0 : rien ne se passe
-1 : cette règle n'est effectuée que si la cellule reste immobile
+1 : cette règle n'est effectuée que si la cellule reste immobile //Ouais, j'ai pas compris ce système de 1
 
-exemple:   #if vie[x][y] == next_vie[x][y]:
+Exemple :   
 
 sable:[
     (@ => |d| , None,0),  la cellule tombe
     (@ => _|d|_ , None,1),   si elle ne peut aller en bas elle reste immobile 
-                            donc grace au 1 de la seconde règle elle tombe en bas a droite ou en bas a gauche
+                            donc grace au 1 de la seconde règle elle tombe en bas à droite ou en bas à gauche
 ]
 
+grphique : 
+- => vide
+# => sable
 
+
+--------#-----          --------------          --------------
+--------#-----          --------#-----          --------------
+--------------   ==>    --------#-----  x2==>   --------------   ==> @ => |d| , None, 0
+--------------          --------------          --------#-----
+--------------          --------------          --------#-----
+
+
+
+--------#-----          --------#-----       
+--------#-----          -------###----      
+--------------   ==>    ------#####---     ==> @ => |d| , None, 0
+--------------          -----#######--         @ => _|d|_ , None, 0 ==> cela donne ce resultat car les deux règle sont effectuées a la suite
+--------------          ----#########-    
+
+
+
+--------#-----          --------------          --------------
+--------#-----          --------------          --------------
+--------------   x3==>  --------------   ==>    --------------     ==> @ => |d| , None, 0
+--------------          ---------#----          --------------         @ => _|d|_ , None, 1  ==> cela donne ce resultat car les deux règle ne sont pas effectuées a la suite
+--------------          ---------#----          --------##----                                   mais la seconde attend que la premiere ne soit plus effectuée
 
 """

@@ -332,7 +332,7 @@ def prochaine_vie(vie):
                 elif paterne[2] == 1:
                     if vie[x][y] == next_vie[x][y]:
                         next_vie = symbolic(x, y, paterne[0], vie, next_vie, paterne[1])
-
+    
     return next_vie
 
 
