@@ -128,7 +128,7 @@ def symbolic(x,y,Paterne,vie,next_vie,elementreaction = None):
             
             if d == None:
             
-                if lhaut(x,y,vie,next_vie) and randint(0,100) < a:  
+                if lhaut(x,y,vie,next_vie) and randint(0,1000) < a:  
                     next_vie[x][y-1] = vie[x][y]
                     
                 else:                       
