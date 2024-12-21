@@ -64,14 +64,14 @@ elements = {
         ],
         'herbe': [
             ('@ => @ / ?terre', None, 0),
-            ('@ => |u| /#create %100', 'tige', 0),
+            ('@ => |u| /#create %1', 'tige', 0),
             ('@ + @bis => / ?feuv', 'feu', 0),
             ('@ + @bis => / ?feuv', 'feuv', 0),
         ],
         'tige': [
-            ('@ => @ / ?herbe *d', None, 0),
-            ('@ => @ / ?tige *d', None, 0),
-            ('@ => |u| /#shift %10', 'herbe', 0),
+            ('@ => @ / ?herbe ', None, 0),
+            ('@ => @ / ?tige ', None, 0),
+            ('@ => |u| /#create %1', 'tige', 0),
             ('@ + @bis => / ?feuv', 'feu', 0),
             ('@ + @bis => / ?feuv', 'feuv', 0),
         ],
@@ -94,6 +94,7 @@ elements = {
         'verre': [
             ('@ => @', None, 0),
         ]
+        
     }
 
 
