@@ -11,6 +11,7 @@ dictionairedescouleur = {
     9:(200,10,0),       #feuv
     10:(130,130,130),   #pierre
     11:(0,200,255),     #glace
+    12:(200,200,200),     #verre
     
 }
 
@@ -27,6 +28,7 @@ e = {
     'feuv':9,
     'pierre':10,
     'glace':11,
+    'verre':12
     
 }
 
@@ -36,6 +38,7 @@ elements = {
         'sable': [
             ('@ => |d|', None, 0),
             ('@ => _|d|_', None, 1),
+            ('@ + @bis => /?verre', 'feu', 0),
         ],
         'eau': [
             ('@ => |d|', None, 0),
@@ -56,6 +59,7 @@ elements = {
         'fumee': [
             ('@ => |u| / %20', None, 0),
             ('@ => |u| /#shift %10', 'feu', 0),
+            ('@ => @_@', None, 1),
             
         ],
         'herbe': [
@@ -72,7 +76,8 @@ elements = {
             ('@ + @bis => / ?feuv', 'feuv', 0),
         ],
         'terre': [
-            ('@ => @', None, 0),
+            ('@ => |d|', None, 0),
+            ('@ => _|d|_', None, 1),
         ],
         'feuv': [
             ('@ => None /%1', None, 0),
@@ -85,6 +90,9 @@ elements = {
             ('@ => @', None, 0),
             ('@ + @bis => / ?eau', 'feu', 0),
             ('@ + @bis => / ?eau', 'feuv', 0),
+        ],
+        'verre': [
+            ('@ => @', None, 0),
         ]
     }
 
