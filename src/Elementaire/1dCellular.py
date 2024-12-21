@@ -3,6 +3,15 @@ Programme jeu de la vie rÃ©alisÃ© par nom, prÃ©nom, classe
 """
 import pygame
 from random import randint
+import sys
+import os
+
+
+project_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+if project_path not in sys.path:
+    sys.path.append(project_path)
+
+from lib.boutton import Bouton , TextInput
 #region------------------------------------------------------------__Init__-----------------------------------------------------------------------------------------
 #variables de l'Ã©cran
 WINDOWWIDTH = 1366
@@ -134,7 +143,7 @@ rule99 = createRule(86)
 
 
 #menu
-from lib.boutton import Bouton , TextInput
+
 
 rule30B=Bouton(0,0,100,50,'Rule 30',ROUGE,BLANC)
 rule110B=Bouton(100,0,100,50,'Rule 110',ROUGE,BLANC)

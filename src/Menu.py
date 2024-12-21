@@ -49,6 +49,7 @@ HexCycl = Bouton(800, 100, 100, 100, 'HexCycl',(0,0,0),(255,255,255))
 HexNuro = Bouton(900, 100, 100, 100, 'HexNuro',(0,0,0),(255,255,255))
 Energy = Bouton(1000, 100, 100, 100, 'Energy',(0,0,0),(255,255,255))
 wave = Bouton(1100, 100, 100, 100, 'Wave',(0,0,0),(255,255,255))
+heat = Bouton(1200, 100, 100, 100, 'Heat',(0,0,0),(255,255,255))
 
 
 
@@ -61,32 +62,32 @@ while run:
         subprocess.run(["python", "jeu de la vie.py"])
         
     if day_and_night.draw(fenetre):
-        subprocess.run(["python", "day&night.py"])
+        subprocess.run(["python", "Jeu de la vie/day&night.py"])
     
     
     if falling.draw(fenetre):
         subprocess.run(["python", "Sand/falling sand.py"])
     
     if additif.draw(fenetre):
-        subprocess.run(["python", "Additif.py"])
+        subprocess.run(["python", "Autre automate/Additif.py"])
         
     if highlif.draw(fenetre):
-        subprocess.run(["python", "highlife.py"])
+        subprocess.run(["python", "Jeu de la vie/highlife.py"])
         
     if immigration.draw(fenetre):
-        subprocess.run(["python", "immigration.py"])
+        subprocess.run(["python", "Jeu de la vie/immigration.py"])
         
     if ouExc.draw(fenetre):
-        subprocess.run(["python", "ou exclusif.py"])
+        subprocess.run(["python", "Autre projet/ou exclusif.py"])
         
     if Quadlife.draw(fenetre):
-        subprocess.run(["python", "Quadlife.py"])
+        subprocess.run(["python", "Jeu de la vie/Quadlife.py"])
         
     if rule184.draw(fenetre):
-        subprocess.run(["python", "1dCellular.py"])
+        subprocess.run(["python", "Elementaire/1dCellular.py"])
         
     if Seeds.draw(fenetre):
-        subprocess.run(["python", "Seeds.py"])
+        subprocess.run(["python", "Jeu de la vie/Seeds.py"])
     
     if neuronelal.draw(fenetre):
         subprocess.run(["python", "neuronlalcellular.py"])
@@ -95,22 +96,23 @@ while run:
         subprocess.run(["python", "Cyclique.py"])
     
     if Etoile.draw(fenetre):
-        subprocess.run(["python", "étoile.py"])
+        subprocess.run(["python", "Autre projet/étoile.py"])
         
     if Dégrade.draw(fenetre):
-        subprocess.run(["python", "Dégradé.py"])
+        subprocess.run(["python", "Autre automate/Dégradé.py"])
     
     if Brain.draw(fenetre):
-        subprocess.run(["python", "Brain.py"])
+        subprocess.run(["python", "Jeu de la vie/Brain.py"])
         
     if wireWorld.draw(fenetre):
-        subprocess.run(["python", "wireworld.py"])
+        subprocess.run(["python", "Autre automate/wireworld.py"])
         
     if Mandelbrot.draw(fenetre):
-        subprocess.run(["cmd.exe", "/c","Game Mandelbrot.bat"])
+        
+        subprocess.run(["cmd.exe", "/c","Autre projet/Game Mandelbrot.bat"])
         
     if Func.draw(fenetre):
-        subprocess.run(["python", "Func.py"])
+        subprocess.run(["python", "Autre projet/Func.py"])
         
     if Hexjdlv.draw(fenetre):
         subprocess.run(["python", "Hex/Hex.py"])
@@ -122,10 +124,13 @@ while run:
         subprocess.run(["python", "Hex/HexNuro.py"])
         
     if Energy.draw(fenetre):
-        subprocess.run(["python", "Energy.py"])
+        subprocess.run(["python", "Autre automate/Energy.py"])
         
     if wave.draw(fenetre):
-        subprocess.run(["python", "Wave.py"])
+        subprocess.run(["python", "Autre automate/Wave.py"])
+        
+    if heat.draw(fenetre):
+        subprocess.run(["python", "Autre automate/Heat.py"])
         
     if exit.draw(fenetre):
         run=False
