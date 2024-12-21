@@ -134,7 +134,7 @@ rule99 = createRule(86)
 
 
 #menu
-from boutton import Bouton , TextInput
+from lib.boutton import Bouton , TextInput
 
 rule30B=Bouton(0,0,100,50,'Rule 30',ROUGE,BLANC)
 rule110B=Bouton(100,0,100,50,'Rule 110',ROUGE,BLANC)

@@ -27,7 +27,7 @@ font = pygame.font.Font('freesansbold.ttf', 20)
 #variables de l'écran
 WINDOWWIDTH = l
 WINDOWHEIGHT = h
-CELLSIZE = 7
+CELLSIZE = 10
 CELLWIDTH = WINDOWWIDTH // CELLSIZE
 CELLHEIGHT = WINDOWHEIGHT // CELLSIZE
 

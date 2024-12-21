@@ -4,7 +4,7 @@ Version 0.1.8
 """
 import pygame
 from random import uniform
-from boutton import TextInput,Bouton
+from lib.boutton import TextInput,Bouton
 from math import *
 
 #region------------------------------------------------------------__Init__-----------------------------------------------------------------------------------------

@@ -3,7 +3,7 @@ Programme jeu de la vie rÃ©alisÃ© par nom, prÃ©nom, classe
 """
 import pygame
 from random import randint
-from boutton import Checkbox,Bouton,TextInput
+from lib.boutton import Checkbox,Bouton,TextInput
 from collections import defaultdict
 
 

@@ -3,7 +3,7 @@ Programme jeu de la vie rÃ©alisÃ© par nom, prÃ©nom, classe
 """
 import pygame
 from random import randint
-from boutton import Checkbox,TextInput
+from lib.boutton import Checkbox,TextInput
 import colorsys
 #region------------------------------------------------------------__Init__-----------------------------------------------------------------------------------------
 #variables de l'Ã©cran

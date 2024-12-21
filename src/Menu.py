@@ -1,4 +1,4 @@
-from boutton import Bouton, Boutonsprite #import de la class bouton
+from lib.boutton import Bouton, Boutonsprite #import de la class bouton
 import subprocess
 import pygame
 
