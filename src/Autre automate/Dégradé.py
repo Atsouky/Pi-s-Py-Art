@@ -187,7 +187,7 @@ while loop==True:
     if mousepos[0]<nbCellWidth*CELLSIZE and mousepos[1]<nbCellHeight*CELLSIZE: 
         if mousePressed1:
             
-            vie[mousepos[0]//CELLSIZE][mousepos[1]//CELLSIZE]=[255,0,0]
+            vie[mousepos[0]//CELLSIZE][mousepos[1]//CELLSIZE]=[0,0,255]
         if mousePressed2:
                 vie[mousepos[0]//CELLSIZE][mousepos[1]//CELLSIZE]=0
 

@@ -50,7 +50,7 @@ HexNuro = Bouton(900, 100, 100, 100, 'HexNuro',(0,0,0),(255,255,255))
 Energy = Bouton(1000, 100, 100, 100, 'Energy',(0,0,0),(255,255,255))
 wave = Bouton(1100, 100, 100, 100, 'Wave',(0,0,0),(255,255,255))
 heat = Bouton(1200, 100, 100, 100, 'Heat',(0,0,0),(255,255,255))
-
+Pile = Bouton(1300, 100, 100, 100, 'Pile',(0,0,0),(255,255,255))
 
 
 run=True
@@ -131,7 +131,10 @@ while run:
         
     if heat.draw(fenetre):
         subprocess.run(["python", "Autre automate/Heat.py"])
-        
+    
+    if Pile.draw(fenetre):
+        subprocess.run(["python", "Autre automate/Pile de sable.py"])
+    
     if exit.draw(fenetre):
         run=False
     
