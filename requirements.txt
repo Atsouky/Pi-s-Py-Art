@@ -1,0 +1,6 @@
+Librairie Majeur :
+- PyGame
+
+Librairie Mineur : 
+-matplotlib
+-numpy

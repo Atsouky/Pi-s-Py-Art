@@ -75,7 +75,7 @@ def nextvie(vie: list) -> list:
         for y in range(0, cellHeight):
             a = voisin(x, y, vie)
             
-            if a == 3:newvie[x][y] = 1
+            if a == 3 or a == 4:newvie[x][y] = 1
             elif a == 2: newvie[x][y] = vie[x][y]
             else:newvie[x][y] = 0
                 
@@ -129,21 +129,29 @@ while running:
                 
                 
     pos = pygame.mouse.get_pos()
+    
+    
     if pygame.mouse.get_pressed()[0]:
         for x in range(0, cellWidth):
             for y in range(0, cellHeight):
                 dx = x * Cellsize * off
                 dy = y * Cellsize * off
-                
-                if (pos[0] > dx) and (pos[0] < dx + Cellsize * off) and (pos[1] > dy) and (pos[1] < dy + Cellsize * off):
+                cx = dx + Cellsize  # Approximate center x
+                cy = dy + Cellsize  # Approximate center y
+                dist = math.sqrt((pos[0] - cx) ** 2 + (pos[1] - cy) ** 2)
+                if dist < Cellsize:
                     grid[x][y] = 1
+                
     elif pygame.mouse.get_pressed()[2]:
         for x in range(0, cellWidth):
             for y in range(0, cellHeight):
                 dx = x * Cellsize * off
                 dy = y * Cellsize * off
                
-                if (pos[0] > dx) and (pos[0] < dx + Cellsize * off) and (pos[1] > dy) and (pos[1] < dy + Cellsize * off):
+                cx = dx + Cellsize  # Approximate center x
+                cy = dy + Cellsize  # Approximate center y
+                dist = math.sqrt((pos[0] - cx) ** 2 + (pos[1] - cy) ** 2)
+                if dist < Cellsize:
                     grid[x][y] = 0
                 
     
