@@ -2,16 +2,15 @@
 Programme jeu de la vie rÃ©alisÃ© par Gazi Damien Tg3
 """
 
-#Day & Night
+#Paint
 
 import pygame , time
-from random import uniform,randint
+from random import randint
 #region------------------------------------------------------------__Init__-----------------------------------------------------------------------------------------
 
 
 
-cellcolor = (0,0,0)
-dedcellcolor = (0,0,50)
+cellcolor = (0,255,0)
 
 clock = pygame.time.Clock()
 pygame.init()
@@ -22,13 +21,13 @@ h = display_info.current_h - 50 #pour la barre de menu windows
 
 fenetre = pygame.display.set_mode((l,h), pygame.RESIZABLE)
 
-pygame.display.set_caption("Day&Night")
+pygame.display.set_caption("Paint")
 font = pygame.font.Font('freesansbold.ttf', 20)
 
 #variables de l'écran
 WINDOWWIDTH = l
 WINDOWHEIGHT = h
-CELLSIZE = 10
+CELLSIZE = 3
 CELLWIDTH = WINDOWWIDTH // CELLSIZE
 CELLHEIGHT = WINDOWHEIGHT // CELLSIZE
 
@@ -43,77 +42,31 @@ nbCellHeight=WINDOWHEIGHT//CELLSIZE
 
 #Initialiste tout les cellule a 0 en faisant des listes de listes: return liste[x][y]
 def initialiserCellules() -> list:
-    return [[0 for i in range(nbCellHeight+1)] for j in range(nbCellWidth+1)]
+    return [[(0,0,0) for i in range(nbCellHeight+1)] for j in range(nbCellWidth+1)]
 
 
-#Initialiste tout les cellule a 0 ou 1 aleatoirement en faisant des listes de listes:  return liste[x][y]
-def generationAleatoire() -> list:
-    return [[randint(0,1) for i in range(nbCellHeight+1)] for j in range(nbCellWidth+1)]
+
     
 
 
-
-
-
-import csv
-
-def import_csv(filename):
-    with open(filename, newline="", encoding="utf-8") as csvfile:
-        reader = csv.reader(csvfile)
-        return [[int(value) for value in row if value.strip()] for row in reader]
-
-def dxl(ring1):
-    dxlst = []
-    r = len(ring1)//2
-    for i in range(-r,r+1):
-        dxlst.append(i)
-    return dxlst, r
-
-
-ring1 = import_csv("test.csv")
-ring2 = import_csv("test1.csv")
-
-dxlst, offset = dxl(ring1)
-
-
-def ring(x, y, vie):
-    nbvoisin1 = nbvoisin2 = avg1 = avg2 = 0
-    for i, dx in enumerate(dxlst):
-        for j, dy in enumerate(dxlst):
-            if ring1[i][j]:
-                nx, ny = (x + dx) % nbCellWidth, (y + dy) % nbCellHeight
-                nbvoisin1 += vie[nx][ny]
-                avg1 += 1
-            elif ring2[i][j]:
-                nx, ny = (x + dx) % nbCellWidth, (y + dy) % nbCellHeight
-                nbvoisin2 += vie[nx][ny]
-                avg2 += 1
-    return (nbvoisin1 / avg1 if avg1 else 0), (nbvoisin2 / avg2 if avg2 else 0)
-
-
-def prochaine_vie(vie):
-    next_vie = [[0] * (nbCellHeight + 1) for _ in range(nbCellWidth + 1)]
-    
-    for x in range(nbCellWidth):
-        for y in range(nbCellHeight):
-            n1, n2 = ring(x, y, vie)
-            if 0.185 <= n1 <= 0.200 or 0.445 <= n2 <= 0.680:
-                next_vie[x][y] = 1.0
-            elif 0.343 <= n1 <= 0.580 or 0.750 <= n1 <= 0.850 or 0.150 <= n2 <= 0.280 or 0.150 <= n1 <= 0.180:
-                next_vie[x][y] = 0.0
-            else:
-                next_vie[x][y] = vie[x][y]
-    return next_vie
-
-
-cell_surface = pygame.Surface((CELLSIZE, CELLSIZE))
-cell_surface.fill(cellcolor)
-
+#remplir la fenetre avec un rectangle vert si la cellule est vivante, sinon noir
 def remplirGrille(vie):
     for x in range(nbCellWidth):
         for y in range(nbCellHeight):
-            if vie[x][y]:
-                fenetre.blit(cell_surface, (x * CELLSIZE, y * CELLSIZE))
+            if vie[x][y]!=(0,0,0):
+                pygame.draw.rect(fenetre, vie[x][y], (x*CELLSIZE, y*CELLSIZE, CELLSIZE, CELLSIZE))
+    
+
+#Compte le nombre de voisins vivant autoure d'une cellule --> ici 8 voisins
+#Bordure type portail
+def voisin(x, y, vie):
+    nbvoisin = 0
+    for dx ,dy in [(-1,-1),(-1,0),(-1,1),(0,-1),(0,1),(1,-1),(1,0),(1,1)]:
+        nx, ny = (x + dx) % nbCellWidth, (y + dy) % nbCellHeight
+        nbvoisin += vie[nx][ny]
+    return nbvoisin
+
+#Calacul de la prochaine generation en fonction du nombre de voisins
 
 
 
@@ -121,7 +74,7 @@ def remplirGrille(vie):
 
 
 vie=initialiserCellules()
-vie=generationAleatoire()
+selected = (255,0,0)
 mousePressed1=False
 mousePressed2=False
 timer = time.monotonic()
@@ -145,8 +98,14 @@ while loop==True:
             
             elif event.key ==pygame.K_v:        #vider la grille
                 vie=initialiserCellules()
-            elif event.key ==pygame.K_r:        #remplir la grille aléatoirement
-                vie=generationAleatoire()
+
+            elif event.key ==pygame.K_1:
+                selected = (255,0,0)
+            elif event.key ==pygame.K_2:
+                selected = (0,255,0)
+            elif event.key ==pygame.K_3:
+                selected = (0,0,255)
+
                 
             elif event.key ==pygame.K_RIGHT:    #augmenter la vitesse
                 if time_interval > 0.01: time_interval -= 0.1
@@ -159,18 +118,14 @@ while loop==True:
                 CELLSIZE+=1
                 CELLWIDTH = WINDOWWIDTH // CELLSIZE
                 CELLHEIGHT = WINDOWHEIGHT // CELLSIZE
-                cell_surface = pygame.Surface((CELLSIZE, CELLSIZE))
-                cell_surface.fill(cellcolor)
                 vie=initialiserCellules()
-                vie=generationAleatoire()
+
             elif event.key ==pygame.K_PAGEDOWN:   #diminuer la taille de la grille
                 if CELLSIZE>1:CELLSIZE-=1
                 nbCellWidth = WINDOWWIDTH // CELLSIZE
                 nbCellHeight = WINDOWHEIGHT // CELLSIZE
-                cell_surface = pygame.Surface((CELLSIZE, CELLSIZE))
-                cell_surface.fill(cellcolor)
                 vie=initialiserCellules()
-                vie=generationAleatoire()
+
                             
         elif event.type == pygame.MOUSEBUTTONUP:    #Vérifie si un bouton de la souris est appuyé
             if event.button == 1:
@@ -187,18 +142,18 @@ while loop==True:
          
     if mousepos[0]<nbCellWidth*CELLSIZE and mousepos[1]<nbCellHeight*CELLSIZE: 
         if mousePressed1:
-            vie[mousepos[0]//CELLSIZE][mousepos[1]//CELLSIZE]=1 #pose une cellule
+            vie[mousepos[0]//CELLSIZE][mousepos[1]//CELLSIZE]=selected #pose une cellule
         if mousePressed2:
-                vie[mousepos[0]//CELLSIZE][mousepos[1]//CELLSIZE]=0 #supprime une cellule
+                vie[mousepos[0]//CELLSIZE][mousepos[1]//CELLSIZE]=(0,0,0) #supprime une cellule
 
-    fenetre.fill(dedcellcolor)   #remplit la fenetre de noir
+    fenetre.fill((0,0,0))   #remplit la fenetre de noir
     remplirGrille(vie)      #affiche la grille
     pygame.display.update() #mets à  jour la fentre graphique
     
     if run and  time.monotonic() - timer > time_interval:   #vitesse du jeu
         timer = time.monotonic()                            #
         
-        vie=prochaine_vie(vie)                              #calcule la prochaine generation
+                                     #calcule la prochaine generation
 
 
 pygame.quit()
