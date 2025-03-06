@@ -23,7 +23,68 @@ pygame.display.set_caption("Neuronal")
 font = pygame.font.Font('freesansbold.ttf', 20)
 #endregion
 
+import sys
+import pygame
+from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.uic import loadUi
+from PyQt5.QtGui import QPixmap
+from PyQt5.QtWidgets import QMainWindow, QApplication, QLineEdit
 
+class MainWindow(QMainWindow):
+     def __init__(self):
+          super(MainWindow, self).__init__()
+          loadUi("fond_nuro.ui", self)
+          qpixmap=QPixmap("data/jeu de la vie.png")
+          self.label.setPixmap(qpixmap)
+         
+         #Chexbox pour Birth cell rule
+          self.label_2.setStyleSheet("background-color: gray")
+          self.label_3.setStyleSheet("background-color: gray")
+          self.label_4.setStyleSheet("background-color: gray")
+          self.label_5.setStyleSheet("background-color: gray")
+
+          self.Start.clicked.connect(self.start)
+          self.Exit.clicked.connect(self.exit)
+          self.random.clicked.connect(self.Random)
+          self.load.clicked.connect(self.Load)
+          self.save.clicked.connect(self.Save)
+          
+          self.l1 = QLineEdit(parent=self,text="0")
+          self.l2 = QLineEdit(parent=self)
+          self.l3 = QLineEdit(parent=self)
+          self.l4 = QLineEdit(parent=self)
+          self.l5 = QLineEdit(parent=self)
+          self.l6 = QLineEdit(parent=self)
+          self.l7 = QLineEdit(parent=self)
+          self.l8 = QLineEdit(parent=self)
+          self.l9 = QLineEdit(parent=self)
+          self.l10 = QLineEdit(parent=self)
+          
+          self.l1.resize(200,100)
+          self.l1.move(100,0)
+          
+
+     def start(self):
+         pass
+     
+     def exit(self):
+         
+         pass
+     def Random(self):
+         pass
+     
+     def Save(self):
+         pass
+     
+     def Load(self):
+         pass
+     
+
+
+app = QApplication(sys.argv)
+window = MainWindow()
+window.show()
+sys.exit(app.exec()) 
 
 #initialise une liste de cellules CELLWIDTH*CELLHEIGHT
 #les cellules seront toutes mortes
@@ -205,163 +266,69 @@ textinput8.text="-0.1"
 textinput9.text="0.2"
 textinput10.text="x"
 
-def menu():
-    global filtere,activation_formula , voisins_fliter,savelocation
-    while True:
-        
-        fenetre.fill((0, 0, 0))
-        
-        
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()        
-            
-            elif event.type == pygame.KEYDOWN: 
-                if event.key ==pygame.K_w:
-                    pygame.quit()
-                elif event.type == pygame.K_ESCAPE:
-                    Bouton1.action = True
-                    break
-            for i in txt:
-                i.analyse_event(event)    
-                
-        if boutonSave.draw(fenetre):
-            save()
-            
-        if boutonLoad.draw(fenetre):
-            load()    
-        
-        if BoutonExit.draw(fenetre):
-            pygame.quit()
-                    
-        if Bouton1.draw(fenetre):
-            break     
-                    
-        if boutonprint.draw(fenetre):
-            pass
-        
-        if Bouton2.draw(fenetre):
-            textinput.text=str(round(uniform(-1.0,1.0),2))
-            textinput2.text=str(round(uniform(-1.0,1.0),2))
-            textinput3.text=str(round(uniform(-1.0,1.0),2))
-            textinput4.text=str(round(uniform(-1.0,1.0),2))
-            textinput5.text=str(round(uniform(-1.0,1.0),2))
-            textinput6.text=str(round(uniform(-1.0,1.0),2))
-            textinput7.text=str(round(uniform(-1.0,1.0),2))
-            textinput8.text=str(round(uniform(-1.0,1.0),2))
-            textinput9.text=str(round(uniform(-1.0,1.0),2))
-            
 
-        
-        for i in txt:
-            i.draw(fenetre)
-            
-        if textinputSavelocation.text!="save" or textinputSavelocation.text!="":
-            savelocation = textinputSavelocation.text
-        
-        pygame.display.update()
-            
-    for i in txt:
-        if i.text!="":
-            filtere = {
-                "-1,-1": float(textinput.text), "0,-1": float(textinput2.text), "1,-1": float(textinput3.text),
-                "-1,0": float(textinput4.text), "0,0": float(textinput5.text), "1,0": float(textinput6.text),
-                "-1,1": float(textinput7.text), "0,1": float(textinput8.text), "1,1": float(textinput9.text)
-            }
-            
-            
-    for i,j in enumerate(voisins_fliter):
-        voisins_fliter[i][2]=filtere[str(j[0])+","+str(j[1])]
-        
-
-    activation_formula = compile_activation(textinput10.text)
     
-menu()
+
+
 #endregion
-while loop==True:
-    mousepos=pygame.mouse.get_pos()
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            loop = False       
-        
-        elif event.type == pygame.VIDEORESIZE:
-            fenetre = pygame.display.set_mode((event.w, event.h),
-                                              pygame.RESIZABLE)
-            nbCellWidth = event.w // CELLSIZE
-            nbCellHeight = event.h // CELLSIZE
-            vie = rescale(vie)
-        
-        elif event.type == pygame.KEYDOWN:  
-  
-            if event.key ==pygame.K_w:
-                loop=False
-            
-            elif event.key ==pygame.K_SPACE:
-                run=not run
-            
-            elif event.key ==pygame.K_r:
-                vie=generationAleatoire()
-            elif event.key ==pygame.K_v:
-                vie=initialiserCellules()
-                
-            elif event.key ==pygame.K_ESCAPE:
-                menu()
-                
-            elif event.key ==pygame.K_RIGHT:
-                if time_interval > 0.01: time_interval -= 0.1
-            elif event.key ==pygame.K_LEFT:
-                time_interval += 0.1
-            
-                
-            
+while loop:
+    for event in pygame.event.get():  # les touche d'action
+        if event.type == pygame.QUIT: 
+            loop = False
+        elif event.type == pygame.KEYDOWN: #quitter 
+            if event.key == pygame.K_w:
+                loop = False
+            elif event.key == pygame.K_SPACE: #pause
+                run = not run
+            elif event.key == pygame.K_v: #vider
+                vie = {}
+            elif event.key == pygame.K_r: #generation aléatoire
+                generationAleatoire()
+        elif event.type == pygame.MOUSEBUTTONDOWN: #les click de la souris
+            if event.button == 1:
+                mousePressed1 = True
+            elif event.button == 3:
+                mousePressed2 = True
+            elif event.button == 2:
+                middlePressed = True
+                last_mouse_pos = pygame.mouse.get_pos()
         elif event.type == pygame.MOUSEBUTTONUP:
             if event.button == 1:
                 mousePressed1 = False
             elif event.button == 3:
                 mousePressed2 = False
-        elif event.type == pygame.MOUSEBUTTONDOWN:
-            if event.button == 1:
-                mousePressed1 = True
-            elif event.button == 3:
-                mousePressed2 = True
-                
-        elif event.type == pygame.MOUSEWHEEL:
-            if event.y>0:
-                #if CELLSIZE < min(WINDOWWIDTH, WINDOWHEIGHT):
-                    CELLSIZE+=1
-                    CELLWIDTH = WINDOWWIDTH // CELLSIZE
-                    CELLHEIGHT = WINDOWHEIGHT // CELLSIZE
-                    vie = rescale(vie)
-
-            elif event.y<0:
-                if CELLSIZE>1:
-                    CELLSIZE-=1
-                    nbCellWidth = WINDOWWIDTH // CELLSIZE
-                    nbCellHeight = WINDOWHEIGHT // CELLSIZE
-                    vie = rescale(vie)
-
+            elif event.button == 2:
+                middlePressed = False
+        elif event.type == pygame.MOUSEMOTION and middlePressed: #le mouvelement de la souris avec le click mollette pour déplace l'offset
+            new_mouse_pos = pygame.mouse.get_pos()
+            dx = new_mouse_pos[0] - last_mouse_pos[0]
+            dy = new_mouse_pos[1] - last_mouse_pos[1]
+            offset_x += dx
+            offset_y += dy
+            last_mouse_pos = new_mouse_pos
+        elif event.type == pygame.MOUSEWHEEL:     # le zoom avec la mollette de la souris
+            mouse_x, mouse_y = pygame.mouse.get_pos() 
+            old_cellsize = CELLSIZE
+            CELLSIZE = max(2, min(50, CELLSIZE + event.y))  
+            scale_factor = CELLSIZE / old_cellsize
+            offset_x = int(mouse_x - (mouse_x - offset_x) * scale_factor)
+            offset_y = int(mouse_y - (mouse_y - offset_y) * scale_factor)
             
-    if mousepos[0]<nbCellWidth*CELLSIZE and mousepos[1]<nbCellHeight*CELLSIZE: 
-        if mousePressed1:
-            
-            vie[mousepos[0]//CELLSIZE][mousepos[1]//CELLSIZE]=1
-        if mousePressed2:
-                vie[mousepos[0]//CELLSIZE][mousepos[1]//CELLSIZE]=0
-
     
-    if run and  time.monotonic() - timer > time_interval:
+    mousepos = pygame.mouse.get_pos()
+    grid_x = (mousepos[0] - offset_x) // CELLSIZE
+    grid_y = (mousepos[1] - offset_y) // CELLSIZE
+    if mousePressed1:
+        vie[grid_x][grid_y] = 1 #placer une celule vivante
+    if mousePressed2:
+        vie[grid_x][grid_y] = 0 # placer une celule mort
+    
+    fenetre.fill((0, 0, 0)) #remplir la fenetre de noir
+    remplirGrille(vie)         #remplir la grille
+    pygame.display.update() #mise a jour
+    
+    if run and time.monotonic() - timer > time_interval: # boucle de la simulation
         timer = time.monotonic()
-        
-        vie = prochaine_vie(vie)
-        
-    
-    
-    fenetre.fill(background_color)
-    
-    remplirGrille(vie)
-    
-    pygame.display.update()
+        vie=prochaine_vie(vie)
 
 pygame.quit()
-
-#endregion
