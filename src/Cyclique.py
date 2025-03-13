@@ -3,41 +3,27 @@ Programme jeu de la vie rÃ©alisÃ© par nom, prÃ©nom, classe
 """
 
 
-import pygame
+import pygame,time,colorsys
 from random import randint
-from lib.boutton import Checkbox,TextInput
-import colorsys
 #region------------------------------------------------------------__Init__-----------------------------------------------------------------------------------------
-#variables de l'Ã©cran
-WINDOWWIDTH = 1366
-WINDOWHEIGHT = 700
-CELLSIZE = 10
-offset_x=0
-offset_y=0
-
-FPS=1000   #vitesse du jeu
-
-ROUGE=(255,0,0)
-NOIR=(0,0,0)
-BLANC=(255,255,255)
-VERT=(0,255,0)
-BLEU=(0,0,125)
-MAGENTA=(255,0,255)
-cellcolor=(15,240,46)
-grillecolor=NOIR
-background_color=grillecolor
-
-
-global nbCellHeight, nbCellWidth
-nbCellWidth=WINDOWWIDTH//CELLSIZE
-nbCellHeight=WINDOWHEIGHT//CELLSIZE
-
+# pygame initialisation
 clock = pygame.time.Clock()
 pygame.init()
-fenetre = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT))
+fenetre = pygame.display.set_mode((0, 0), pygame.NOFRAME)
 pygame.display.set_caption("Jeu de la vie")
 font = pygame.font.Font('freesansbold.ttf', 20)
-#endregion
+
+# Variables de l'écran
+info = pygame.display.get_surface().get_size()
+cellcolor = (0, 255, 0)
+CELLSIZE = 10
+
+#offset de la écran
+offset_x = 0
+offset_y = 0
+
+nbCellWidth=info[0]//CELLSIZE
+nbCellHeight=info[1]//CELLSIZE
 
 
 
@@ -50,7 +36,7 @@ from PyQt5.QtWidgets import QMainWindow, QApplication, QLineEdit, QVBoxLayout
 import threading
 
 class MainWindow(QMainWindow):
-     def __init__(self,parent=None):
+     def __init__(self,rule0,rule1,rule2,rule3,rule4,rule5,rule6,rule7,rule8,rulec,parent=None):
          
           super(MainWindow, self).__init__(parent)
           loadUi("fond_cycl.ui", self)
@@ -81,6 +67,11 @@ class MainWindow(QMainWindow):
 
           self.Exit.clicked.connect(self.exit)
           self.Start.clicked.connect(self.start)
+          ruel = [self.rule0,self.rule1,self.rule2,self.rule3,self.rule4,self.rule5,self.rule6,self.rule7,self.rule8,self.modecolor]
+          rule = [rule0,rule1,rule2,rule3,rule4,rule5,rule6,rule7,rule8,rulec]
+          for i in range(10):
+              if rule[i]==True:
+                  ruel[i].setChecked(True)
 
           
           
@@ -90,66 +81,66 @@ class MainWindow(QMainWindow):
         global rule0
         if checked:rule0 = True
         else:rule0 = False
-        self.show()
+        
         
      def checkedrule1(self, checked):
         global rule1
         if checked:rule1 = True
         else:rule1 = False
-        self.show()
+        
      
 
      def checkedrule2(self, checked):
         global rule2
         if checked:rule2 = True
         else:rule2 = False
-        self.show()
+        
 
      def checkedrule3(self, checked):
         global rule3
         if checked:rule3 = True
         else:rule3 = False
-        self.show()
+        
 
      def checkedrule4(self, checked):
         global rule4
         if checked:rule4 = True
         else:rule4 = False
-        self.show()
+        
 
      def checkedrule5(self, checked):
         global rule5
         if checked:rule5 = True
         else:rule5 = False
-        self.show()
+        
 
      def checkedrule6(self, checked):
         global rule6
         if checked:rule6 = True
         else:rule6 = False
-        self.show()
+        
 
      def checkedrule7(self, checked):
         global rule7
         if checked:rule7 = True
         else:rule7 = False
-        self.show()
+        
 
      def checkedrule8(self, checked):
         global rule8
         if checked:rule8 = True
         else:rule8 = False
-        self.show()
+        
      def checkedcolorfullb(self, checked):
         global rulec
         if checked:rulec = True
         else:rulec = False
-        self.show()
+        
 
      def start(self):
-         global loopMenu,loopGame
-         loopGame=True
-         loopMenu=False
+         global menuOn
+         self.hide()
+         menuOn=False
          
      def exit(self):
          quit()
@@ -160,13 +151,6 @@ class MainWindow(QMainWindow):
 
 
 
-#Trace la grille
-def tracerGrille():
-    for i in range(0,WINDOWWIDTH+1,CELLSIZE):
-        pygame.draw.line(fenetre,grillecolor,(0+i,0),(0+i,700),1)
-    for j in range(0,WINDOWHEIGHT+1,CELLSIZE):
-        pygame.draw.line(fenetre,grillecolor,(0,0+j),(1366,0+j),1)
-    pass
 
 
 #initialise un dictionnaire de cellules CELLWIDTH*CELLHEIGHT {(0, 0): 0, (1, 0): 0, (2, 0): 0, (3, 0): 0, ....(17, 14): 0, (18, 14): 0, (19, 14): 0}
@@ -197,13 +181,15 @@ def generate_colors(State):
 
 #remplir la fenetre avec un rectangle vert si la cellule est vivante, noir sinon morte)
 def remplirGrille(vie):
-    global COLORS, offset_y,offset_x
-    c=10
+    global COLORS, offset_y,offset_x,rulec
+    
     for x in range(nbCellWidth):
         for y in range(nbCellHeight):
             if vie[x][y]!=0:
-                try:colo = COLORS[vie[x][y]]
-                except:colo = (c*vie[x][y],c*vie[x][y],c*vie[x][y])
+                if rulec==True:
+                    colo = COLORS[vie[x][y]]
+                else:
+                    colo = (vie[x][y]*10,vie[x][y]*10,vie[x][y]*10)
                 pygame.draw.rect(fenetre, colo, (x*CELLSIZE+offset_x, y*CELLSIZE+offset_y, CELLSIZE, CELLSIZE))
     
 
@@ -253,12 +239,12 @@ def prochaine_vie(vie):
 
     return next_vie
 
-rule0,rule1,rule2,rule3,rule4,rule5,rule6,rule7,rule8=False,False,False,False,False,False,False,False,False
+rule0,rule1,rule2,rule3,rule4,rule5,rule6,rule7,rule8=False,False,True,True,False,False,False,False,False
+rulec = False
 
-
-
+menuOn=True
 app = QApplication(sys.argv)
-window = MainWindow()
+window = MainWindow(rule0,rule1,rule2,rule3,rule4,rule5,rule6,rule7,rule8,rulec)
 window.show()
 
 
@@ -304,7 +290,10 @@ while loopGame:
             elif event.key == pygame.K_SPACE: #pause
                 run = not run
             elif event.key == pygame.K_v: #vider
-                vie = {}
+                vie = initialiserCellules()
+            elif event.key == pygame.K_ESCAPE:
+                if not menuOn:window.show()
+                else:window.hide()
             elif event.key == pygame.K_r: #generation aléatoire
                 generationAleatoire()
         elif event.type == pygame.MOUSEBUTTONDOWN: #les click de la souris

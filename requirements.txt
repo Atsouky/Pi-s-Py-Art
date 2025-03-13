@@ -1,6 +1,18 @@
-Librairie Majeur :
-- PyGame
+A installer :
 
-Librairie Mineur : 
--matplotlib
--numpy
+Vcolorpicker
+PyGame
+Matplotlib
+Numpy
+PyQt5
+
+intégrée a python:
+
+random
+Colorsys
+time
+json
+sys
+os
+math
+csv

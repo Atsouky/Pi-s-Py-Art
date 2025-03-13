@@ -10,30 +10,27 @@ from random import uniform
 
 
 voisins =[(-1,0),(1,0),(0,1),(0,-1),(-1,0),(1,0),(0,1),(0,-1),(-1,0),(1,0),(0,1),(0,-1),(-1,0),(1,0),(0,1),(0,-1),(-1,1),(1,-1),(1,1),(-1,-1)]
-cellcolor = (0,255,0)
-
+# pygame initialisation
 clock = pygame.time.Clock()
 pygame.init()
-
-display_info = pygame.display.Info()
-l = display_info.current_w
-h = display_info.current_h - 50 #pour la barre de menu windows
-
-fenetre = pygame.display.set_mode((l,h), pygame.RESIZABLE)
-
-pygame.display.set_caption("Day&Night")
+fenetre = pygame.display.set_mode((0, 0), pygame.NOFRAME)
+pygame.display.set_caption("Jeu de la vie")
 font = pygame.font.Font('freesansbold.ttf', 20)
 
-#variables de l'écran
-WINDOWWIDTH = l
-WINDOWHEIGHT = h
+# Variables de l'écran
+info = pygame.display.get_surface().get_size()
+cellcolor = (0, 255, 0)
 CELLSIZE = 10
-CELLWIDTH = WINDOWWIDTH // CELLSIZE
-CELLHEIGHT = WINDOWHEIGHT // CELLSIZE
 
-global nbCellHeight, nbCellWidth
-nbCellWidth=WINDOWWIDTH//CELLSIZE
-nbCellHeight=WINDOWHEIGHT//CELLSIZE
+#offset de la écran
+offset_x = 0
+offset_y = 0
+
+nbCellWidth=info[0]//CELLSIZE
+nbCellHeight=info[1]//CELLSIZE
+background_color = (0, 0, 0)
+WINDOWWIDTH = info[0]
+WINDOWHEIGHT = info[1]
 
 
 #endregion
@@ -108,7 +105,7 @@ while loop==True:
         
         elif event.type == pygame.KEYDOWN:      # Vérifie les touches appuyées
             
-            if event.key ==pygame.K_w:          #fermeture du jeu
+            if event.key ==pygame.K_ESCAPE:          #fermeture du jeu
                 loop=False
             
             elif event.key ==pygame.K_SPACE:    #activer/desactiver pause

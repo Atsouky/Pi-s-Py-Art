@@ -4,14 +4,10 @@ Programme jeu de la vie rÃ©alisÃ© par nom, prÃ©nom, classe
 import pygame,time
 from random import randint
 #region------------------------------------------------------------__Init__-----------------------------------------------------------------------------------------
-#pourquoi que des comprhénsions?
-#c'est plus rapide que des boucles for
-
 # pygame initialisation
-
 clock = pygame.time.Clock()
 pygame.init()
-fenetre = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+fenetre = pygame.display.set_mode((0, 0), pygame.NOFRAME)
 pygame.display.set_caption("Jeu de la vie")
 font = pygame.font.Font('freesansbold.ttf', 20)
 
@@ -24,8 +20,11 @@ CELLSIZE = 10
 offset_x = 0
 offset_y = 0
 
-
-#endregion
+nbCellWidth=info[0]//CELLSIZE
+nbCellHeight=info[1]//CELLSIZE
+background_color = (0, 0, 0)
+WINDOWWIDTH = info[0]
+WINDOWHEIGHT = info[1]
 
 
 
@@ -34,7 +33,7 @@ offset_y = 0
 
 def generationAleatoire(): # initialisation de la grille
     global vie    
-    vie = { (x,y): randint(0, 9) for x in range(info[0]//CELLSIZE) for y in range(info[1]//CELLSIZE) if randint(0, 0) == 0}
+    vie = { (x,y): 0 for x in range(info[0]//CELLSIZE) for y in range(info[1]//CELLSIZE) if randint(0, 0) == 0}
 
 #remplir la fenetre avec un rectangle vert si la cellule est vivante, sinon noir
 
@@ -89,7 +88,7 @@ while loop:
         if event.type == pygame.QUIT: 
             loop = False
         elif event.type == pygame.KEYDOWN: #quitter 
-            if event.key == pygame.K_w:
+            if event.key == pygame.K_ESCAPE:
                 loop = False
             elif event.key == pygame.K_SPACE: #pause
                 run = not run

@@ -7,38 +7,28 @@ Programme jeu de la vie rÃ©alisÃ© par Gazi Damien Tg3
 import pygame , time
 from random import randint
 #region------------------------------------------------------------__Init__-----------------------------------------------------------------------------------------
-
-
-
-cellcolor = (0,255,0)
-
+# pygame initialisation
 clock = pygame.time.Clock()
 pygame.init()
-
-display_info = pygame.display.Info()
-l = display_info.current_w
-h = display_info.current_h - 50 #pour la barre de menu windows
-
-fenetre = pygame.display.set_mode((l,h), pygame.RESIZABLE)
-
-pygame.display.set_caption("pile de sable")
+fenetre = pygame.display.set_mode((0, 0), pygame.NOFRAME)
+pygame.display.set_caption("Jeu de la vie")
 font = pygame.font.Font('freesansbold.ttf', 20)
 
-#variables de l'écran
-WINDOWWIDTH = l
-WINDOWHEIGHT = h
+# Variables de l'écran
+info = pygame.display.get_surface().get_size()
+cellcolor = (0, 255, 0)
 CELLSIZE = 10
-sable = 100
-CELLWIDTH = WINDOWWIDTH // CELLSIZE
-CELLHEIGHT = WINDOWHEIGHT // CELLSIZE
 
-global nbCellHeight, nbCellWidth
-nbCellWidth=WINDOWWIDTH//CELLSIZE
-nbCellHeight=WINDOWHEIGHT//CELLSIZE
+#offset de la écran
+offset_x = 0
+offset_y = 0
 
-
-#endregion
-
+nbCellWidth=info[0]//CELLSIZE
+nbCellHeight=info[1]//CELLSIZE
+background_color = (0, 0, 0)
+WINDOWWIDTH = info[0]
+WINDOWHEIGHT = info[1]
+sable = 255
 
 
 #Initialiste tout les cellule a 0 en faisant des listes de listes: return liste[x][y]
@@ -57,7 +47,7 @@ def remplirGrille(vie):
     for x in range(nbCellWidth):
         for y in range(nbCellHeight):
             if 5 > vie[x][y] > 0:
-                pygame.draw.rect(fenetre, (vie[x][y]*30,min(vie[x][y]*70,255),vie[x][y]*50), (x*CELLSIZE, y*CELLSIZE, CELLSIZE, CELLSIZE))
+                pygame.draw.rect(fenetre, (min(vie[x][y]*90,255),min(vie[x][y]*90,255),vie[x][y]*50), (x*CELLSIZE, y*CELLSIZE, CELLSIZE, CELLSIZE))
             elif vie[x][y] > 255:
                 pygame.draw.rect(fenetre, (255,255,255), (x*CELLSIZE, y*CELLSIZE, CELLSIZE, CELLSIZE))
     
@@ -121,7 +111,7 @@ while loop==True:
         
         elif event.type == pygame.KEYDOWN:      # Vérifie les touches appuyées
             
-            if event.key ==pygame.K_w:          #fermeture du jeu
+            if event.key ==pygame.K_ESCAPE:          #fermeture du jeu
                 loop=False
             
             elif event.key ==pygame.K_SPACE:    #activer/desactiver pause

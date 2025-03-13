@@ -2,26 +2,28 @@
 Programme jeu de la vie rÃ©alisÃ© par Gazi Damien
 Version 0.1.8
 """
-import pygame
-from random import uniform
-from lib.boutton import TextInput,Bouton
-from math import *
-
+import pygame,time,os,json
+from random import randint,uniform
+from math import * 
 #region------------------------------------------------------------__Init__-----------------------------------------------------------------------------------------
-#variables de l'écrans
-WINDOWWIDTH = 1366
-WINDOWHEIGHT = 700
-CELLSIZE = 7
-background_color=(0,0,0)
-nbCellWidth=WINDOWWIDTH//CELLSIZE
-nbCellHeight=WINDOWHEIGHT//CELLSIZE
-screen =(WINDOWWIDTH,WINDOWHEIGHT)
-
+# pygame initialisation
+clock = pygame.time.Clock()
 pygame.init()
-fenetre = pygame.display.set_mode(screen,pygame.RESIZABLE)
-pygame.display.set_caption("Neuronal")
+fenetre = pygame.display.set_mode((0, 0), pygame.NOFRAME)
+pygame.display.set_caption("Jeu de la vie")
 font = pygame.font.Font('freesansbold.ttf', 20)
-#endregion
+
+# Variables de l'écran
+info = pygame.display.get_surface().get_size()
+cellcolor = (0, 255, 0)
+CELLSIZE = 10
+
+#offset de la écran
+offset_x = 0
+offset_y = 0
+
+nbCellWidth=info[0]//CELLSIZE
+nbCellHeight=info[1]//CELLSIZE
 
 import sys
 import pygame
@@ -59,59 +61,93 @@ class MainWindow(QMainWindow):
           self.l8 = QLineEdit(parent=self)
           self.l9 = QLineEdit(parent=self)
           self.l10 = QLineEdit(parent=self)
+          self.l11 = QLineEdit(parent=self,text='x')
           
-          self.l1.resize(200,100)
-          self.l1.move(100,0)
           
-
+          
+          
+          self.number = [self.l1,self.l2,self.l3,self.l4,self.l5,self.l6,self.l7,self.l8,self.l9]
+          self.ll = [self.l1,self.l2,self.l3,self.l4,self.l5,self.l6,self.l7,self.l8,self.l9,self.l10,self.l11]
+          for i in self.number:
+             i.setText(str(round(uniform(-1,1),4)))
+          for i in range(11):
+              self.ll[i].setStyleSheet("background-color: gray")
+              self.ll[i].resize(200,50)
+          
+          self.l10.move(775,350) 
+          self.l11.move(75,500)  
+        
+          k=0
+          for i in range(3):
+              for j in range(3):
+                self.ll[k].move(75+i*210,160+j*55)
+                k+=1
+          
+          
      def start(self):
-         pass
-     
-     def exit(self):
+         global voisins_fliter,activation_formula
+         for i,j in enumerate(self.number):
+             voisins_fliter[i][2] = float(j.text())
          
-         pass
+         activation_formula = compile_activation(self.l11.text())
+         self.hide()
+     def exit(self):
+         quit()
+         exit()
      def Random(self):
-         pass
+         for i in self.number:
+             i.setText(str(round(uniform(-1,1),4)))
      
      def Save(self):
-         pass
+        
+        data = {"text"+str(i):self.number[i].text() for i in range(len(self.number))}
+        
+        
+        
+        os.makedirs("saves", exist_ok=True)
+        os.makedirs("saves/neuronal", exist_ok=True)
+        with open(f"saves/neuronal/{self.l10.text()}.json", "w") as f:
+            json.dump(data, f)
+        
+        
      
      def Load(self):
-         pass
+        try:
+            with open(f"saves/neuronal/{self.l10.text()}.json", "r") as f:
+                data = json.load(f)
+                for i,j in enumerate(data.values()):
+                    self.number[i].setText(str(j)) 
+            print("sauvegarde chargé")
+            
+        except FileNotFoundError:
+            print("Aucune sauvegarde trouvée")
+           
      
 
 
-app = QApplication(sys.argv)
-window = MainWindow()
-window.show()
-sys.exit(app.exec()) 
+
 
 #initialise une liste de cellules CELLWIDTH*CELLHEIGHT
 #les cellules seront toutes mortes
 def initialiserCellules():
-    return [[0 for i in range(nbCellHeight+1)] for j in range(nbCellWidth+1)]
+    return [[0.0 for i in range(nbCellHeight+1)] for j in range(nbCellWidth+1)]
 
 #Mettre des cellules vivantes au hasard
 def generationAleatoire():
     return [[uniform(-1.0,1.0) for i in range(nbCellHeight+1)] for j in range(nbCellWidth+1)]
     
-def rescale(vie):
-    nvie = [[0 for i in range(nbCellHeight+1)] for j in range(nbCellWidth+1)]
-    for x in range(min(len(vie), nbCellWidth)):
-        for y in range(min(len(vie[0]), nbCellHeight)):
-            nvie[x][y] = vie[x][y]
-            
-    return nvie
+
 
 
 #remplir la fenetre avec un rectangle vert si la cellule est vivante, noir sinon morte)
 def remplirGrille(vie):
+    global offset_x,offset_y
     for x in range(nbCellWidth):
         for y in range(nbCellHeight):
             value = max(0.0, min(1.0, vie[x][y]))
             intensity = int(value * 255)   
             color = (max(0,intensity-100), 0, max(0,intensity-50))
-            pygame.draw.rect(fenetre, color, (x * CELLSIZE, y * CELLSIZE, CELLSIZE, CELLSIZE))
+            pygame.draw.rect(fenetre, color, (x * CELLSIZE+offset_x, y * CELLSIZE+offset_y, CELLSIZE, CELLSIZE))
 
 
 #Détermine combien de voisins sont en vie
@@ -119,18 +155,15 @@ def voisin(x, y, vie):
     nbvoisin = 0.0
     for dx, dy, weight in voisins_fliter:
         nx, ny = (x + dx) % nbCellWidth, (y + dy) % nbCellHeight
+        
         nbvoisin += vie[nx][ny] * weight
     return nbvoisin
  
 
 
 
-#dictionnaire des filtres pour la fonction voisin
-filtere = {
-    "-1,-1": 0.1, "0,-1": -0.1, "1,-1": 0.3,
-    "-1,0": 0.0, "0,0": 1.0, "1,0": -0.3,
-    "-1,1": -0.5, "0,1": -0.1, "1,1": 0.2
-}
+
+
 #tuple contenant les valeurs des filtres pour un calcule plus efficace
 voisins_fliter = [
     [-1, -1, 0.1], [0, -1, -0.1], [1, -1, 0.3],
@@ -138,7 +171,8 @@ voisins_fliter = [
     [-1, 1, -0.5], [0, 1, -0.1], [1, 1, 0.2]
 ]
 
-textinput10 = TextInput(10, 370, 440,64, 64)
+
+
 
 
 
@@ -150,13 +184,16 @@ def compile_activation(formula):
 
 
     
-textinput10.text="x"
-activation_formula = compile_activation(textinput10.text)
+
+
 
 #fonction d'activation
 def activation(x):
     try:return activation_formula(x)
     except: return 0
+
+
+
 
 
 
@@ -172,52 +209,11 @@ def prochaine_vie(vie):
 
     return next_vie
 
+activation_formula = compile_activation('x')
 
-import os 
-import json
-savelocation ='save'
-def save():
-    data = {
-        "txt1" : textinput.text,
-        "txt2" : textinput2.text,
-        "txt3" : textinput3.text,
-        "txt4" : textinput4.text,
-        "txt5" : textinput5.text,
-        "txt6" : textinput6.text,
-        "txt7" : textinput7.text,
-        "txt8" : textinput8.text,
-        "txt9" : textinput9.text,
-        "txt10" : textinput10.text
-    }
-    os.makedirs("saves", exist_ok=True)
-    os.makedirs("saves/neuronal", exist_ok=True)
-    with open(f"saves/neuronal/{savelocation}.json", "w") as f:
-        json.dump(data, f)
-    print("sauvegarde effectuer")
-    boutonprint.txt = 'sauvegarde effectuer'
-
-
-def load():
-    try:
-        with open(f"saves/neuronal/{savelocation}.json", "r") as f:
-            data = json.load(f)
-            textinput.text = data["txt1"]
-            textinput2.text = data["txt2"]
-            textinput3.text = data["txt3"]
-            textinput4.text = data["txt4"]
-            textinput5.text = data["txt5"]
-            textinput6.text = data["txt6"]
-            textinput7.text = data["txt7"]
-            textinput8.text = data["txt8"]
-            textinput9.text = data["txt9"]
-            textinput10.text = data["txt10"]
-        print("sauvegarde chargé")
-        boutonprint.txt = 'sauvegarde chargé'
-    except FileNotFoundError:
-        print("Aucune sauvegarde trouvée")
-        boutonprint.txt = 'Aucune sauvegarde trouvée'
-    
-    
+app = QApplication(sys.argv)
+window = MainWindow()
+window.show() 
 
 
 vie=initialiserCellules()
@@ -226,6 +222,7 @@ vie=initialiserCellules()
 
 mousePressed1=False
 mousePressed2=False
+middlePressed=False
 import time
 timer = time.monotonic()
 time_interval = 0.01
@@ -233,41 +230,7 @@ time_interval = 0.01
 loop=True
 run=True
 #region menu
-textinput = TextInput(10, 10, 140, 32, 32)
-textinput2 = TextInput(155, 10, 140, 32, 32)
-textinput3 = TextInput(300, 10, 140, 32, 32)
-textinput4 = TextInput(10, 50, 140, 32, 32)
-textinput5 = TextInput(155, 50, 140, 32, 32)
-textinput6 = TextInput(300, 50, 140, 32, 32)
-textinput7 = TextInput(10, 90, 140, 32, 32)
-textinput8 = TextInput(155, 90, 140, 32, 32)
-textinput9 = TextInput(300, 90, 140, 32, 32)
 
-boutonSave = Bouton(10, 130, 140, 32, 'Save', (0, 0, 0), (255, 255, 255))
-boutonLoad = Bouton(10, 170, 140, 32, 'Load', (0, 0, 0), (255, 255, 255))
-textinputSavelocation = TextInput(150, 150, 140, 32, 32)
-boutonprint = Bouton(10, 210, 140, 32, '', (0, 0, 0), (255, 255, 255))
-
-Bouton1 = Bouton(10, 450, 140, 32, 'Start', (0, 0, 0), (255, 255, 255))
-Bouton2 = Bouton(450, 10, 140, 32, 'Random', (0, 0, 0), (255, 255, 255))
-BoutonExit = Bouton(WINDOWWIDTH - 150, WINDOWHEIGHT - 50, 140, 32, 'Exit', (0, 0, 0), (255, 255, 255))
-txt=[textinput,textinput2,textinput3,textinput4,textinput5,textinput6,textinput7,textinput8,textinput9,textinput10,textinputSavelocation]
-
-
-
-textinput.text="0.1"
-textinput2.text="-0.1"
-textinput3.text="0.3"
-textinput4.text="0.0"
-textinput5.text="1.0"
-textinput6.text="-0.3"
-textinput7.text="-0.5"
-textinput8.text="-0.1"
-textinput9.text="0.2"
-textinput10.text="x"
-
-
-    
 
 
 #endregion
@@ -281,9 +244,23 @@ while loop:
             elif event.key == pygame.K_SPACE: #pause
                 run = not run
             elif event.key == pygame.K_v: #vider
-                vie = {}
+                vie = initialiserCellules()
             elif event.key == pygame.K_r: #generation aléatoire
-                generationAleatoire()
+                vie=generationAleatoire()
+            elif event.key == pygame.K_ESCAPE:
+                window.show()
+            elif event.key == pygame.K_a:
+                last_mouse_pos = pygame.mouse.get_pos()
+                middlePressed = True
+            elif event.key == pygame.K_e:
+               offset_x = 0
+               offset_y = 0    
+               CELLSIZE = 10
+            
+        elif event.type == pygame.KEYUP: 
+            if event.key == pygame.K_a:
+                middlePressed = False
+                
         elif event.type == pygame.MOUSEBUTTONDOWN: #les click de la souris
             if event.button == 1:
                 mousePressed1 = True

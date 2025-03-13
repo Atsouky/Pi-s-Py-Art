@@ -7,34 +7,27 @@ Programme jeu de la vie rÃ©alisÃ© par Gazi Damien Tg3
 import pygame , time
 from random import uniform,randint
 #region------------------------------------------------------------__Init__-----------------------------------------------------------------------------------------
-
-
-
-cellcolor = (0,0,0)
-dedcellcolor = (0,0,50)
-
+# pygame initialisation
 clock = pygame.time.Clock()
 pygame.init()
-
-display_info = pygame.display.Info()
-l = display_info.current_w
-h = display_info.current_h - 50 #pour la barre de menu windows
-
-fenetre = pygame.display.set_mode((l,h), pygame.RESIZABLE)
-
-pygame.display.set_caption("Day&Night")
+fenetre = pygame.display.set_mode((0, 0), pygame.NOFRAME)
+pygame.display.set_caption("Jeu de la vie")
 font = pygame.font.Font('freesansbold.ttf', 20)
 
-#variables de l'écran
-WINDOWWIDTH = l
-WINDOWHEIGHT = h
+# Variables de l'écran
+info = pygame.display.get_surface().get_size()
+cellcolor = (0, 255, 0)
 CELLSIZE = 10
-CELLWIDTH = WINDOWWIDTH // CELLSIZE
-CELLHEIGHT = WINDOWHEIGHT // CELLSIZE
 
-global nbCellHeight, nbCellWidth
-nbCellWidth=WINDOWWIDTH//CELLSIZE
-nbCellHeight=WINDOWHEIGHT//CELLSIZE
+#offset de la écran
+offset_x = 0
+offset_y = 0
+
+nbCellWidth=info[0]//CELLSIZE
+nbCellHeight=info[1]//CELLSIZE
+
+WINDOWWIDTH = info[0]
+WINDOWHEIGHT = info[1]
 
 
 #endregion
@@ -137,7 +130,7 @@ while loop==True:
         
         elif event.type == pygame.KEYDOWN:      # Vérifie les touches appuyées
             
-            if event.key ==pygame.K_w:          #fermeture du jeu
+            if event.key ==pygame.K_ESCAPE:          #fermeture du jeu
                 loop=False
             
             elif event.key ==pygame.K_SPACE:    #activer/desactiver pause
@@ -191,7 +184,7 @@ while loop==True:
         if mousePressed2:
                 vie[mousepos[0]//CELLSIZE][mousepos[1]//CELLSIZE]=0 #supprime une cellule
 
-    fenetre.fill(dedcellcolor)   #remplit la fenetre de noir
+    fenetre.fill((0,0,0))   #remplit la fenetre de noir
     remplirGrille(vie)      #affiche la grille
     pygame.display.update() #mets à  jour la fentre graphique
     

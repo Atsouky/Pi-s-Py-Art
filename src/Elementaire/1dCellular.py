@@ -13,49 +13,29 @@ if project_path not in sys.path:
 
 from lib.boutton import Bouton , TextInput
 #region------------------------------------------------------------__Init__-----------------------------------------------------------------------------------------
-#variables de l'Ã©cran
-WINDOWWIDTH = 1366
-WINDOWHEIGHT = 700
-CELLSIZE = 6
-CELLWIDTH = WINDOWWIDTH // CELLSIZE
-CELLHEIGHT = WINDOWHEIGHT // CELLSIZE
-
-FPS=1000   #vitesse du jeu
-
-ROUGE=(255,0,0)
-NOIR=(0,0,0)
-BLANC=(255,255,255)
-VERT=(0,255,0)
-BLEU=(0,0,125)
-MAGENTA=(255,0,255)
-cellcolor=(15,240,46)
-grillecolor=NOIR
-background_color=grillecolor
-
-
-global nbCellHeight, nbCellWidth
-nbCellWidth=WINDOWWIDTH//CELLSIZE
-nbCellHeight=WINDOWHEIGHT//CELLSIZE
-
 clock = pygame.time.Clock()
 pygame.init()
-fenetre = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT))
+fenetre = pygame.display.set_mode((0, 0), pygame.NOFRAME)
 pygame.display.set_caption("Jeu de la vie")
 font = pygame.font.Font('freesansbold.ttf', 20)
-#endregion
 
+# Variables de l'écran
+info = pygame.display.get_surface().get_size()
+cellcolor = (0, 255, 0)
+CELLSIZE = 5
 
+#offset de la écran
+offset_x = 0
+offset_y = 0
 
+nbCellWidth=info[0]//CELLSIZE
+nbCellHeight=info[1]//CELLSIZE
+background_color = (0, 0, 0)
+WINDOWWIDTH = info[0]
+WINDOWHEIGHT = info[1]
 
-
-#Trace la grille
-def tracerGrille():
-    for i in range(0,WINDOWWIDTH+1,CELLSIZE):
-        pygame.draw.line(fenetre,grillecolor,(0+i,0),(0+i,700),1)
-    for j in range(0,WINDOWHEIGHT+1,CELLSIZE):
-        pygame.draw.line(fenetre,grillecolor,(0,0+j),(1366,0+j),1)
-    pass
-
+ROUGE = (255, 0, 0)
+BLANC = (255, 255, 255)
 
 #initialise un dictionnaire de cellules CELLWIDTH*CELLHEIGHT {(0, 0): 0, (1, 0): 0, (2, 0): 0, (3, 0): 0, ....(17, 14): 0, (18, 14): 0, (19, 14): 0}
 #les cellules seront toutes mortes
@@ -78,7 +58,9 @@ def remplirGrille(vie):
         for y in range(nbCellHeight):
             
             if vie[x][y]==1:
-                pygame.draw.rect(fenetre, (0,(10+x)%256,0), (x*CELLSIZE, y*CELLSIZE, CELLSIZE, CELLSIZE))
+                if (10+x)< 255: cellcolor = (0,(10+x)%255,0)
+                else: cellcolor = (0,255,0)
+                pygame.draw.rect(fenetre, cellcolor, (x*CELLSIZE, y*CELLSIZE, CELLSIZE, CELLSIZE))
     
 
 def prochaine_vie(vie):
@@ -235,7 +217,7 @@ vie=initialiserCellules()
 if rule184R:
     vie=generationAleatoire()
     
-else : vie[CELLWIDTH//2+1][0]=1
+else : vie[nbCellWidth//2+1][0]=1
 
 vie=prochaine_vie(vie)
 #remplirGrille(vie)
@@ -256,7 +238,7 @@ while loop==True:
         
         elif event.type == pygame.KEYDOWN:  #une touche a Ã©tÃ© pressÃ©e...laquelle ?
                
-            if event.key ==pygame.K_w:
+            if event.key ==pygame.K_ESCAPE:
                 loop=False
             
             elif event.key ==pygame.K_SPACE:

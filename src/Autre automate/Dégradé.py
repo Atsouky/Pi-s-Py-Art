@@ -3,49 +3,30 @@ Programme jeu de la vie rÃ©alisÃ© par nom, prÃ©nom, classe
 """
 import pygame
 from random import randint , random
+from vcolorpicker import getColor
 #region------------------------------------------------------------__Init__-----------------------------------------------------------------------------------------
 #variables de l'Ã©cran
-WINDOWWIDTH = 1366
-WINDOWHEIGHT = 700
-CELLSIZE = 3
-CELLWIDTH = WINDOWWIDTH // CELLSIZE
-CELLHEIGHT = WINDOWHEIGHT // CELLSIZE
-
-FPS=1000   #vitesse du jeu
-
-ROUGE=(255,0,0)
-NOIR=(0,0,0)
-BLANC=(255,255,255)
-VERT=(0,255,0)
-BLEU=(0,0,125)
-MAGENTA=(255,0,255)
-cellcolor=(15,240,46)
-grillecolor=NOIR
-background_color=grillecolor
-
-
-global nbCellHeight, nbCellWidth
-nbCellWidth=WINDOWWIDTH//CELLSIZE
-nbCellHeight=WINDOWHEIGHT//CELLSIZE
-
+# pygame initialisation
 clock = pygame.time.Clock()
 pygame.init()
-fenetre = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT))
+fenetre = pygame.display.set_mode((0, 0), pygame.NOFRAME)
 pygame.display.set_caption("Jeu de la vie")
 font = pygame.font.Font('freesansbold.ttf', 20)
-#endregion
 
+# Variables de l'écran
+info = pygame.display.get_surface().get_size()
+cellcolor = (0, 255, 0)
+CELLSIZE = 3    
 
+#offset de la écran
+offset_x = 0
+offset_y = 0
 
-
-
-#Trace la grille
-def tracerGrille():
-    for i in range(0,WINDOWWIDTH+1,CELLSIZE):
-        pygame.draw.line(fenetre,grillecolor,(0+i,0),(0+i,700),1)
-    for j in range(0,WINDOWHEIGHT+1,CELLSIZE):
-        pygame.draw.line(fenetre,grillecolor,(0,0+j),(1366,0+j),1)
-    pass
+nbCellWidth=info[0]//CELLSIZE
+nbCellHeight=info[1]//CELLSIZE
+background_color = (0, 0, 0)
+WINDOWWIDTH = info[0]
+WINDOWHEIGHT = info[1]
 
 
 #initialise un dictionnaire de cellules CELLWIDTH*CELLHEIGHT {(0, 0): 0, (1, 0): 0, (2, 0): 0, (3, 0): 0, ....(17, 14): 0, (18, 14): 0, (19, 14): 0}
@@ -121,7 +102,7 @@ chance_mutation = 0.4
 vie=initialiserCellules()
 #vie=generationAleatoire()
 
-
+selecteur = [0,0,255]
 mousePressed1=False
 mousePressed2=False
 import time
@@ -140,8 +121,11 @@ while loop==True:
             if event.key == pygame.K_UP:    #est-ce la touche UP si animation est DéSACTIVER
                 #vie=generationAleatoire(vie)
                 vie=prochaine_vie(vie)     #manuel
-            elif event.key ==pygame.K_w:
+            elif event.key ==pygame.K_ESCAPE:
                 loop=False
+            
+            elif event.key ==pygame.K_c:
+                selecteur=getColor()
             
             elif event.key ==pygame.K_SPACE:
                 run=not run
@@ -187,7 +171,7 @@ while loop==True:
     if mousepos[0]<nbCellWidth*CELLSIZE and mousepos[1]<nbCellHeight*CELLSIZE: 
         if mousePressed1:
             
-            vie[mousepos[0]//CELLSIZE][mousepos[1]//CELLSIZE]=[0,0,255]
+            vie[mousepos[0]//CELLSIZE][mousepos[1]//CELLSIZE]=selecteur
         if mousePressed2:
                 vie[mousepos[0]//CELLSIZE][mousepos[1]//CELLSIZE]=0
 

@@ -14,18 +14,17 @@ cellcolor = (0,255,0)
 clock = pygame.time.Clock()
 pygame.init()
 
-display_info = pygame.display.Info()
-l = display_info.current_w
-h = display_info.current_h - 50 #pour la barre de menu windows
 
-fenetre = pygame.display.set_mode((l,h), pygame.RESIZABLE)
+
+fenetre = pygame.display.set_mode((0,0), pygame.NOFRAME)
 
 pygame.display.set_caption("Wave")
 font = pygame.font.Font('freesansbold.ttf', 20)
 
 #variables de l'écran
-WINDOWWIDTH = l
-WINDOWHEIGHT = h
+info = pygame.display.get_surface().get_size()
+WINDOWWIDTH = info[0]
+WINDOWHEIGHT = info[1]
 CELLSIZE = 7
 CELLWIDTH = WINDOWWIDTH // CELLSIZE
 CELLHEIGHT = WINDOWHEIGHT // CELLSIZE
@@ -120,7 +119,7 @@ while loop==True:
         
         elif event.type == pygame.KEYDOWN:      # Vérifie les touches appuyées
             
-            if event.key ==pygame.K_w:          #fermeture du jeu
+            if event.key ==pygame.K_ESCAPE:          #fermeture du jeu
                 loop=False
             
             elif event.key ==pygame.K_SPACE:    #activer/desactiver pause

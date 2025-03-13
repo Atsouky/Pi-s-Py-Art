@@ -6,32 +6,27 @@ from random import randint,choice
 from Element import elements,dictionairedescouleur,e
 
 #region------------------------------------------------------------__Init__-----------------------------------------------------------------------------------------
-#variables de l'Ã©cran
-
-cellcolor = (0,255,0)
-
+# pygame initialisation
 clock = pygame.time.Clock()
 pygame.init()
-
-display_info = pygame.display.Info()
-l = display_info.current_w
-h = display_info.current_h - 75 #pour la barre de menu windows
-
-fenetre = pygame.display.set_mode((l,h), pygame.RESIZABLE)
-
-pygame.display.set_caption("Day&Night")
+fenetre = pygame.display.set_mode((0, 0), pygame.NOFRAME)
+pygame.display.set_caption("Jeu de la vie")
 font = pygame.font.Font('freesansbold.ttf', 20)
 
-#variables de l'écran
-WINDOWWIDTH = l
-WINDOWHEIGHT = h
+# Variables de l'écran
+info = pygame.display.get_surface().get_size()
+cellcolor = (0, 255, 0)
 CELLSIZE = 5
-CELLWIDTH = WINDOWWIDTH // CELLSIZE
-CELLHEIGHT = WINDOWHEIGHT // CELLSIZE
 
-global nbCellHeight, nbCellWidth
-nbCellWidth=WINDOWWIDTH//CELLSIZE
-nbCellHeight=WINDOWHEIGHT//CELLSIZE
+#offset de la écran
+offset_x = 0
+offset_y = 0
+
+nbCellWidth=info[0]//CELLSIZE
+nbCellHeight=info[1]//CELLSIZE
+background_color = (0, 0, 0)
+WINDOWWIDTH = info[0]
+WINDOWHEIGHT = info[1]
 
 
 
@@ -51,7 +46,7 @@ def remplirGrille(vie):
         for y in range(nbCellHeight):
             if vie[x][y]!=0:
                 colo = dictionairedescouleur[vie[x][y]]
-                pygame.draw.rect(fenetre, colo, (x*CELLSIZE, y*CELLSIZE, CELLSIZE, CELLSIZE))
+                pygame.draw.rect(fenetre, colo, (x*CELLSIZE+offset_x, y*CELLSIZE+offset_y, CELLSIZE, CELLSIZE))
                         
 
 
@@ -349,79 +344,102 @@ for i in range(len(dictionairedescouleur.keys())+1):
 
 
     
-    
+
 
 #region------------------------------------------------------------__Loop__-----------------------------------------------------------------------------------------
-loop=True
-run=True
+
+            
+
+vie=initialiserCellules()
+
+
+
+#variable d'événement
+
 mousePressed1 = False
 mousePressed2 = False
+middlePressed = False
+last_mouse_pos = (0, 0)
 seclecteur = 1
-import time
-while loop==True:
-    mousepos=pygame.mouse.get_pos()
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            loop = False            #fermeture de la fenetre (croix rouge)
-        
-        elif event.type == pygame.KEYDOWN:  #une touche a Ã©tÃ© pressÃ©e...laquelle ?
-            if event.key == pygame.K_UP:    #est-ce la touche UP si animation est DéSACTIVER
-                #vie=generationAleatoire(vie)
-                vie=prochaine_vie(vie)     #manuel
-            elif event.key ==pygame.K_w:
-                loop=False
-            
-            elif event.key ==pygame.K_SPACE:
-                run=not run
-            
-            elif event.key ==pygame.K_r:
-                vie=generationAleatoire()
-            elif event.key ==pygame.K_v:
-                vie=initialiserCellules()
-            
+timer = time.monotonic()
+time_interval = 0.01
+loop = True
+run = True
+
+
+while loop:
+    for event in pygame.event.get():  # les touche d'action
+        if event.type == pygame.QUIT: 
+            loop = False
+        elif event.type == pygame.KEYDOWN: #quitter 
+            if event.key == pygame.K_ESCAPE:
+                loop = False
+            elif event.key == pygame.K_SPACE: #pause
+                run = not run
+            elif event.key == pygame.K_v: #vider
+                vie = initialiserCellules()
+            elif event.key == pygame.K_r: #generation aléatoire
+                vie = generationAleatoire()
+                
             elif event.key in key:
                 seclecteur=keyselecteur[event.key]
-            
-            
-            elif event.key ==pygame.K_RIGHT:
-                if time_interval > 0.01: time_interval -= 0.1
-            elif event.key ==pygame.K_LEFT:
-                time_interval += 0.1
-            
-            
-            
+                
+            elif event.key == pygame.K_a:
+                last_mouse_pos = pygame.mouse.get_pos()
+                middlePressed = True
+            elif event.key == pygame.K_e:
+               offset_x = 0
+               offset_y = 0
+               CELLSIZE = 5         
+        elif event.type == pygame.KEYUP: 
+            if event.key == pygame.K_a:
+                middlePressed = False
+        elif event.type == pygame.MOUSEBUTTONDOWN: #les click de la souris
+            if event.button == 1:
+                mousePressed1 = True
+            elif event.button == 3:
+                mousePressed2 = True
+            elif event.button == 2:
+                middlePressed = True
+                last_mouse_pos = pygame.mouse.get_pos()
         elif event.type == pygame.MOUSEBUTTONUP:
             if event.button == 1:
                 mousePressed1 = False
             elif event.button == 3:
                 mousePressed2 = False
-        elif event.type == pygame.MOUSEBUTTONDOWN:
-            if event.button == 1:
-                mousePressed1 = True
-            elif event.button == 3:
-                mousePressed2 = True
-                
-    if mousepos[0]<nbCellWidth*CELLSIZE and mousepos[1]<nbCellHeight*CELLSIZE:
-        if mousePressed1:
-            if vie[mousepos[0]//CELLSIZE][mousepos[1]//CELLSIZE]==seclecteur or vie[mousepos[0]//CELLSIZE][mousepos[1]//CELLSIZE]==0: 
-                vie[mousepos[0]//CELLSIZE][mousepos[1]//CELLSIZE]=seclecteur
+            elif event.button == 2:
+                middlePressed = False
+        elif event.type == pygame.MOUSEMOTION and middlePressed: #le mouvelement de la souris avec le click mollette pour déplace l'offset
+            new_mouse_pos = pygame.mouse.get_pos()
+            dx = new_mouse_pos[0] - last_mouse_pos[0]
+            dy = new_mouse_pos[1] - last_mouse_pos[1]
             
-        elif mousePressed2:
-            vie[mousepos[0]//CELLSIZE][mousepos[1]//CELLSIZE]=0
-        
+            offset_x += dx
+            offset_y += dy
+            last_mouse_pos = new_mouse_pos
+        elif event.type == pygame.MOUSEWHEEL:     # le zoom avec la mollette de la souris
+            mouse_x, mouse_y = pygame.mouse.get_pos() 
+            old_cellsize = CELLSIZE
+            CELLSIZE = max(2, min(50, CELLSIZE + event.y))  
+            scale_factor = CELLSIZE / old_cellsize
+            offset_x = int(mouse_x - (mouse_x - offset_x) * scale_factor)
+            offset_y = int(mouse_y - (mouse_y - offset_y) * scale_factor)
             
-    fenetre.fill((0,0,0))
-    remplirGrille(vie)
-    #tracerGrille()
-    pygame.display.update() #mets Ã  jour la fentre graphique
     
-    if run and  time.monotonic() - timer > time_interval:
+    mousepos = pygame.mouse.get_pos()
+    grid_x = (mousepos[0] - offset_x) // CELLSIZE
+    grid_y = (mousepos[1] - offset_y) // CELLSIZE
+    if mousePressed1 and grid_x<nbCellWidth and grid_y<nbCellHeight:
+        vie[grid_x][grid_y] = seclecteur #placer une celule vivante
+    if mousePressed2:
+        vie[grid_x][grid_y] = 0 # placer une celule mort
+    
+    fenetre.fill((0, 0, 0)) #remplir la fenetre de noir
+    remplirGrille(vie)         #remplir la grille
+    pygame.display.update() #mise a jour
+    
+    if run and time.monotonic() - timer > time_interval: # boucle de la simulation
         timer = time.monotonic()
-        
-        vie=prochaine_vie(vie)#;time.sleep(0.1)  #pour une animation !!!!!!
-    #clock.tick(FPS)
+        vie=prochaine_vie(vie)
 
-    #vie=prochaine_vie(vie)
 pygame.quit()
-
-#endregion

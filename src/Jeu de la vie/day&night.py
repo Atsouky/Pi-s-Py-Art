@@ -6,7 +6,7 @@ from random import randint
 # pygame initialisation
 clock = pygame.time.Clock()
 pygame.init()
-fenetre = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+fenetre = pygame.display.set_mode((0, 0), pygame.NOFRAME)
 pygame.display.set_caption("Jeu de la vie")
 font = pygame.font.Font('freesansbold.ttf', 20)
 
@@ -64,7 +64,7 @@ while loop:
         if event.type == pygame.QUIT: 
             loop = False
         elif event.type == pygame.KEYDOWN: #quitter 
-            if event.key == pygame.K_w:
+            if event.key == pygame.K_ESCAPE:
                 loop = False
             elif event.key == pygame.K_SPACE: #pause
                 run = not run
@@ -72,6 +72,9 @@ while loop:
                 vie = {}
             elif event.key == pygame.K_r: #generation aléatoire
                 generationAleatoire()
+            elif event.key == pygame.K_a:
+                last_mouse_pos = pygame.mouse.get_pos()
+                middlePressed = not middlePressed
         elif event.type == pygame.MOUSEBUTTONDOWN: #les click de la souris
             if event.button == 1:
                 mousePressed1 = True

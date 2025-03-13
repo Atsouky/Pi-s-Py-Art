@@ -10,11 +10,12 @@ WINDOWWIDTH = 1366
 WINDOWHEIGHT = 700
 WIDTH, HEIGHT = WINDOWWIDTH, WINDOWHEIGHT
 clock = pygame.time.Clock()
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
+screen = pygame.display.set_mode((0, 0), pygame.NOFRAME)
 pygame.display.set_caption("Hexagon Grid")
+info = pygame.display.get_surface().get_size()
 
-
-
+WINDOWWIDTH = info[0]
+WINDOWHEIGHT =  info[1]
 
 Cellsize = 5
 cellWidth = WIDTH // Cellsize
@@ -114,7 +115,7 @@ while running:
             running = False
             
         elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_w:
+            if event.key == pygame.K_ESCAPE:
                 running = False
                 pygame.quit()
             elif event.key == pygame.K_r:

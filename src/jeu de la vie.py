@@ -1,528 +1,593 @@
-"""
-Programme jeu de la vie rÃ©alisÃ© par nom, prÃ©nom, classe
-"""
-import pygame
+import pygame , time
 from random import randint
-from lib.boutton import Checkbox,Bouton,TextInput
+#pourquoi que des comprhénsions?
+#c'est plus rapide que des boucles for
 
-#region------------------------------------------------------------__Init__-----------------------------------------------------------------------------------------
-#variables de l'Ã©cran
-WINDOWWIDTH = 1366
-WINDOWHEIGHT = 700
-CELLSIZE = 10
-
-
-FPS=1000   #vitesse du jeu
-
-ROUGE=(255,0,0)
-NOIR=(0,0,0)
-BLANC=(255,255,255)
-VERT=(0,255,0)
-BLEU=(0,0,125)
-MAGENTA=(255,0,255)
-cellcolor=(15,240,46)
-grillecolor=NOIR
-background_color=grillecolor
-
-
-global nbCellHeight, nbCellWidth
-nbCellWidth=WINDOWWIDTH//CELLSIZE
-nbCellHeight=WINDOWHEIGHT//CELLSIZE
-
+# pygame initialisation
 clock = pygame.time.Clock()
 pygame.init()
-fenetre = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT))
+fenetre = pygame.display.set_mode((0, 0), pygame.NOFRAME)
 pygame.display.set_caption("Jeu de la vie")
 font = pygame.font.Font('freesansbold.ttf', 20)
-#endregion
+
+# Variables de l'écran
+info = pygame.display.get_surface().get_size()
+cellcolor = (0, 255, 0)
+CELLSIZE = 10
+
+#offset de la écran
+offset_x = 0
+offset_y = 0
+
+
+import sys
+import pygame
+from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.uic import loadUi
+from PyQt5.QtGui import QPixmap
+from PyQt5.QtWidgets import QMainWindow, QApplication
+
+class MainWindow(QMainWindow):
+     def __init__(self,rule0,rule1,rule2,rule3,rule4,rule5,rule6,rule7,rule8,
+                  rule0S,rule1S,rule2S,rule3S,rule4S,rule5S,rule6S,rule7S,rule8S,vc1,
+                  vc2,vc3,vc4,vc5,vc6,vc7,vc8,vc9,vc10,vc11,vc12,vc13,vc14,vc15,vc16,
+                  vc17,vc18,vc19,vc20,vc21,vc22,vc23,vc24,vc25,parent=None):
+          super(MainWindow, self).__init__()
+          loadUi("fond_jv.ui", self)
+          qpixmap=QPixmap("data/jeu de la vie.png")
+          self.label.setPixmap(qpixmap)
+         
+         #Chexbox pour Birth cell rule
+          self.Birth.setStyleSheet("background-color: gray")
+          self.rule0.stateChanged.connect(self.checkedrule0)
+          self.rule0.setStyleSheet("background-color: gray")
+          self.rule1.stateChanged.connect(self.checkedrule1)
+          self.rule1.setStyleSheet("background-color: gray")
+          self.rule2.stateChanged.connect(self.checkedrule2)
+          self.rule2.setStyleSheet("background-color: gray")
+          self.rule3.stateChanged.connect(self.checkedrule3)
+          self.rule3.setStyleSheet("background-color: gray")
+          self.rule4.stateChanged.connect(self.checkedrule4)
+          self.rule4.setStyleSheet("background-color: gray")
+          self.rule5.stateChanged.connect(self.checkedrule5)
+          self.rule5.setStyleSheet("background-color: gray")
+          self.rule6.stateChanged.connect(self.checkedrule6)
+          self.rule6.setStyleSheet("background-color: gray")
+          self.rule7.stateChanged.connect(self.checkedrule7)
+          self.rule7.setStyleSheet("background-color: gray")
+          self.rule8.stateChanged.connect(self.checkedrule8)
+          self.rule8.setStyleSheet("background-color: gray")
+
+         #Chexbox pour survive cell rule
+          self.Survive.setStyleSheet("background-color: gray")
+          self.rule0S.stateChanged.connect(self.checkedrule0S)
+          self.rule0S.setStyleSheet("background-color: gray")
+          self.rule1S.stateChanged.connect(self.checkedrule1S)
+          self.rule1S.setStyleSheet("background-color: gray")
+          self.rule2S.stateChanged.connect(self.checkedrule2S)
+          self.rule2S.setStyleSheet("background-color: gray")
+          self.rule3S.stateChanged.connect(self.checkedrule3S)
+          self.rule3S.setStyleSheet("background-color: gray")
+          self.rule4S.stateChanged.connect(self.checkedrule4S)
+          self.rule4S.setStyleSheet("background-color: gray")
+          self.rule5S.stateChanged.connect(self.checkedrule5S)
+          self.rule5S.setStyleSheet("background-color: gray")
+          self.rule6S.stateChanged.connect(self.checkedrule6S)
+          self.rule6S.setStyleSheet("background-color: gray")
+          self.rule7S.stateChanged.connect(self.checkedrule7S)
+          self.rule7S.setStyleSheet("background-color: gray")
+          self.rule8S.stateChanged.connect(self.checkedrule8S)
+          self.rule8S.setStyleSheet("background-color: gray")
+
+         #Chexbox pour Voisin check
+          self.Voisin.setStyleSheet("background-color: gray")
+          self.vc1.stateChanged.connect(self.checkedvc1)
+          self.vc2.stateChanged.connect(self.checkedvc2)
+          self.vc3.stateChanged.connect(self.checkedvc3)
+          self.vc4.stateChanged.connect(self.checkedvc4)
+          self.vc5.stateChanged.connect(self.checkedvc5)
+          self.vc6.stateChanged.connect(self.checkedvc6)
+          self.vc7.stateChanged.connect(self.checkedvc7)
+          self.vc8.stateChanged.connect(self.checkedvc8)
+          self.vc9.stateChanged.connect(self.checkedvc9)
+          self.vc10.stateChanged.connect(self.checkedvc10)
+          self.vc11.stateChanged.connect(self.checkedvc11)
+          self.vc12.stateChanged.connect(self.checkedvc12)
+          self.vc13.stateChanged.connect(self.checkedvc13)
+          self.vc14.stateChanged.connect(self.checkedvc14)
+          self.vc15.stateChanged.connect(self.checkedvc15)
+          self.vc16.stateChanged.connect(self.checkedvc16)
+          self.vc17.stateChanged.connect(self.checkedvc17)
+          self.vc18.stateChanged.connect(self.checkedvc18)
+          self.vc19.stateChanged.connect(self.checkedvc19)
+          self.vc20.stateChanged.connect(self.checkedvc20)
+          self.vc21.stateChanged.connect(self.checkedvc21)
+          self.vc22.stateChanged.connect(self.checkedvc22)
+          self.vc23.stateChanged.connect(self.checkedvc23)
+          self.vc24.stateChanged.connect(self.checkedvc24)
+          self.vc25.stateChanged.connect(self.checkedvc25)
+        
+         #boutons start et exit
+          self.Start.clicked.connect(self.start)
+          self.Exit.clicked.connect(self.exit)
+          
+          self.ruelS = [self.rule0S,self.rule1S,self.rule2S,self.rule3S,self.rule4S,self.rule5S,self.rule6S,self.rule7S,self.rule8S]
+          self.ruel = [self.rule0,self.rule1,self.rule2,self.rule3,self.rule4,self.rule5,self.rule6,self.rule7,self.rule8]
+          self.ruelvc =[self.vc1,self.vc2,self.vc3,self.vc4,self.vc5,self.vc6,self.vc7,self.vc8,self.vc9,self.vc10,
+                   self.vc11,self.vc12,self.vc13,self.vc14,self.vc15,self.vc16,self.vc17,self.vc18,self.vc19,self.vc20,
+                   self.vc21,self.vc22,self.vc23,self.vc24,self.vc25]
+
+          global ruleS,rulevc,rule
+          for i in range(len(self.ruel)):
+              if rule[i]==True:
+                 self. ruel[i].setChecked(True)
+              if ruleS[i]==True:
+                  self.ruelS[i].setChecked(True)
+          for i in range(len(rulevc)):
+              if rulevc[i]==True:
+                  self.ruelvc[i].setChecked(True)
+         
+    #region Check pour Birth cell rule
+     def checkedrule0(self, checked):
+        global rule0
+        if checked:rule0=True
+        else:rule0=False
+        
+
+     def checkedrule1(self, checked):
+        global rule1
+        if checked:rule1=True
+        else:rule1=False
+        
+
+     def checkedrule2(self, checked):
+        global rule2
+        if checked:rule2=True
+        else:rule2=False
+        
+
+     def checkedrule3(self, checked):
+        global rule3
+        if checked:rule3=True
+        else:rule3=False
+        
+
+     def checkedrule4(self, checked):
+        global rule4
+        if checked:rule4=True
+        else:rule4=False
+        
+
+     def checkedrule5(self, checked):
+        global rule5
+        if checked:rule5=True
+        else:rule5=False
+        
+
+     def checkedrule6(self, checked):
+        global rule6
+        if checked:rule6=True
+        else:rule6=False
+        
+
+     def checkedrule7(self, checked):
+        global rule7
+        if checked:rule7=True
+        else:rule7=False
+        
+
+     def checkedrule8(self, checked):
+        global rule8
+        if checked:rule8=True
+        else:rule8=False
+        
 
 
 
+     #Check pour survive cell rule
+     def checkedrule0S(self, checked):
+        global rule0S
+        if checked:rule0S=True
+        else:rule0S=False
+        
+        
+     def checkedrule1S(self, checked):
+        global rule1S
+        if checked:rule1S=True
+        else:rule1S=False
+        
+
+     def checkedrule2S(self, checked):
+        global rule2S
+        if checked:rule2S=True
+        else:rule2S=False
+        
+
+     def checkedrule3S(self, checked):
+        global rule3S
+        if checked:rule3S=True
+        else:rule3S=False
+        
+
+     def checkedrule4S(self, checked):
+        global rule4S
+        if checked:rule4S=True
+        else:rule4S=False
+        
+
+     def checkedrule5S(self, checked):
+        global rule5S
+        if checked:rule5S=True
+        else:rule5S=False
+        
+
+     def checkedrule6S(self, checked):
+        global rule6S
+        if checked:rule6S=True
+        else:rule6S=False
+        
+
+     def checkedrule7S(self, checked):
+        global rule7S
+        if checked:rule7S=True
+        else:rule7S=False
+        
+
+     def checkedrule8S(self, checked):
+        global rule8S
+        if checked:rule8S=True
+        else:rule8S=False
+        
 
 
-#Trace la grille
-def tracerGrille():
-    for i in range(0,WINDOWWIDTH+1,CELLSIZE):
-        pygame.draw.line(fenetre,grillecolor,(0+i,0),(0+i,700),1)
-    for j in range(0,WINDOWHEIGHT+1,CELLSIZE):
-        pygame.draw.line(fenetre,grillecolor,(0,0+j),(1366,0+j),1)
-    pass
+    #Check pour Voisin check
+     def checkedvc1(self, checked):
+        global vc1
+        if checked:vc1=True
+        else:vc1=False
+        
+        
+     def checkedvc2(self, checked):
+        global vc2
+        if checked:vc2=True
+        else:vc2=False
+        
 
+     def checkedvc3(self, checked):
+        global vc3
+        if checked:vc3=True
+        else:vc3=False
+        
 
-#initialise un dictionnaire de cellules CELLWIDTH*CELLHEIGHT {(0, 0): 0, (1, 0): 0, (2, 0): 0, (3, 0): 0, ....(17, 14): 0, (18, 14): 0, (19, 14): 0}
-#les cellules seront toutes mortes
-def initialiserCellules():
-    return [[0 for i in range(nbCellHeight+1)] for j in range(nbCellWidth+1)]
+     def checkedvc4(self, checked):
+        global vc4
+        if checked:vc4=True
+        else:vc4=False
+        
 
+     def checkedvc5(self, checked):
+        global vc5
+        if checked:vc5=True
+        else:vc5=False
+        
 
+     def checkedvc6(self, checked):
+        global vc6
+        if checked:vc6=True
+        else:vc6=False
+        
 
-#active alÃ©atoirement les cellules (mise Ã  1) {(0, 0): 0, (1, 0): 1, (2, 0): 1, (3, 0): 1, (4, 0): 1, etc...
-def generationAleatoire():
-    return [[randint(0,1) for i in range(nbCellHeight+1)] for j in range(nbCellWidth+1)]
-    
+     def checkedvc7(self, checked):
+        global vc7
+        if checked:vc7=True
+        else:vc7=False
+        
 
+     def checkedvc8(self, checked):
+        global vc8
+        if checked:vc8=True
+        else:vc8=False
+        
 
-#remplir la fenetre avec un rectangle vert si la cellule est vivante, noir sinon morte)
-
-def remplirGrille(vie):
-    
-    for x in range(nbCellWidth):
-        for y in range(nbCellHeight):
-            if vie[x][y]:
-                pygame.draw.rect(fenetre, cellcolor, (x*CELLSIZE, y*CELLSIZE, CELLSIZE, CELLSIZE))
-    
-
-#DÃ©termine combien de voisins sont en vie
-#rappel item est un tuple (x,y) contenant la position de la cellule.
-
-
-
-def voisin(x, y, vie,voisins):
-    nbvoisin = 0
-    for dx, dy in voisins:
-            nx, ny = (x + dx) % nbCellWidth, (y + dy) % nbCellHeight
-            nbvoisin += vie[nx][ny]
-    return nbvoisin
-
-
-
-
-#calcule la prochaine Ã©tape, retourne un nouveau dictionnaire
-
-def prochaine_vie(vie):
-    
-    next_vie = [[0] * (nbCellHeight+1) for i in range(nbCellWidth+1)]
-    
-    for x in range(nbCellWidth):
-        for y in range(nbCellHeight):
-            a = voisin(x, y, vie, voisins)
+     def checkedvc9(self, checked):
+        global vc9
+        if checked:vc9=True
+        else:vc9=False
             
-            
-            if a == 2 and rule2B: next_vie[x][y] = 1  
-            elif a == 3 and rule3B: next_vie[x][y] = 1
-            elif a == 4 and rule4B: next_vie[x][y] = 1
-            elif a == 5 and rule5B: next_vie[x][y] = 1
-            elif a == 6 and rule6B: next_vie[x][y] = 1
-            elif a == 7 and rule7B: next_vie[x][y] = 1
-            elif a == 8 and rule8B: next_vie[x][y] = 1
-            elif a == 0 and rule0B: next_vie[x][y] = 1
-            elif a == 1 and rule1B: next_vie[x][y] = 1
-            
-            else:
-                if a == 2 and rule2S: next_vie[x][y] = vie[x][y]
-                elif a == 3 and rule3S: next_vie[x][y] = vie[x][y]
-                elif a == 4 and rule4S: next_vie[x][y] = vie[x][y]
-                elif a == 5 and rule5S: next_vie[x][y] = vie[x][y]
-                elif a == 6 and rule6S: next_vie[x][y] = vie[x][y]
-                elif a == 7 and rule7S: next_vie[x][y] = vie[x][y]
-                elif a == 8 and rule8S: next_vie[x][y] = vie[x][y]
-                elif a == 0 and rule0S: next_vie[x][y] = vie[x][y]
-                elif a == 1 and rule1S: next_vie[x][y] = vie[x][y]
-                
-                
-
-                else: next_vie[x][y] = 0
-
-    return next_vie
-
-
-vie=initialiserCellules()
-vie=generationAleatoire()
-
-
-
-#region menu
-
-def printscreen(text:str,x,y,color):
-    txt=font.render(text,True,color)
-    fenetre.blit(txt,(x,y))
-
-
-CheckboxStart = Checkbox(100, 100, 50, 50, "Start", (255, 0, 0), False) 
-CheckboxCl = Checkbox(100, 600, 50, 50, "color mode", (255, 0, 0), False)
-CheckboxQuit = Checkbox(500, 600, 50, 50, "Quit", (255, 0, 0), False)
-BoutonSave = Bouton(400, 200, 50, 50, "Save", (255, 0, 0), False)
-BoutonLoad = Bouton(400, 300, 50, 50, "Load", (255, 0, 0), False)
-Savelocation =TextInput(400, 400, 200, 64,32)
-
-
-
-Checkbox0 = Checkbox(300, 600, 50, 50, "Rule 0", (255, 0, 0), False)
-Checkbox1 = Checkbox(300, 500, 50, 50, "Rule 1", (255, 0, 0), False)
-Checkbox2 = Checkbox(100, 200, 50, 50, "Rule 2", (255, 0, 0), False)
-Checkbox3 = Checkbox(300, 200, 50, 50, "Rule 3", (255, 0, 0), True)
-Checkbox4 = Checkbox(100, 300, 50, 50, "Rule 4", (255, 0, 0), False)
-Checkbox5 = Checkbox(300, 300, 50, 50, "Rule 5", (255, 0, 0), False)
-Checkbox6 = Checkbox(100, 400, 50, 50, "Rule 6", (255, 0, 0), False)
-Checkbox7 = Checkbox(300, 400, 50, 50, "Rule 7", (255, 0, 0), False)
-Checkbox8 = Checkbox(100, 500, 50, 50, "Rule 8", (255, 0, 0), False)
-
-lst_checkbox=[Checkbox0,Checkbox1,Checkbox2,Checkbox3,Checkbox4,Checkbox5,Checkbox6,Checkbox7,Checkbox8]
-
-Checkboxb0 = Checkbox(900, 600, 50, 50, "Rule 0", (255, 0, 0), False)
-Checkboxb1 = Checkbox(900, 500, 50, 50, "Rule 1", (255, 0, 0), False)
-Checkboxb2 = Checkbox(700, 200, 50, 50, "Rule 2", (255, 0, 0), True)
-Checkboxb3 = Checkbox(900, 200, 50, 50, "Rule 3", (255, 0, 0), False)
-Checkboxb4 = Checkbox(700, 300, 50, 50, "Rule 4", (255, 0, 0), False)
-Checkboxb5 = Checkbox(900, 300, 50, 50, "Rule 5", (255, 0, 0), False)
-Checkboxb6 = Checkbox(700, 400, 50, 50, "Rule 6", (255, 0, 0), False)
-Checkboxb7 = Checkbox(900, 400, 50, 50, "Rule 7", (255, 0, 0), False)
-Checkboxb8 = Checkbox(700, 500, 50, 50, "Rule 8", (255, 0, 0), False)
-
-lst_checkboxb= [Checkboxb0,Checkboxb1,Checkboxb2,Checkboxb3,Checkboxb4,Checkboxb5,Checkboxb6,Checkboxb7,Checkboxb8]
-
-
-
-
-CheckboxVs=[]
-for i in range (5):
-    for j in range (5):
-        CheckboxVs.append(Checkbox(1100+i*50, 300+j*50, 50, 50, '', (255, 0, 0), False))
-
-for i in [6,7,8,11,13,16,17,18]:
-    CheckboxVs[i].checked = True
-    
-    
-    
-    
-def to_savedata():
-    to_save = {}
-    for i in range (len(CheckboxVs)):
-        to_save[str(i)] = CheckboxVs[i].checked
-    for i in range (len(lst_checkbox)):
-        to_save[str(i+25)] = lst_checkbox[i].checked
-    for i in range (len(lst_checkboxb)):
-        to_save[str(i+34)] = lst_checkboxb[i].checked 
-    return to_save   
-
-def to_loaddata(data):
-    for i in range (len(CheckboxVs)):
-        CheckboxVs[i].checked = data[str(i)]
-    for i in range (len(lst_checkbox)):
-        lst_checkbox[i].checked = data[str(i+25)]
-    for i in range (len(lst_checkboxb)):
-        lst_checkboxb[i].checked = data[str(i+34)]
-    
-
-
-import os 
-import json
-
-
-boutonprint = Bouton(0, 0, 140, 32, '', (52,78, 91), (0,0,0))
-
-def save():
-    if Savelocation.text not in ['day&night']:
-        os.makedirs("saves", exist_ok=True)
-        os.makedirs("saves/jdlv", exist_ok=True)
-        with open(f"saves/jdlv/{Savelocation.text}.json", "w") as f:
-            json.dump(to_savedata(), f)
-        print("sauvegarde effectuer")
-        boutonprint.txt = 'sauvegarde effectuer'
-    else:
-        boutonprint.txt = 'sauvegarde impossible ou tentative de réecriture d"une des sauvegarde de base'
-
-
-def load():
-    try:
-        with open(f"saves/jdlv/{Savelocation.text}.json", "r") as f:
-            data = json.load(f)
-            to_loaddata(data)
-        print("sauvegarde chargé")
-        boutonprint.txt = 'sauvegarde chargé'
-        
-    except FileNotFoundError:
-        print("Aucune sauvegarde trouvée")
-        boutonprint.txt = 'Aucune sauvegarde trouvée'
-
-
-rule0S=False
-rule1S=False
-rule2S=False
-rule3S=False
-rule4S=False
-rule5S=False
-rule6S=False
-rule7S=False
-rule8S=False
-
-
-rule0B=False
-rule1B=False
-rule2B=False
-rule3B=False
-rule4B=False
-rule5B=False
-rule6B=False
-rule7B=False
-rule8B=False
-colormode=False
-
-
-
-def menu():
-    global rule0B,rule1B,rule2B,rule3B,rule4B,rule5B,rule6B,rule7B,rule8B
-    global rule0S,rule1S,rule2S,rule3S,rule4S,rule5S,rule6S,rule7S,rule8S
-    global voisins,colormode
-    voisins=[]
-    a,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24=0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-    
-    
-    
-    while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                break
-                
-            elif event.type == pygame.KEYDOWN: 
-                if event.key == pygame.K_w :
-                    pygame.quit()
-                    break
-                
-                elif event.key ==pygame.K_ESCAPE:
-                    CheckboxStart.checked = True
-                    break
-            Savelocation.analyse_event(event)
-        
-        fenetre.fill((52,78,91))
-        
-        printscreen("Birth cell rule",150,160,(0,0,0))
-        printscreen("Commbient de voisins pour que la cellule soit vivante",0,177,(0,0,0))
-        printscreen("Conway Game Of Life ",400,100,(0,0,0))
-        printscreen("Commbient de voisins pour que la cellule Survive",600,177,(0,0,0))
-        printscreen("Survive cell rule",750,160,(0,0,0))
-        printscreen("Voisins check",1150,250,(0,0,0))
-            
-        if Checkbox0.draw(fenetre): rule0B=True
-        else: rule0B=False
-        if Checkbox1.draw(fenetre): rule1B=True
-        else: rule1B=False
-        if Checkbox2.draw(fenetre): rule2B=True
-        else: rule2B=False
-        if Checkbox3.draw(fenetre): rule3B=True
-        else: rule3B=False
-        if Checkbox4.draw(fenetre): rule4B=True
-        else: rule4B=False
-        if Checkbox5.draw(fenetre): rule5B=True
-        else: rule5B=False
-        if Checkbox6.draw(fenetre): rule6B=True
-        else: rule6B=False
-        if Checkbox7.draw(fenetre): rule7B=True
-        else: rule7B=False
-        if Checkbox8.draw(fenetre): rule8B=True
-        else: rule8B=False
-        if CheckboxCl.draw(fenetre): colormode=True
-        else: colormode=False
-        
-        if Checkboxb0.draw(fenetre): rule0S=True
-        else: rule0S=False
-        if Checkboxb1.draw(fenetre): rule1S=True
-        else: rule1S=False
-        if Checkboxb2.draw(fenetre): rule2S=True
-        else: rule2S=False
-        if Checkboxb3.draw(fenetre): rule3S=True
-        else: rule3S=False
-        if Checkboxb4.draw(fenetre): rule4S=True
-        else: rule4S=False
-        if Checkboxb5.draw(fenetre): rule5S=True
-        else: rule5S=False
-        if Checkboxb6.draw(fenetre): rule6S=True
-        else: rule6S=False
-        if Checkboxb7.draw(fenetre): rule7S=True
-        else: rule7S=False
-        if Checkboxb8.draw(fenetre): rule8S=True
-        else: rule8S=False
-        
-        if CheckboxStart.draw(fenetre):
-            break
-        if CheckboxQuit.draw(fenetre):
-            pygame.quit()
-            break
+     def checkedvc10(self, checked):
+        global vc10
+        if checked:vc10=True
+        else:vc10=False
         
         
+     def checkedvc11(self, checked):
+        global vc11
+        if checked:vc11=True
+        else:vc11=False
         
-        """for i,j in enumerate([(-2, -2), (-2, -1), (-2, 0), (-2, 1), (-2, 2), (-1, -2), (-1, -1), (-1, 0), (-1, 1), (-1, 2), (0, -2), (0, -1), (0, 0), (0, 1), (0, 2), (1, -2), (1, -1), (1, 0), (1, 1), (1, 2), (2, -2), (2, -1), (2, 0), (2, 1), (2, 2)]):
-            if CheckboxVs[i].draw(fenetre):
-                voisins.append(j)"""
-        
-        if CheckboxVs[0].draw(fenetre):a=1
-        else: a=0
-        if CheckboxVs[1].draw(fenetre):a1=1
-        else: a1=0
-        if CheckboxVs[2].draw(fenetre):a2=1
-        else: a2=0
-        if CheckboxVs[3].draw(fenetre):a3=1
-        else: a3=0
-        if CheckboxVs[4].draw(fenetre):a4=1
-        else: a4=0
-        if CheckboxVs[5].draw(fenetre):a5=1
-        else: a5=0
-        if CheckboxVs[6].draw(fenetre):a6=1
-        else: a6=0
-        if CheckboxVs[7].draw(fenetre):a7=1
-        else: a7=0
-        if CheckboxVs[8].draw(fenetre):a8=1
-        else: a8=0
-        if CheckboxVs[9].draw(fenetre):a9=1
-        else: a9=0
-        if CheckboxVs[10].draw(fenetre):a10=1
-        else: a10=0
-        if CheckboxVs[11].draw(fenetre):a11=1
-        else: a11=0
-        if CheckboxVs[12].draw(fenetre):a12=1
-        else: a12=0
-        if CheckboxVs[13].draw(fenetre):a13=1
-        else: a13=0
-        if CheckboxVs[14].draw(fenetre):a14=1
-        else: a14=0
-        if CheckboxVs[15].draw(fenetre):a15=1
-        else: a15=0
-        if CheckboxVs[16].draw(fenetre):a16=1
-        else: a16=0
-        if CheckboxVs[17].draw(fenetre):a17=1
-        else: a17=0
-        if CheckboxVs[18].draw(fenetre):a18=1
-        else: a18=0
-        if CheckboxVs[19].draw(fenetre):a19=1
-        else: a19=0
-        if CheckboxVs[20].draw(fenetre):a20=1
-        else: a20=0
-        if CheckboxVs[21].draw(fenetre):a21=1
-        else: a21=0
-        if CheckboxVs[22].draw(fenetre):a22=1
-        else: a22=0
-        if CheckboxVs[23].draw(fenetre):a23=1
-        else: a23=0
-        if CheckboxVs[24].draw(fenetre):a24=1
-        else: a24=0
-            
-        if BoutonSave.draw(fenetre):save()
-        if BoutonLoad.draw(fenetre):load()
-        if Savelocation.draw(fenetre):pass
-        if boutonprint.draw(fenetre):pass
-        
-        
-        
-        pygame.display.update()
 
-    if a ==1:voisins.append((-2, -2))
-    if a1 ==1:voisins.append((-2, -1))
-    if a2 ==1:voisins.append((-2, 0))
-    if a3 ==1:voisins.append((-2, 1))
-    if a4 ==1:voisins.append((-2, 2))
-    if a5 ==1:voisins.append((-1, -2))
-    if a6 ==1:voisins.append((-1, -1))
-    if a7 ==1:voisins.append((-1, 0))
-    if a8 ==1:voisins.append((-1, 1))
-    if a9 ==1:voisins.append((-1, 2))
-    if a10 ==1:voisins.append((0, -2))
-    if a11 ==1:voisins.append((0, -1))        
-    if a12 ==1:voisins.append((0, 0))
-    if a13 ==1:voisins.append((0, 1))
-    if a14 ==1:voisins.append((0, 2))
-    if a15 ==1:voisins.append((1, -2))
-    if a16 ==1:voisins.append((1, -1))
-    if a17 ==1:voisins.append((1, 0))
-    if a18 ==1:voisins.append((1, 1))
-    if a19 ==1:voisins.append((1, 2))
-    if a20 ==1:voisins.append((2, -2))
-    if a21 ==1:voisins.append((2, -1))
-    if a22 ==1:voisins.append((2, 0))
-    if a23 ==1:voisins.append((2, 1))
-    if a24 ==1:voisins.append((2, 2))
-    
-    
-#voisins=[(-1,-1),(-1,0),(-1,1),(0,-1),(0,1),(1,-1),(1,0),(1,1)]
+     def checkedvc12(self, checked):
+        global vc12
+        if checked:vc12=True
+        else:vc12=False
+        
+
+     def checkedvc13(self, checked):
+        global vc13
+        if checked:vc13=True
+        else:vc13=False
+        
+
+     def checkedvc14(self, checked):
+        global vc14
+        if checked:vc14=True
+        else:vc14=False
+        
+
+     def checkedvc15(self, checked):
+        global vc15
+        if checked:vc15=True
+        else:vc15=False
+        
+
+     def checkedvc16(self, checked):
+        global vc16
+        if checked:vc16=True
+        else:vc16=False
+        
+
+     def checkedvc17(self, checked):
+        global vc17
+        if checked:vc17=True
+        else:vc17=False
+        
+
+     def checkedvc18(self, checked):
+        global vc18
+        if checked:vc18=True
+        else:vc18=False
+        
+     def checkedvc19(self, checked):
+        global vc19
+        if checked:vc19=True
+        else:vc19=False
+        
+        
+     def checkedvc20(self, checked):
+        global vc20
+        if checked:vc20=True
+        else:vc20=False
+        
+
+     def checkedvc21(self, checked):
+        global vc21
+        if checked:vc21=True
+        else:vc21=False
+        
+
+     def checkedvc22(self, checked):
+        global vc22
+        if checked:vc22=True
+        else:vc22=False
+        
+
+     def checkedvc23(self, checked):
+        global vc23
+        if checked:vc23=True
+        else:vc23=False
+        
+
+     def checkedvc24(self, checked):
+        global vc24
+        if checked:vc24=True
+        else:vc24=False
+        
+
+     def checkedvc25(self, checked):
+        global vc25
+        if checked:vc25=True
+        else:vc25=False
+        
+   #endregion
+     
+     
+     def start(self):
+         global rS,rV,rule0,rule1,rule2,rule3,rule4,rule5,rule6,rule7,rule8,rule0S,rule1S,rule2S,rule3S,rule4S,rule5S,rule6S,rule7S,rule8S,voisins
+         rS=[]
+         rV=[]
+         for i in range(9):
+             if rule0:rV.append(0)
+             if rule1:rV.append(1)
+             if rule2:rV.append(2)
+             if rule3:rV.append(3)
+             if rule4:rV.append(4)
+             if rule5:rV.append(5)
+             if rule6:rV.append(6)
+             if rule7:rV.append(7)
+             if rule8:rV.append(8)
+         for i in range(9):
+             if rule0S:rS.append(0)
+             if rule1S:rS.append(1)
+             if rule2S:rS.append(2)
+             if rule3S:rS.append(3)
+             if rule4S:rS.append(4)
+             if rule5S:rS.append(5)
+             if rule6S:rS.append(6)
+             if rule7S:rS.append(7)
+             if rule8S:rS.append(8)
+         voisins=[]
+         #ligne 1
+         if self.vc1.isChecked():voisins.append((-2,-2))
+         if self.vc2.isChecked():voisins.append((-1,-2))
+         if self.vc3.isChecked():voisins.append((0,-2))
+         if self.vc4.isChecked():voisins.append((1,-2))
+         if self.vc5.isChecked():voisins.append((2,-2))
+         #ligne 2
+         if self.vc16.isChecked():voisins.append((-2,-1))
+         if self.vc19.isChecked():voisins.append((1,-1))
+         if self.vc17.isChecked():voisins.append((-1,-1))
+         if self.vc18.isChecked():voisins.append((0,-1))
+         if self.vc6.isChecked():voisins.append((2,-1))
+         #ligne 3
+         if self.vc7.isChecked():voisins.append((2,0))
+         if self.vc24.isChecked():voisins.append((-1,0))
+         if self.vc20.isChecked():voisins.append((1,0))
+         if self.vc15.isChecked():voisins.append((-2,0))
+         #ligne 4
+         if self.vc8.isChecked():voisins.append((2,1))
+         if self.vc23.isChecked():voisins.append((-1,1))
+         if self.vc22.isChecked():voisins.append((0,1))
+         if self.vc21.isChecked():voisins.append((1,1))
+         if self.vc14.isChecked():voisins.append((-2,1))
+         #ligne 5
+         if self.vc9.isChecked():voisins.append((2,2))
+         if self.vc10.isChecked():voisins.append((1,2))
+         if self.vc11.isChecked():voisins.append((0,2))
+         if self.vc12.isChecked():voisins.append((-1,2))        
+         if self.vc13.isChecked():voisins.append((-2,2))
+         
+         
+         
+         
+         
+         
+         
+         
+         if self.vc25.isChecked():voisins.append(25)
+         
+         print(voisins)
+         self.hide()
+     
+     def exit(self):
+         quit()
+         exit()
 voisins=[]
+vc1,vc2,vc3,vc4,vc5,vc6,vc7,vc8,vc9,vc10,vc11,vc12,vc13,vc14,vc15,vc16,vc17,vc18,vc19,vc20,vc21,vc22,vc23,vc24,vc25 = False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False
+rule0,rule1,rule2,rule3,rule4,rule5,rule6,rule7,rule8 = False,False, False, True, False, False, False, False, False
+rule0S,rule1S,rule2S,rule3S,rule4S,rule5S,rule6S,rule7S,rule8S = False,False, True, False, False, False, False, False, False
+ruleS = [rule0S,rule1S,rule2S,rule3S,rule4S,rule5S,rule6S,rule7S,rule8S]
+rulevc = [vc1,vc2,vc3,vc4,vc5,vc6,vc7,vc8,vc9,vc10,vc11,vc12,vc13,vc14,vc15,vc16,vc17,vc18,vc19,vc20,vc21,vc22,vc23,vc24,vc25]
+rule = [rule0,rule1,rule2,rule3,rule4,rule5,rule6,rule7,rule8]
 
-menu()
-print(voisins)
-#endregion
+rS = [2]
+rV=[3]
 
-mousePressed1=False
-mousePressed2=False
-import time
+app = QApplication(sys.argv)
+window = MainWindow(rule0,rule1,rule2,rule3,rule4,rule5,rule6,rule7,rule8,
+                    rule0S,rule1S,rule2S,rule3S,rule4S,rule5S,rule6S,rule7S,rule8S,
+                    vc1,vc2,vc3,vc4,vc5,vc6,vc7,vc8,vc9,vc10,vc11,vc12,vc13,vc14,vc15,vc16,vc17,vc18,vc19,vc20,vc21,vc22,vc23,vc24,vc25)
+window.show()
+
+
+def generationAleatoire(): # initialisation de la grille
+    global vie, offset_x, offset_y 
+    vie = { (x,y): 1 for x in range(info[0]//CELLSIZE) for y in range(info[1]//CELLSIZE) if randint(0, 1) == 0}
+
+def remplirGrille(): # affiche la grille uniquement les cellule vivante et dans l'écran
+    for (x, y) in vie:
+        screen_x = (x * CELLSIZE) + offset_x
+        screen_y = (y * CELLSIZE) + offset_y
+        pygame.draw.rect(fenetre, cellcolor, (screen_x, screen_y, CELLSIZE, CELLSIZE))
+
+def voisin(x, y): # calcule le nombre de voisin avec un compréhention
+   global voisins
+   return sum(vie.get((x+dx, y+dy), 0) for dx, dy in voisins)
+
+def prochaine_vie(): # calcule la prochaine étape 
+    global vie,rS,rV
+    new_vie = {}
+    #toute les cellule autour des cellule vivante
+    candidates = set(vie.keys()) | { (x+dx, y+dy) for x, y in vie for dx, dy in [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]}
+    
+    #calcule la prochaine étape
+    for cell in candidates:
+        n = voisin(*cell)
+        if n in rV or (cell in vie and n in rS):
+            new_vie[cell] = 1
+    vie = new_vie
+
+#variable d'événement
+
+mousePressed1 = False
+mousePressed2 = False
+middlePressed = False
+last_mouse_pos = (0, 0)
+
 timer = time.monotonic()
 time_interval = 0.01
-#region------------------------------------------------------------__Loop__-----------------------------------------------------------------------------------------
-loop=True
-run=True
-while loop==True:
-    mousepos=pygame.mouse.get_pos()
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            loop = False            #fermeture de la fenetre (croix rouge)
-        
-        elif event.type == pygame.KEYDOWN:  #une touche a Ã©tÃ© pressÃ©e...laquelle ?
-            if event.key == pygame.K_UP:    #est-ce la touche UP si animation est DéSACTIVER
-                #vie=generationAleatoire(vie)
-                vie=prochaine_vie(vie)     #manuel
-            elif event.key ==pygame.K_w:
-                loop=False
-            
-            elif event.key ==pygame.K_SPACE:
-                run=not run
-            
-            elif event.key ==pygame.K_r:
-                vie=generationAleatoire()
-            elif event.key ==pygame.K_v:
-                vie=initialiserCellules()
-                
-            elif event.key ==pygame.K_ESCAPE:
-                CheckboxStart.checked = False
-                voisins=[]
-                menu()
-            
-            
-            elif event.key ==pygame.K_PAGEUP:
-                CELLSIZE+=1
-                CELLWIDTH = WINDOWWIDTH // CELLSIZE
-                CELLHEIGHT = WINDOWHEIGHT // CELLSIZE
-                #fenetre = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT))
-                vie=initialiserCellules()
-                vie=generationAleatoire()
-            elif event.key ==pygame.K_PAGEDOWN:
-                if CELLSIZE>1:CELLSIZE-=1
-                nbCellWidth = WINDOWWIDTH // CELLSIZE
-                nbCellHeight = WINDOWHEIGHT // CELLSIZE
-                #fenetre = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT))
-                vie=initialiserCellules()
-                vie=generationAleatoire()
-                
-            elif event.key ==pygame.K_RIGHT:
-                if time_interval > 0: time_interval -= 0.1
-            elif event.key ==pygame.K_LEFT:
-                time_interval += 0.1
-            
-                
-            
+loop = True
+run = True
+
+generationAleatoire()
+
+while loop:
+    for event in pygame.event.get():  # les touche d'action
+        if event.type == pygame.QUIT: 
+            loop = False
+        elif event.type == pygame.KEYDOWN: #quitter 
+            if event.key == pygame.K_w:
+                loop = False
+            elif event.key == pygame.K_SPACE: #pause
+                run = not run
+            elif event.key == pygame.K_v: #vider
+                vie = {}
+            elif event.key == pygame.K_r: #generation aléatoire
+                generationAleatoire()
+            elif event.key == pygame.K_ESCAPE:
+                window.show()
+            elif event.key == pygame.K_a:
+                last_mouse_pos = pygame.mouse.get_pos()
+                middlePressed = True
+            elif event.key == pygame.K_e:
+               offset_x = 0
+               offset_y = 0            
+        elif event.type == pygame.KEYUP: 
+            if event.key == pygame.K_a:
+                middlePressed = False
+        elif event.type == pygame.MOUSEBUTTONDOWN: #les click de la souris
+            if event.button == 1:
+                mousePressed1 = True
+            elif event.button == 3:
+                mousePressed2 = True
+            elif event.button == 2:
+                middlePressed = True
+                last_mouse_pos = pygame.mouse.get_pos()
         elif event.type == pygame.MOUSEBUTTONUP:
             if event.button == 1:
                 mousePressed1 = False
             elif event.button == 3:
                 mousePressed2 = False
-        elif event.type == pygame.MOUSEBUTTONDOWN:
-            if event.button == 1:
-                mousePressed1 = True
-            elif event.button == 3:
-                mousePressed2 = True
-            
-    if mousepos[0]<nbCellWidth*CELLSIZE and mousepos[1]<nbCellHeight*CELLSIZE: 
-        if mousePressed1:
-            
-            vie[mousepos[0]//CELLSIZE][mousepos[1]//CELLSIZE]=1
-        if mousePressed2:
-                vie[mousepos[0]//CELLSIZE][mousepos[1]//CELLSIZE]=0
-
-    fenetre.fill(background_color)
-    remplirGrille(vie)
-    #tracerGrille()
-    pygame.display.update() #mets Ã  jour la fentre graphique
-    if run and  time.monotonic() - timer > time_interval:
+            elif event.button == 2:
+                middlePressed = False
+        elif event.type == pygame.MOUSEMOTION and middlePressed: #le mouvelement de la souris avec le click mollette pour déplace l'offset
+            new_mouse_pos = pygame.mouse.get_pos()
+            dx = new_mouse_pos[0] - last_mouse_pos[0]
+            dy = new_mouse_pos[1] - last_mouse_pos[1]
+            offset_x += dx
+            offset_y += dy
+            last_mouse_pos = new_mouse_pos
+        elif event.type == pygame.MOUSEWHEEL:     # le zoom avec la mollette de la souris
+            mouse_x, mouse_y = pygame.mouse.get_pos() 
+            old_cellsize = CELLSIZE
+            CELLSIZE = max(2, min(50, CELLSIZE + event.y))  
+            scale_factor = CELLSIZE / old_cellsize
+            offset_x = int(mouse_x - (mouse_x - offset_x) * scale_factor)
+            offset_y = int(mouse_y - (mouse_y - offset_y) * scale_factor)
+    
+    mousepos = pygame.mouse.get_pos()
+    grid_x = (mousepos[0] - offset_x) // CELLSIZE
+    grid_y = (mousepos[1] - offset_y) // CELLSIZE
+    if mousePressed1:
+        vie[(grid_x, grid_y)] = 1 #placer une celule vivante
+    if mousePressed2:
+        vie.pop((grid_x, grid_y), None) # placer une celule mort
+    
+    fenetre.fill((0, 0, 0)) #remplir la fenetre de noir
+    remplirGrille()         #remplir la grille
+    pygame.display.update() #mise a jour
+    
+    if run and time.monotonic() - timer > time_interval: # boucle de la simulation
         timer = time.monotonic()
-        vie=prochaine_vie(vie)#clock.tick(FPS)
+        prochaine_vie()
 
 pygame.quit()
-
-#endregion
