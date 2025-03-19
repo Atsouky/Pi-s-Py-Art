@@ -1,6 +1,5 @@
-"""
-Programme jeu de la vie rÃ©alisÃ© par nom, prÃ©nom, classe
-"""
+#Projet : Pi's Py Art
+#Auteurs : Damien Gazi
 import pygame
 from random import randint,choice
 #region------------------------------------------------------------__Init__-----------------------------------------------------------------------------------------

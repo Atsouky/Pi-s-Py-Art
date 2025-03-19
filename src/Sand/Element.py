@@ -1,3 +1,6 @@
+#Projet : Pi's Py Art
+#Auteurs : Damien Gazi
+
 dictionairedescouleur = {
     
     1:(255,200,0),      #sable
@@ -158,7 +161,7 @@ Chaque paramètre doivent être renseigné sous la forme suivante (avec un /) :
 %n : n chance sur 100
 ?element : spécifie un element par son nom
 #create : crée un nouvel element
-#shift : fait glisser un element
+#shift : fait échange de place un element
 #destroy : fait disparaitre un element
 *d : direction (uniquement pour statique)
 

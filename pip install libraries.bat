@@ -1,1 +1,0 @@
-pip install Vcolorpicker PyGame Matplotlib Numpy PyQt5

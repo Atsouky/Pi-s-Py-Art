@@ -1,3 +1,5 @@
+#Projet : Pi's Py Art
+#Auteurs : Damien Gazi et d'internet
 import numpy as np
 import matplotlib.pyplot as plt
 

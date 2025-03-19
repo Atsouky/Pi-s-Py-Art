@@ -1,6 +1,9 @@
+#Projet : Pi's Py Art
+#Auteurs : Damien Gazi
+
 import pygame , time
 from random import randint
-#pourquoi que des comprhénsions?
+#pourquoi que des comprhénsions? solution trouver par ia
 #c'est plus rapide que des boucles for
 
 # pygame initialisation

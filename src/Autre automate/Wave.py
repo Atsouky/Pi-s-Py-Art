@@ -1,6 +1,5 @@
-"""
-Programme jeu de la vie rÃ©alisÃ© par Gazi Damien Tg3
-"""
+#Projet : Pi's Py Art
+#Auteurs : Damien Gazi
 
 #Wave v0.1
 

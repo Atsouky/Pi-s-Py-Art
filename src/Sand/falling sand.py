@@ -1,6 +1,5 @@
-"""
-Programme jeu de la vie rÃ©alisÃ© par Gazi Damien Tg3
-"""
+#Projet : Pi's Py Art
+#Auteurs : Damien Gazi & Jenny Richard
 import pygame , time , re
 from random import randint,choice
 from Element import elements,dictionairedescouleur,e
@@ -27,6 +26,118 @@ nbCellHeight=info[1]//CELLSIZE
 background_color = (0, 0, 0)
 WINDOWWIDTH = info[0]
 WINDOWHEIGHT = info[1]
+
+
+
+import sys
+import pygame
+from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.uic import loadUi
+from PyQt5.QtGui import QPixmap, QIcon
+from PyQt5.QtWidgets import QMainWindow, QApplication, QLineEdit, QVBoxLayout, QPushButton, QComboBox
+
+class MainWindow(QMainWindow):
+    def __init__(self,parent=None):
+        super(MainWindow, self).__init__(parent)
+        loadUi("Sand/fond_sand.ui", self)
+        qpixmap=QPixmap("data/sand game/sandbox.png")
+        self.label.setPixmap(qpixmap)
+        
+        
+        #combobox de la liste des éléments
+       
+        self.comboBox.addItems(elements.keys()) # créer une liste dans la parentèse 
+        self.comboBox.activated[str].connect(self.onActivated)
+        
+        #combobox de la liste des couleurs
+        
+        exit= QPushButton("Quitter", self)
+        start= QPushButton("Start", self)
+        exit.setGeometry(350, 300, 100, 50)
+        start.setGeometry(50, 300, 100, 50)
+        
+        exit.clicked.connect(self.exit)
+        start.clicked.connect(self.start)
+        # creating a push button
+        sandb = QPushButton("sable", self)
+        eaub = QPushButton("eau", self)
+        boisb = QPushButton("bois", self)
+        pierreb = QPushButton("pierre", self)
+        terreb = QPushButton("terre", self)
+        herbeb = QPushButton("herbe", self)
+        
+
+    # position du boutton
+        sandb.setGeometry(400-375, 75, 200, 50)
+        sandb.clicked.connect(self.sand)
+        eaub.setGeometry(650-375, 75, 200, 50)
+        eaub.clicked.connect(self.eau)
+        boisb.setGeometry(400-375, 150, 200, 50)
+        boisb.clicked.connect(self.bois)
+        pierreb.setGeometry(650-375, 150, 200, 50)
+        pierreb.clicked.connect(self.pierre)
+        terreb.setGeometry(400-375, 225, 200, 50)
+        terreb.clicked.connect(self.terre)
+        herbeb.setGeometry(650-375, 225, 200, 50)
+        herbeb.clicked.connect(self.herbe)
+        
+
+    # mettre une image sur le boutton
+        sandb.setIcon(QIcon('data/icon/sable.png'))
+        eaub.setIcon(QIcon('data/icon/eau.png'))
+        boisb.setIcon(QIcon('data/icon/bois.png'))
+        pierreb.setIcon(QIcon('data/icon/pierre.png'))
+        terreb.setIcon(QIcon('data/icon/dirt.png'))
+        herbeb.setIcon(QIcon('data/icon/harbe.png'))
+        
+
+    def onActivated(self, text):
+        global seclecteur
+        if text in elements.keys():
+            seclecteur = e[text]
+    
+    def start(self):
+        self.hide()
+    
+    def exit(self):
+        sys.exit()
+
+    def sand(self):
+        global seclecteur
+        seclecteur = e['sable']
+        self.hide()
+
+    def eau(self):
+        global seclecteur 
+        seclecteur = e['eau']
+        self.hide()
+
+    def bois(self):
+        global seclecteur
+        seclecteur = e['bois']
+        self.hide()
+
+    def pierre(self):
+        global seclecteur
+        seclecteur = e['feu']
+        self.hide()
+
+    def terre(self):
+        global seclecteur
+        seclecteur = e['terre']
+        self.hide()
+
+    def herbe(self):
+        global seclecteur
+        seclecteur = e['herbe']
+        self.hide()
+
+    
+
+app = QApplication(sys.argv)
+window = MainWindow()
+window.show()
+
 
 
 
@@ -245,7 +356,7 @@ def symbolic(x,y,Paterne,vie,next_vie,elementreaction = None):
             
     return next_vie
     
-    
+#region func
 
 def neigbour(x,y,vie,elementreaction):
     for dx, dy in [(-1,-1),(-1,0),(-1,1),(0,-1),(0,1),(1,-1),(1,0),(1,1)]:
@@ -344,7 +455,7 @@ for i in range(len(dictionairedescouleur.keys())+1):
 
 
     
-
+#endregion
 
 #region------------------------------------------------------------__Loop__-----------------------------------------------------------------------------------------
 
@@ -352,6 +463,14 @@ for i in range(len(dictionairedescouleur.keys())+1):
 
 vie=initialiserCellules()
 
+pinceaux = 1
+pinceauy = 1
+
+pinceaux2 = False
+pinceauy2 = False
+pinceaux3 = False
+pinceauy3 = False
+pinceauyTime = time.monotonic()
 
 
 #variable d'événement
@@ -373,7 +492,7 @@ while loop:
             loop = False
         elif event.type == pygame.KEYDOWN: #quitter 
             if event.key == pygame.K_ESCAPE:
-                loop = False
+                window.show()
             elif event.key == pygame.K_SPACE: #pause
                 run = not run
             elif event.key == pygame.K_v: #vider
@@ -390,10 +509,35 @@ while loop:
             elif event.key == pygame.K_e:
                offset_x = 0
                offset_y = 0
-               CELLSIZE = 5         
+               CELLSIZE = 5   
+            
+            
+            
+            elif event.key == pygame.K_RIGHT:
+                pinceaux2 = True
+            elif event.key == pygame.K_LEFT:                
+                pinceaux3 = True
+            elif event.key == pygame.K_UP:                
+                if pinceauy-1>0:pinceauy3 = True
+            elif event.key == pygame.K_DOWN:                
+                pinceauy2 = True
+
+                  
         elif event.type == pygame.KEYUP: 
             if event.key == pygame.K_a:
                 middlePressed = False
+                
+            elif event.key == pygame.K_RIGHT:
+                pinceaux2 = False
+            elif event.key == pygame.K_LEFT:                
+                pinceaux3 = False
+            elif event.key == pygame.K_UP:                
+                pinceauy3 = False
+            elif event.key == pygame.K_DOWN:                
+                pinceauy2 = False
+            
+                
+                
         elif event.type == pygame.MOUSEBUTTONDOWN: #les click de la souris
             if event.button == 1:
                 mousePressed1 = True
@@ -425,18 +569,41 @@ while loop:
             offset_x = int(mouse_x - (mouse_x - offset_x) * scale_factor)
             offset_y = int(mouse_y - (mouse_y - offset_y) * scale_factor)
             
+    if time.monotonic()-pinceauyTime>0.02:
+        pinceauyTime = time.monotonic()
+        if pinceaux2:
+            pinceaux+=1
+        if pinceauy2:
+            pinceauy+=1
+        if pinceaux3:
+            if pinceaux-1>0:pinceaux-=1
+        if pinceauy3:
+            if pinceauy-1>0:pinceauy-=1
     
     mousepos = pygame.mouse.get_pos()
     grid_x = (mousepos[0] - offset_x) // CELLSIZE
     grid_y = (mousepos[1] - offset_y) // CELLSIZE
+    grid_x -= pinceaux//2
+    grid_y -= pinceauy//2
     if mousePressed1 and grid_x<nbCellWidth and grid_y<nbCellHeight:
-        vie[grid_x][grid_y] = seclecteur #placer une celule vivante
+        if vie[grid_x][grid_y] == 0:
+            for i in range(pinceaux):
+                for j in range(pinceauy):
+                    if grid_x+i<nbCellWidth and grid_y+j<nbCellHeight and vie[grid_x+i][grid_y+j] == 0 :
+                        vie[grid_x+i][grid_y+j] = seclecteur                    #placer une celule vivante
+        
     if mousePressed2:
-        vie[grid_x][grid_y] = 0 # placer une celule mort
+        for i in range(pinceaux):
+            for j in range(pinceauy):
+                if grid_x+i<nbCellWidth and grid_y+j<nbCellHeight and vie[grid_x+i][grid_y+j] != 0:
+                    vie[grid_x+i][grid_y+j] = 0 # placer une celule mort
     
     fenetre.fill((0, 0, 0)) #remplir la fenetre de noir
     remplirGrille(vie)         #remplir la grille
     pygame.display.update() #mise a jour
+    
+    
+    clock.tick(60)
     
     if run and time.monotonic() - timer > time_interval: # boucle de la simulation
         timer = time.monotonic()

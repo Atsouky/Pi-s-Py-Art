@@ -1,3 +1,6 @@
+#Projet : Pi's Py Art
+#Auteurs : Damien Gazi
+#complètement hors sujet mais pas grave
 from math import *
 import pygame
 

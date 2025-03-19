@@ -1,7 +1,7 @@
-"""
-Programme jeu de la vie rÃ©alisÃ© par Gazi Damien
-Version 0.1.8
-"""
+#Projet : Pi's Py Art
+#Auteurs : Damien Gazi & Jenny Richard
+
+
 import pygame,time,os,json
 from random import randint,uniform
 from math import * 

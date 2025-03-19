@@ -1,3 +1,6 @@
+#Projet : Pi's Py Art
+#Auteurs : Damien Gazi & Jenny Richard
+
 import pygame , time
 from random import randint
 #pourquoi que des comprhénsions?
@@ -19,6 +22,7 @@ CELLSIZE = 10
 offset_x = 0
 offset_y = 0
 
+# les menus
 
 import sys
 import pygame

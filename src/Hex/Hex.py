@@ -1,3 +1,5 @@
+#Projet : Pi's Py Art
+#Auteurs : Damien Gazi
 import pygame
 import math 
 from random import randint

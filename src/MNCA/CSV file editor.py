@@ -1,3 +1,6 @@
+#Projet : Pi's Py Art
+#Auteurs : Damien Gazi et Aide d'une intelligence artificielle
+
 import pygame
 import csv
 import os

@@ -1,8 +1,7 @@
-"""
-Programme jeu de la vie rÃ©alisÃ© par Gazi Damien Tg3
-"""
+#Projet : Pi's Py Art
+#Auteurs : Damien Gazi
 
-#Day & Night
+
 
 import pygame , time
 from random import randint

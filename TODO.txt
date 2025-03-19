@@ -1,9 +1,3 @@
-Menu
-
-Video 
-#image du projet
-
-description syntétique
-résume du projet
-documentation technique
-presentation
+supprimer le todo 
+présentation.pdf
+ficher docs

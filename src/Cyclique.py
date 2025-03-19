@@ -1,6 +1,5 @@
-"""
-Programme jeu de la vie rÃ©alisÃ© par nom, prÃ©nom, classe
-"""
+#Projet : Pi's Py Art
+#Auteurs : Damien Gazi & Jenny Richard
 
 
 import pygame,time,colorsys

@@ -1,3 +1,7 @@
+#Projet : Pi's Py Art
+#Auteurs : Damien Gazi
+#extrait d'un autre projet
+
 import pygame
 
 class Boutonsprite():
