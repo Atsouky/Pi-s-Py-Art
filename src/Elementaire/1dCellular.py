@@ -36,6 +36,117 @@ WINDOWHEIGHT = info[1]
 ROUGE = (255, 0, 0)
 BLANC = (255, 255, 255)
 
+
+
+import sys
+import pygame
+from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.uic import loadUi
+from PyQt5.QtGui import QPixmap
+from PyQt5.QtWidgets import QMainWindow, QApplication, QLineEdit, QPushButton
+
+class MainWindow(QMainWindow):
+     def __init__(self):
+          super(MainWindow, self).__init__()
+          loadUi(os.path.join("Elementaire","elementary.ui"), self)
+          qpixmap=QPixmap(os.path.join("Elementaire","elementary.png"))
+          
+          self.salut = QtWidgets.QLineEdit(self)
+          self.salut.setGeometry(530, 110, 200, 50)
+          
+          custboutton = QPushButton(self)
+          custboutton.setText("Custom")
+          custboutton.setGeometry(530, 170, 200, 50)
+          
+          self.label.setPixmap(qpixmap)
+          
+          self.label2.setStyleSheet("background-color: gray")
+          
+          custboutton.clicked.connect(self.custom)
+          self.Start.clicked.connect(self.start)
+          self.Exit.clicked.connect(self.exit)
+          self.rule30.clicked.connect(self.rule_30)
+          self.rule99.clicked.connect(self.rule_99)
+          self.rule110.clicked.connect(self.rule_110)
+          self.rule184.clicked.connect(self.rule_184)
+          
+     def convertbin(self,n:int):
+        return [int(x) for x in bin(n)[2:].zfill(8)]
+     def createRule(self,rule):
+        a= self.convertbin(rule)
+        
+        dicte={
+            '000':None,
+            '001':None,
+            '010':None,
+            '011':None,
+            '100':None,
+            '101':None,
+            '110':None,
+            '111':None
+            }
+        for i,j in enumerate(dicte):
+            
+            dicte[j]=a[len(dicte)-i-1]
+        return dicte
+     def start(self):
+         self.hide()
+
+     def exit(self):
+        sys.exit()
+
+     def rule_30(self):
+         global rule30R,rule110R,rule184R,rule99R
+         rule110R=False
+         rule99R=False
+         rule184R=False
+         rule30R=True
+
+     def rule_99(self):
+         global rule30R,rule110R,rule184R,rule99R,ruleMod
+         ruleMod=False
+         rule110R=False
+         rule99R=True
+         rule184R=False
+         rule30R=False
+
+     def rule_110(self):
+         global rule30R,rule110R,rule184R,rule99R,ruleMod
+         rule110R=True
+         ruleMod=False
+         rule99R=False
+         rule184R=False
+         rule30R=False
+
+     def rule_184(self):
+         global rule30R,rule110R,rule184R,rule99R,ruleMod
+         rule110R=False
+         rule99R=False
+         ruleMod=False
+         rule184R=True
+         rule30R=False
+    
+     def custom(self):
+         global rule30R,rule110R,rule184R,rule99R,ruleMod,ruleModDict
+         rule110R=False
+         rule99R=False
+         rule184R=False
+         rule30R=False
+         ruleMod=True
+         lab = self.salut.text()
+         try: ruleModDict = self.createRule(int(lab))
+         except: pass
+         print(ruleModDict)
+
+
+app = QApplication(sys.argv)
+window = MainWindow()
+window.show()
+
+
+
+
+
 #initialise un dictionnaire de cellules CELLWIDTH*CELLHEIGHT {(0, 0): 0, (1, 0): 0, (2, 0): 0, (3, 0): 0, ....(17, 14): 0, (18, 14): 0, (19, 14): 0}
 #les cellules seront toutes mortes
 def initialiserCellules():
@@ -126,12 +237,6 @@ rule99 = createRule(86)
 #menu
 
 
-rule30B=Bouton(0,0,100,50,'Rule 30',ROUGE,BLANC)
-rule110B=Bouton(100,0,100,50,'Rule 110',ROUGE,BLANC)
-rule184B=Bouton(200,0,100,50,'Rule 184',ROUGE,BLANC)
-rule99B=Bouton(300,0,100,50,'Rule 99',ROUGE,BLANC)
-ruleModB=Bouton(400,0,100,50,'Custom',ROUGE,BLANC)
-TextInput1=TextInput(500,0,100,50,50)
 
 rule30R = False
 rule110R = False
@@ -148,68 +253,7 @@ ruleModDict = {
     '110':None,
     '111':None
 }
-def menu():
-    global rule30R,rule110R,rule184R,rule99R,ruleModDict,ruleMod
-    while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                run=False
-                quit()
-            elif event.type == pygame.KEYDOWN:           
-                if event.key == pygame.K_w:
-                    pygame.quit()
-                    run=False
-                    quit()
-            if TextInput1.analyse_event(event) != '' and TextInput1.active == False:
-            
-                ruleModDict = createRule(int(TextInput1.text))
-            
-                
-    
-        fenetre.fill((52,78,91))
-        if rule30B.draw(fenetre): 
-            rule30R=True
-            rule110R=False
-            rule184R=False
-            break
-        
-        if rule110B.draw(fenetre):
-            rule110R=True
-            rule30R=False
-            rule184R=False
-            break
-        
-        if rule184B.draw(fenetre):
-            rule184R=True
-            rule30R=False
-            rule110R=False
-            break
-        
-        if rule99B.draw(fenetre):
-            rule99R=True
-            rule30R=False
-            rule110R=False
-            rule184R=False
-            break
-        
-        if ruleModB.draw(fenetre):
-            ruleMod=True
-            rule30R=False
-            rule110R=False
-            rule184R=False
-            break
-        
-        TextInput1.draw(fenetre)
-        
-        pygame.display.update()
 
-
-
-
-
-
-menu()
 
 vie=initialiserCellules()
 
@@ -238,7 +282,7 @@ while loop==True:
         elif event.type == pygame.KEYDOWN:  #une touche a Ã©tÃ© pressÃ©e...laquelle ?
                
             if event.key ==pygame.K_ESCAPE:
-                menu()
+                window.show()
             
             elif event.key ==pygame.K_SPACE:
                 run=not run
@@ -252,8 +296,7 @@ while loop==True:
                 if time_interval > 0.01: time_interval -= 0.1
             elif event.key ==pygame.K_LEFT:
                 time_interval += 0.1
-            elif event.key ==pygame.K_ESCAPE:
-                menu()
+            
                 
             
                 

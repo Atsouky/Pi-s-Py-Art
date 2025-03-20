@@ -16,29 +16,36 @@ Bien que les règles des automates cellulaires soit simples, de nombreuse chose 
 
 ---
 
+### Comment lancer le projet
+
+Exécuter avec un terminal pip install -r requirement.txt
+Puis lancer le Game.bat
+
+---
+
 ##  Dans notre projet nous verrons les automates cellulaires les plus populaire tel que :
 
 - ### Le jeu de la vie de John Conway
-![jeu de la vie](Image/jdlv.png)
+![jeu de la vie](data/jdlv.png)
   
 - ### Un Automate Cellulaire Cyclique
-![Cyclic](Image/Cyclic.png)
+![Cyclic](data/Cyclic.png)
 
 - ### Un Automate Celluaire Neuronal
-![Neuro](Image/neuronal.png)
+![Neuro](data/neuronal.png)
 
 - ### Une simulation "Falling Sand"
-![Sand](Image/Sand.png)
+![Sand](data/Sand.png)
 
 - ### Et bien encore...
-![Other](Image/other.png)
+![Other](data/other.png)
 
 ---
 
 ### Prérequis
 
 - Python 3.8 ou plus
-- Librairie requises: `pygame`, (`matplotlib`, `numpy`) uniquement pour mandelbrot et julia
+- Librairie requises: Pygame et autre dans requirement
 
 
 
