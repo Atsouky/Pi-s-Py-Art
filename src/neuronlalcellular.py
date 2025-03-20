@@ -36,7 +36,7 @@ class MainWindow(QMainWindow):
      def __init__(self):
           super(MainWindow, self).__init__()
           loadUi("fond_nuro.ui", self)
-          qpixmap=QPixmap(os.path.join("data","jeu de la vie.png"))
+          qpixmap=QPixmap(os.path.join("data","nuro.png"))
           self.label.setPixmap(qpixmap)
          
          #Chexbox pour Birth cell rule

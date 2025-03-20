@@ -238,7 +238,7 @@ while loop==True:
         elif event.type == pygame.KEYDOWN:  #une touche a Ã©tÃ© pressÃ©e...laquelle ?
                
             if event.key ==pygame.K_ESCAPE:
-                loop=False
+                menu()
             
             elif event.key ==pygame.K_SPACE:
                 run=not run

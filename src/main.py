@@ -20,6 +20,8 @@ image0 =pygame.transform.scale (pygame.image.load(os.path.join("data","menu.png"
 selectsim =pygame.transform.scale (pygame.image.load(os.path.join("data","sim.png")),(info))
 selectjv =pygame.transform.scale(pygame.image.load(os.path.join("data","jeu de la vie.png")),(info))
 option=pygame.transform.scale (pygame.image.load(os.path.join("data","option.png")),(x,y))
+selectother=pygame.transform.scale (pygame.image.load(os.path.join("data","autres.png")),(info))
+selectsand=pygame.transform.scale (pygame.image.load(os.path.join("data","sandbox.png")),(info))
 #image menu principal
 start=pygame.transform.scale (pygame.image.load(os.path.join("data","start_b.png")),(x/5,y/9))
 option_b=pygame.transform.scale (pygame.image.load(os.path.join("data","options_b.png")),(x/5,y/9))
@@ -323,7 +325,7 @@ def select_sand():
     global sim,s_sand
     while s_sand:
         click1=False
-        fenetre.blit(selectsim,(0,0))
+        fenetre.blit(selectsand,(0,0))
 
         mx, my = pygame.mouse.get_pos()
 
@@ -365,7 +367,7 @@ def select_other():
     global s_other,sim,s_other1
     while s_other:
         click1=False
-        fenetre.blit(selectjv,(0,0))
+        fenetre.blit(selectother,(0,0))
 
         mx, my = pygame.mouse.get_pos()
 
@@ -423,7 +425,7 @@ def select_other1():
     global s_other,sim,s_other1,s_other2
     while s_other1:
         click=False
-        fenetre.blit(selectjv,(0,0))
+        fenetre.blit(selectother,(0,0))
 
         mx, my = pygame.mouse.get_pos()
 
@@ -487,7 +489,7 @@ def select_other2():
     global s_other2,sim,s_other1
     while s_other2:
         click1=False
-        fenetre.blit(selectjv,(0,0))
+        fenetre.blit(selectother,(0,0))
 
         mx, my = pygame.mouse.get_pos()
         button_1 = fenetre.blit(bouttons_xor,(x/2.55,y/7.5))
