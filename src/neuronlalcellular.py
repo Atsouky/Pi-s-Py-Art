@@ -36,7 +36,7 @@ class MainWindow(QMainWindow):
      def __init__(self):
           super(MainWindow, self).__init__()
           loadUi("fond_nuro.ui", self)
-          qpixmap=QPixmap("data/jeu de la vie.png")
+          qpixmap=QPixmap(os.path.join("data","jeu de la vie.png"))
           self.label.setPixmap(qpixmap)
          
          #Chexbox pour Birth cell rule
@@ -105,15 +105,15 @@ class MainWindow(QMainWindow):
         
         
         os.makedirs("saves", exist_ok=True)
-        os.makedirs("saves/neuronal", exist_ok=True)
-        with open(f"saves/neuronal/{self.l10.text()}.json", "w") as f:
+        os.makedirs(os.path.join("saves","neuronal"), exist_ok=True)
+        with open(os.path.join("saves","neuronal",f"{self.l10.text()}.json"), "w") as f:
             json.dump(data, f)
         
         
      
      def Load(self):
         try:
-            with open(f"saves/neuronal/{self.l10.text()}.json", "r") as f:
+            with open(os.path.join("saves","neuronal",f"{self.l10.text()}.json"), "r") as f:
                 data = json.load(f)
                 for i,j in enumerate(data.values()):
                     self.number[i].setText(str(j)) 

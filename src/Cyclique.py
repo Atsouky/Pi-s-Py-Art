@@ -26,7 +26,7 @@ nbCellHeight=info[1]//CELLSIZE
 
 
 
-import sys
+import sys,os
 import pygame
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.uic import loadUi
@@ -39,7 +39,7 @@ class MainWindow(QMainWindow):
          
           super(MainWindow, self).__init__(parent)
           loadUi("fond_cycl.ui", self)
-          qpixmap=QPixmap("data/cycl.png")
+          qpixmap=QPixmap(os.path.join("data","cycl.png"))
           self.label.setPixmap(qpixmap)
          
          #Chexbox pour Birth cell rule

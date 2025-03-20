@@ -55,18 +55,8 @@ def remplirGrille(vie):
     
 
 #DÃ©termine combien de voisins sont en vie
-#rappel item est un tuple (x,y) contenant la position de la cellule.
-'''''
-def voisins(item,vie):
-    nbVoisins = 0
-    for x in range (-1,2):
-        for y in range (-1,2):
-            xv=item[0]+x
-            yv=item[1]+y
 
-            
-    return nbVoisins
-    '''
+
 def voisin(x, y, vie):
     nbvoisin = 0
     for dx in [-1, 0, 1]:

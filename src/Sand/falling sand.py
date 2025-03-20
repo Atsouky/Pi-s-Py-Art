@@ -28,26 +28,38 @@ WINDOWWIDTH = info[0]
 WINDOWHEIGHT = info[1]
 
 
-
+from os import path as p
 import sys
 import pygame
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.uic import loadUi
-from PyQt5.QtGui import QPixmap, QIcon
+from PyQt5.QtGui import QPixmap, QIcon, QColor
 from PyQt5.QtWidgets import QMainWindow, QApplication, QLineEdit, QVBoxLayout, QPushButton, QComboBox
+
+
+
 
 class MainWindow(QMainWindow):
     def __init__(self,parent=None):
         super(MainWindow, self).__init__(parent)
-        loadUi("Sand/fond_sand.ui", self)
-        qpixmap=QPixmap("data/sand game/sandbox.png")
+        loadUi(p.join("Sand","fond_sand.ui"), self)
+        qpixmap=QPixmap(p.join("data","sand game","sandbox.png"))
         self.label.setPixmap(qpixmap)
         
         
         #combobox de la liste des éléments
        
-        self.comboBox.addItems(elements.keys()) # créer une liste dans la parentèse 
+         # créer une liste dans la parentèse 
+
+        for i,j in e.items():
+            print(i,j)
+            pixmap = QPixmap(20, 20)  # Create square
+            pixmap.fill(QColor(*dictionairedescouleur[j]))  # Fill with RGB color
+            self.comboBox.addItem(QIcon(pixmap), i) 
+        
         self.comboBox.activated[str].connect(self.onActivated)
+        
+        
         
         #combobox de la liste des couleurs
         
@@ -83,12 +95,12 @@ class MainWindow(QMainWindow):
         
 
     # mettre une image sur le boutton
-        sandb.setIcon(QIcon('data/icon/sable.png'))
-        eaub.setIcon(QIcon('data/icon/eau.png'))
-        boisb.setIcon(QIcon('data/icon/bois.png'))
-        pierreb.setIcon(QIcon('data/icon/pierre.png'))
-        terreb.setIcon(QIcon('data/icon/dirt.png'))
-        herbeb.setIcon(QIcon('data/icon/harbe.png'))
+        sandb.setIcon(QIcon(p.join('data','icon','sable.png')))
+        eaub.setIcon(QIcon(p.join('data','icon','eau.png')))
+        boisb.setIcon(QIcon(p.join('data','icon','bois.png')))
+        pierreb.setIcon(QIcon(p.join('data','icon','pierre.png')))
+        terreb.setIcon(QIcon(p.join('data','icon','dirt.png')))
+        herbeb.setIcon(QIcon(p.join('data','icon','harbe.png')))
         
 
     def onActivated(self, text):

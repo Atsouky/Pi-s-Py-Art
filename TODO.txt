@@ -1,3 +1,2 @@
 supprimer le todo 
-présentation.pdf
 ficher docs

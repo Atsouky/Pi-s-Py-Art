@@ -1,7 +1,7 @@
 #Projet : Pi's Py Art
 #Auteurs : Jenny Richard
 
-import pygame, sys
+import pygame, sys, os
 import subprocess
 
 pygame.init()
@@ -16,53 +16,53 @@ x=info[0]
 y=info[1]
 # importation des images
 #image de fond
-image0 =pygame.transform.scale (pygame.image.load("data/menu.png"),(info))
-selectsim =pygame.transform.scale (pygame.image.load("data/sim.png"),(info))
-selectjv =pygame.transform.scale(pygame.image.load("data/jeu de la vie.png"),(info))
-option=pygame.transform.scale (pygame.image.load("data/option.png"),(x,y))
+image0 =pygame.transform.scale (pygame.image.load(os.path.join("data","menu.png")),(info))
+selectsim =pygame.transform.scale (pygame.image.load(os.path.join("data","sim.png")),(info))
+selectjv =pygame.transform.scale(pygame.image.load(os.path.join("data","jeu de la vie.png")),(info))
+option=pygame.transform.scale (pygame.image.load(os.path.join("data","option.png")),(x,y))
 #image menu principal
-start=pygame.transform.scale (pygame.image.load("data/start_b.png"),(x/5,y/9))
-option_b=pygame.transform.scale (pygame.image.load("data/options_b.png"),(x/5,y/9))
-quitter=pygame.transform.scale (pygame.image.load("data/quit_b.png"),(x/5,y/9))
+start=pygame.transform.scale (pygame.image.load(os.path.join("data","start_b.png")),(x/5,y/9))
+option_b=pygame.transform.scale (pygame.image.load(os.path.join("data","options_b.png")),(x/5,y/9))
+quitter=pygame.transform.scale (pygame.image.load(os.path.join("data","quit_b.png")),(x/5,y/9))
 #image pour le choix de simulation
-back=pygame.transform.scale (pygame.image.load("data/back_b.png"),(x/5,y/9))
-bouttons_jv=pygame.transform.scale (pygame.image.load("data/game of life/boutton_jv.png"),(x/5,y/3))
-bouttons_sand=pygame.transform.scale (pygame.image.load("data/sand game/boutton_sand.png"),(x/5,y/3))
-bouttons_other=pygame.transform.scale (pygame.image.load("data/others/boutton_other.png"),(x/5,y/3))
+back=pygame.transform.scale (pygame.image.load(os.path.join("data","back_b.png")),(x/5,y/9))
+bouttons_jv=pygame.transform.scale (pygame.image.load(os.path.join("data","game of life","boutton_jv.png")),(x/5,y/3))
+bouttons_sand=pygame.transform.scale (pygame.image.load(os.path.join("data","sand game","boutton_sand.png")),(x/5,y/3))
+bouttons_other=pygame.transform.scale (pygame.image.load(os.path.join("data","others","boutton_other.png")),(x/5,y/3))
 #image pour les differents automate du jeu de la vie
-bouttons_brain=pygame.transform.scale (pygame.image.load("data/game of life/brain_b.png"),(x/5,y/3))
-bouttons_day_night=pygame.transform.scale (pygame.image.load("data/game of life/day&night_b.png"),(x/5,y/3))
-bouttons_hex=pygame.transform.scale (pygame.image.load("data/game of life/hex_b.png"),(x/5,y/3))
-bouttons_hexcycl=pygame.transform.scale (pygame.image.load("data/game of life/hexcycl_b.png"),(x/5,y/3))
-bouttons_hexnuro=pygame.transform.scale (pygame.image.load("data/game of life/hexnur_b.png"),(x/5,y/3))
-bouttons_highlife=pygame.transform.scale (pygame.image.load("data/game of life/highlife_b.png"),(x/5,y/3))
-bouttons_immigration=pygame.transform.scale (pygame.image.load("data/game of life/immigration_b.png"),(x/5,y/3))
-bouttons_larger=pygame.transform.scale (pygame.image.load("data/game of life/larger_than_life_b.png"),(x/5,y/3))
-bouttons_mnca=pygame.transform.scale (pygame.image.load("data/game of life/mnca_b.png"),(x/5,y/3))
-bouttons_seeds=pygame.transform.scale (pygame.image.load("data/game of life/seeds_b.png"),(x/5,y/3))
-bouttons_block=pygame.transform.scale (pygame.image.load("data/game of life/block_b.png"),(x/5,y/3))
+bouttons_brain=pygame.transform.scale (pygame.image.load(os.path.join("data","game of life","brain_b.png")),(x/5,y/3))
+bouttons_day_night=pygame.transform.scale (pygame.image.load(os.path.join("data","game of life","day&night_b.png")),(x/5,y/3))
+bouttons_hex=pygame.transform.scale (pygame.image.load(os.path.join("data","game of life","hex_b.png")),(x/5,y/3))
+bouttons_hexcycl=pygame.transform.scale (pygame.image.load(os.path.join("data","game of life","hexcycl_b.png")),(x/5,y/3))
+bouttons_hexnuro=pygame.transform.scale (pygame.image.load(os.path.join("data","game of life","hexnur_b.png")),(x/5,y/3))
+bouttons_highlife=pygame.transform.scale (pygame.image.load(os.path.join("data","game of life","highlife_b.png")),(x/5,y/3))
+bouttons_immigration=pygame.transform.scale (pygame.image.load(os.path.join("data","game of life","immigration_b.png")),(x/5,y/3))
+bouttons_larger=pygame.transform.scale (pygame.image.load(os.path.join("data","game of life","larger_than_life_b.png")),(x/5,y/3))
+bouttons_mnca=pygame.transform.scale (pygame.image.load(os.path.join("data","game of life","mnca_b.png")),(x/5,y/3))
+bouttons_seeds=pygame.transform.scale (pygame.image.load(os.path.join("data","game of life","seeds_b.png")),(x/5,y/3))
+bouttons_block=pygame.transform.scale (pygame.image.load(os.path.join("data","game of life","block_b.png")),(x/5,y/3))
 
-bouttons_next=pygame.transform.scale (pygame.image.load("data/next_b.png"),(x/5,y/9))
-bouttons_previous=pygame.transform.scale (pygame.image.load("data/previous_b.png"),(x/5,y/9))
+bouttons_next=pygame.transform.scale (pygame.image.load(os.path.join("data","next_b.png")),(x/5,y/9))
+bouttons_previous=pygame.transform.scale (pygame.image.load(os.path.join("data","previous_b.png")),(x/5,y/9))
 #image pour les differentes simulation de jeu bac a sable
-bouttons_paint=pygame.transform.scale (pygame.image.load("data/sand game/paint_b.png"),(x/5,y/3))
-bouttons_wireworld=pygame.transform.scale (pygame.image.load("data/sand game/wireworld_b.png"),(x/5,y/3))
+bouttons_paint=pygame.transform.scale (pygame.image.load(os.path.join("data","sand game","paint_b.png")),(x/5,y/3))
+bouttons_wireworld=pygame.transform.scale (pygame.image.load(os.path.join("data","sand game","wireworld_b.png")),(x/5,y/3))
 #image pour les autres simulations
-bouttons_additife=pygame.transform.scale (pygame.image.load("data/others/additife_b.png"),(x/5,y/3))
-bouttons_csv=pygame.transform.scale (pygame.image.load("data/others/csv_b.png"),(x/5,y/3))
-bouttons_cyclique=pygame.transform.scale (pygame.image.load("data/others/cyclique_b.png"),(x/5,y/3))
-bouttons_degrade=pygame.transform.scale (pygame.image.load("data/others/degradé_b.png"),(x/5,y/3))
-bouttons_elementary=pygame.transform.scale (pygame.image.load("data/others/elementary_b.png"),(x/5,y/3))
-bouttons_energy=pygame.transform.scale (pygame.image.load("data/others/energy_b.png"),(x/5,y/3))
-bouttons_etoile=pygame.transform.scale (pygame.image.load("data/others/etoile_b.png"),(x/5,y/3))
-bouttons_func=pygame.transform.scale (pygame.image.load("data/others/func_b.png"),(x/5,y/3))
-bouttons_heat=pygame.transform.scale (pygame.image.load("data/others/heat_b.png"),(x/5,y/3))
-bouttons_mandelbrot=pygame.transform.scale (pygame.image.load("data/others/mandelbrot_b.png"),(x/5,y/3))
-bouttons_xor=pygame.transform.scale (pygame.image.load("data/others/ou_exlusif_b.png"),(x/5,y/3))
-bouttons_pile=pygame.transform.scale (pygame.image.load("data/others/pile_b.png"),(x/5,y/3))
-bouttons_quadlife=pygame.transform.scale (pygame.image.load("data/others/quadlife_b.png"),(x/5,y/3))
-bouttons_wave=pygame.transform.scale (pygame.image.load("data/others/wave_b.png"),(x/5,y/3))
-bouttons_nuro=pygame.transform.scale (pygame.image.load("data/others/nuro_b.png"),(x/5,y/3))
+bouttons_additife=pygame.transform.scale (pygame.image.load(os.path.join("data","others","additife_b.png")),(x/5,y/3))
+bouttons_csv=pygame.transform.scale (pygame.image.load(os.path.join("data","others","csv_b.png")),(x/5,y/3))
+bouttons_cyclique=pygame.transform.scale (pygame.image.load(os.path.join("data","others","cyclique_b.png")),(x/5,y/3))
+bouttons_degrade=pygame.transform.scale (pygame.image.load(os.path.join("data","others","degradé_b.png")),(x/5,y/3))
+bouttons_elementary=pygame.transform.scale (pygame.image.load(os.path.join("data","others","elementary_b.png")),(x/5,y/3))
+bouttons_energy=pygame.transform.scale (pygame.image.load(os.path.join("data","others","energy_b.png")),(x/5,y/3))
+bouttons_etoile=pygame.transform.scale (pygame.image.load(os.path.join("data","others","etoile_b.png")),(x/5,y/3))
+bouttons_func=pygame.transform.scale (pygame.image.load(os.path.join("data","others","func_b.png")),(x/5,y/3))
+bouttons_heat=pygame.transform.scale (pygame.image.load(os.path.join("data","others","heat_b.png")),(x/5,y/3))
+bouttons_mandelbrot=pygame.transform.scale (pygame.image.load(os.path.join("data","others","mandelbrot_b.png")),(x/5,y/3))
+bouttons_xor=pygame.transform.scale (pygame.image.load(os.path.join("data","others","ou_exlusif_b.png")),(x/5,y/3))
+bouttons_pile=pygame.transform.scale (pygame.image.load(os.path.join("data","others","pile_b.png")),(x/5,y/3))
+bouttons_quadlife=pygame.transform.scale (pygame.image.load(os.path.join("data","others","quadlife_b.png")),(x/5,y/3))
+bouttons_wave=pygame.transform.scale (pygame.image.load(os.path.join("data","others","wave_b.png")),(x/5,y/3))
+bouttons_nuro=pygame.transform.scale (pygame.image.load(os.path.join("data","others","nuro_b.png")),(x/5,y/3))
 
 #differente boucle
 sim=False
@@ -214,13 +214,13 @@ def select_jv():
 
         if button_1.collidepoint((mx, my)):
             if click:
-                subprocess.run(["python", "jeu de la vie.py"])
+                subprocess.run(["python", os.path.join("jeu de la vie.py")])
         if button_2.collidepoint((mx, my)):
             if click:
-                subprocess.run(["python", "Jeu de la vie/Brain.py"])
+                subprocess.run(["python", os.path.join("Jeu de la vie","Brain.py")])
         if button_3.collidepoint((mx, my)):
             if click:
-                subprocess.run(["python", "Jeu de la vie/day&night.py"])
+                subprocess.run(["python", os.path.join("Jeu de la vie","day&night.py")])
         if button_4.collidepoint((mx, my)):
             if click:
                 s_jv=False
@@ -228,13 +228,13 @@ def select_jv():
                 select_sim()
         if button_5.collidepoint((mx, my)):
             if click:
-                subprocess.run(["python", "Hex/Hex.py"])
+                subprocess.run(["python", os.path.join("Hex","Hex.py")])
         if button_6.collidepoint((mx, my)):
             if click:
-                subprocess.run(["python", "Hex/HexCycl.py"])
+                subprocess.run(["python", os.path.join("Hex","HexCycl.py")])
         if button_7.collidepoint((mx, my)):
             if click:
-                subprocess.run(["python", "Hex/HexNuro.py"])     
+                subprocess.run(["python", os.path.join("Hex","HexNuro.py")])     
         if button_8.collidepoint((mx, my)):
             if click:
                 s_jv=False
@@ -276,13 +276,13 @@ def select_jv1():
         
         if button_1.collidepoint((mx, my)):
             if click1:
-                subprocess.run(["python", "Jeu de la vie/highlife.py"])
+                subprocess.run(["python", os.path.join("Jeu de la vie","highlife.py")])
         if button_2.collidepoint((mx, my)):
             if click1:
-                subprocess.run(["python", "Jeu de la vie/immigration.py"])
+                subprocess.run(["python", os.path.join("Jeu de la vie","immigration.py")])
         if button_3.collidepoint((mx, my)):
             if click1:
-                subprocess.run(["python", "MNCA/larger than life.py"])
+                subprocess.run(["python", os.path.join("MNCA","larger than life.py")])
         if button_4.collidepoint((mx, my)):
             if click1:
                 s_jv1=False
@@ -294,7 +294,7 @@ def select_jv1():
                 
         if button_6.collidepoint((mx, my)):
             if click1:
-                subprocess.run(["python", "Jeu de la vie/Seeds.py"])  
+                subprocess.run(["python", os.path.join("Jeu de la vie","Seeds.py")])  
         if button_7.collidepoint((mx, my)):
             if click1:
                 s_jv1=False
@@ -302,7 +302,7 @@ def select_jv1():
                 select_jv()
         if button_8.collidepoint((mx, my)):
             if click1:
-                subprocess.run(["python", "Block.py"])
+                subprocess.run(["python", os.path.join("Block.py")])
         #pygame.draw.rect(fenetre, (255, 0, 0), button_2)
         #pygame.draw.rect(fenetre, (255, 0, 0), button_1)
         #pygame.draw.rect(fenetre, (255, 0, 0), button_3)
@@ -333,13 +333,13 @@ def select_sand():
         button_4 = fenetre.blit(back,(x/2.55,y/1.3))
         if button_1.collidepoint((mx, my)):
             if click:
-                subprocess.run(["python", "Autre automate/paint.py"])
+                subprocess.run(["python", os.path.join("Autre automate","paint.py")])
         if button_2.collidepoint((mx, my)):
             if click:
-                subprocess.run(["python", "Sand/falling sand.py"])
+                subprocess.run(["python", os.path.join("Sand","falling sand.py")])
         if button_3.collidepoint((mx, my)):
             if click:
-                subprocess.run(["python", "Autre automate/wireworld.py"])
+                subprocess.run(["python", os.path.join("Autre automate","wireworld.py")])
         if button_4.collidepoint((mx, my)):
             if click:
                 s_sand=False
@@ -380,10 +380,10 @@ def select_other():
 
         if button_1.collidepoint((mx, my)):
             if click:
-                subprocess.run(["python", "Autre automate/Additif.py"])
+                subprocess.run(["python", os.path.join("Autre automate","Additif.py")])
         if button_2.collidepoint((mx, my)):
             if click:
-                subprocess.run(["python", "Elementaire/1dCellular.py"])
+                subprocess.run(["python", os.path.join("Elementaire","1dCellular.py")])
         if button_3.collidepoint((mx, my)):
             if click:
                 subprocess.run(["python", "CSV file editor.py"], cwd='MNCA')
@@ -394,10 +394,10 @@ def select_other():
                 select_sim()
         if button_5.collidepoint((mx, my)):
             if click:
-                subprocess.run(["python", "Cyclique.py"])
+                subprocess.run(["python", os.path.join("Cyclique.py")])
         if button_6.collidepoint((mx, my)):
             if click:
-                subprocess.run(["python", "Autre automate/Dégradé.py"]) 
+                subprocess.run(["python", os.path.join("Autre automate","Dégradé.py")]) 
         if button_7.collidepoint((mx, my)):
             if click:
                 s_other=False
@@ -439,13 +439,13 @@ def select_other1():
 
         if button_1.collidepoint((mx, my)):
             if click1:
-                subprocess.run(["python", "Autre automate/Energy.py"])
+                subprocess.run(["python", os.path.join("Autre automate","Energy.py")])
         if button_2.collidepoint((mx, my)):
             if click1:
-                subprocess.run(["python", "Autre projet/étoile.py"])
+                subprocess.run(["python", os.path.join("Autre projet","étoile.py")])
         if button_3.collidepoint((mx, my)):
             if click1:
-                subprocess.run(["python", "Autre projet/Func.py"])
+                subprocess.run(["python", os.path.join("Autre projet","Func.py")])
         if button_4.collidepoint((mx, my)):
             if click1:
                 s_other1=False
@@ -453,10 +453,10 @@ def select_other1():
                 select_sim()
         if button_5.collidepoint((mx, my)):
             if click1:
-                subprocess.run(["python", "Autre automate/Heat.py"])
+                subprocess.run(["python", os.path.join("Autre automate","Heat.py")])
         if button_6.collidepoint((mx, my)):
             if click1:
-                subprocess.run(["cmd.exe", "/c","Autre projet/Game Mandelbrot.bat"]) 
+                subprocess.run(["cmd.exe", "/c",os.path.join("Autre projet","Game Mandelbrot.bat")]) 
         if button_7.collidepoint((mx, my)):
             if click1:
                 s_other=False
@@ -501,13 +501,13 @@ def select_other2():
 
         if button_1.collidepoint((mx, my)):
             if click:
-                subprocess.run(["python", "Autre projet/ou exclusif.py"])
+                subprocess.run(["python", os.path.join("Autre projet","ou exclusif.py")])
         if button_2.collidepoint((mx, my)):
             if click:
-                subprocess.run(["python", "Autre automate/Pile de sable.py"])
+                subprocess.run(["python", os.path.join("Autre automate","Pile de sable.py")])
         if button_3.collidepoint((mx, my)):
             if click:
-                subprocess.run(["python", "Jeu de la vie/Quadlife.py"])
+                subprocess.run(["python", os.path.join("Jeu de la vie","Quadlife.py")])
         if button_4.collidepoint((mx, my)):
             if click:
                 s_other2=False
@@ -515,7 +515,7 @@ def select_other2():
                 select_sim()
         if button_5.collidepoint((mx, my)):
             if click:
-                subprocess.run(["python", "Autre automate/Wave.py"])  
+                subprocess.run(["python", os.path.join("Autre automate","Wave.py")])  
         if button_6.collidepoint((mx, my)):
             if click:
                 s_other2=False
@@ -523,7 +523,7 @@ def select_other2():
                 select_other1()
         if button_7.collidepoint((mx, my)):
             if click:
-                subprocess.run(["python", "neuronalcellular.py"])
+                subprocess.run(["python", os.path.join("neuronlalcellular.py")])
         #pygame.draw.rect(fenetre, (255, 0, 0), button_2)
         #pygame.draw.rect(fenetre, (255, 0, 0), button_1)
         #pygame.draw.rect(fenetre, (255, 0, 0), button_3)

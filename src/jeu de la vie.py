@@ -24,7 +24,7 @@ offset_y = 0
 
 # les menus
 
-import sys
+import os,sys
 import pygame
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.uic import loadUi
@@ -38,7 +38,7 @@ class MainWindow(QMainWindow):
                   vc17,vc18,vc19,vc20,vc21,vc22,vc23,vc24,vc25,parent=None):
           super(MainWindow, self).__init__()
           loadUi("fond_jv.ui", self)
-          qpixmap=QPixmap("data/jeu de la vie.png")
+          qpixmap=QPixmap(os.path.join("data","jeu de la vie.png"))
           self.label.setPixmap(qpixmap)
          
          #Chexbox pour Birth cell rule
