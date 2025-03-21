@@ -18,8 +18,14 @@ Bien que les règles des automates cellulaires soit simples, de nombreuse chose 
 
 ### Comment lancer le projet
 
+Projet développer avec Python 3.10.11
+
 Exécuter avec un terminal pip install -r requirement.txt
-Puis lancer le Game.bat
+Puis lancer le src/Game.bat
+
+OU
+
+Executer le `Lancer avec un environement virtuel.bat`
 
 ---
 
