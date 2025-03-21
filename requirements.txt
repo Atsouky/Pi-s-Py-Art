@@ -1,5 +1,5 @@
-Vcolorpicker==1.4.4
-PyGame==2.6.0
-Matplotlib==3.8.1
-Numpy==1.26.2
-PyQt5==5.15.11
+vcolorpicker>=1.4.4
+pygame>=2.6.0
+matplotlib>=3.8.1
+numpy>=1.26.2
+pyqt5-tools>=5.15.9.3.3
