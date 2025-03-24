@@ -1,36 +1,35 @@
 
 # Pi-s-Py-Art
 
-Bonjour voici notre projet pour les trophée NSI de 2024 avec le thème Art et Informatique
+Bonjour, voici notre projet pour les trophées NSI 2024 sur le thème **Art et Informatique**.
 
+## Notre projet  
 
-## Notre projet : 
+### Les Automates Cellulaires  
 
-### Les Automates Cellulaires
+Les automates cellulaires sont une branche de l'informatique et des mathématiques étudiant le comportement de cellules dans une grille en suivant des règles simples.  
 
-Les automates cellulaires sont une branche de l'informatique et des math étudiant le comportement de cellule dans une grille avec des règles simples.
+Ce sont des simulations, donc elles évoluent seules, mais il est possible d'intervenir en temps réel.  
 
-Ce sont des simulation donc il se joue tout seul mais il est possible d'intervenir dans les simulation en tant réel.
-
-Bien que les règles des automates cellulaires soit simples, de nombreuse chose peuvent arriver que ce soit très simple a une grande complexiter.
-
----
-
-### Comment lancer le projet
-
-Projet développer avec Python 3.10.11
-
-Exécuter avec un terminal pip install -r requirement.txt
-Puis lancer le src/Game.bat
-
-OU
-
-Executer le `Lancer avec un environement virtuel.bat`
+Bien que les règles des automates cellulaires soient simples, de nombreux phénomènes peuvent émerger, allant de structures basiques à des comportements d'une grande complexité.  
 
 ---
 
-##  Dans notre projet nous verrons les automates cellulaires les plus populaire tel que :
+## Comment lancer le projet  
 
+Projet développé avec **Python 3.10.11**. 
+Lancer le Bat Environement virtuelle 
+
+### Installation des dépendances  
+
+```sh
+pip install -r requirements.txt
+```
+---
+
+
+##  Automates cellulaires présents dans le projet :
+Nous explorerons plusieurs automates cellulaires populaires, tels que :
 - ### Le jeu de la vie de John Conway
 ![jeu de la vie](data/jdlv.png)
   
@@ -43,15 +42,18 @@ Executer le `Lancer avec un environement virtuel.bat`
 - ### Une simulation "Falling Sand"
 ![Sand](data/Sand.png)
 
-- ### Et bien encore...
+- ### Et bien plus encore...
 ![Other](data/other.png)
 
 ---
 
 ### Prérequis
 
-- Python 3.8 ou plus
-- Librairie requises: Pygame et autre dans requirement
+Python 3.8 ou plus
+
+Bibliothèques requises : Pygame et autres dépendances listées dans requirements.txt
+
+
 
 
 
