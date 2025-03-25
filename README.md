@@ -19,6 +19,7 @@ Bien que les règles des automates cellulaires soient simples, de nombreux phén
 
 Projet développé avec **Python 3.10.11**. 
 Lancer le Bat Environement virtuelle 
+Si il y a une erreur il est probable que le chemin du dossier soit trop long (Pour l'envirenement) donc il faut mettre le fichier le plus proche de la racine si l'envirenement virtuelle est utilisé
 
 ### Installation des dépendances  
 
